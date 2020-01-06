@@ -4,18 +4,25 @@
 class Professor{
 
 };
-// it's gonna be ad
 class AdjunctProfessor : public Professor { 
+
+void ChangePassword(){
+    
+}
+// list of courses
+//access grades list
+
 
 };
 
 class Faculty : public AdjunctProfessor{
-
-};
-class DepartmentHead : public Faculty{
+//is supervisor?? -> apply enrollments
+// degree
 
 };
 class DepartmentAcademicAffairsStaff :public AcademicAffairsStaff{
+// list of all courses 
+// list of students of department
 
 };
 
