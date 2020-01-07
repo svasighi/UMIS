@@ -1,19 +1,19 @@
-#include <iostream>
 #include "AcademicAffairs.h"
- 
+#include <string>
+#include <vector>
+#include "Student.h"
+
 class Professor {
+// list of courses
+//access grades list
 
 };
 
 class AdjunctProfessor : public Professor { 
 
-// list of courses
-//access grades list
-
-
 };
 
-class Faculty : public AdjunctProfessor {
+class Faculty : public Professor {
 // is supervisor?? -> apply enrollments
 // degree
 
