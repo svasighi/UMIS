@@ -2,16 +2,22 @@
 #include "AcademicAffairs.h"
 #include "User.h"
 #include "Student.h"
+#include "Course.h"
 #include "..\include\md5.h"
 
 // .............................PROFESSOR......................................
 
-class Professor : public User {
-
+class Professor : public User{
+    std::vector<Presented_Course*> courses; //list of presented courses
+	std::vector<Students*> course_students; //
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
-    std::vector<Presented_Course*> courses;
-	std::vector<Student*> course_students;
+    void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
+    void EnterGrades(Presented_Course presented_course , float grade){
+        
+        MyTerm myterm;
+        myterm.courses.insert.insert(pair<Presented_Course*, float>(presented_course, grade));
+   
+    }
 };
 // .............................AdjunctProfessor......................................
 
@@ -50,7 +56,7 @@ class Faculty : public AdjunctProfessor{
 class DepartmentAcademicAffairsStaff :public AcademicAffairsStaff{
     std::vector<Presented_Course*> courses;
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+    void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
 };
 
 int main(){
