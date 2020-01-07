@@ -1,8 +1,7 @@
-#include <iostream>
-#include <string>
-
 #ifndef USER_H
 #define USER_H
+
+#include <string>
 
 // .............................FIELD......................................
 class Field{ 
@@ -10,9 +9,9 @@ class Field{
     std::string FieldName;
 public:
     inline void SetID(int FieldID){ ID = FieldID;}
-    inline std::String GetID(void) const {return FieldName;}
+    inline std::string GetID(void) const {return FieldName;}
     inline void SetFieldName(std::String fieldname){FieldName = fieldname;}
-    inline std::String GetFieldName(void) const {return FieldName;}
+    inline std::string GetFieldName(void) const {return FieldName;}
 };
 // .............................USER......................................
 
