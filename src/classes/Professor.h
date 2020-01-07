@@ -1,9 +1,10 @@
 #include "AcademicAffairs.h"
 #include <string>
 #include <vector>
+#include "User.h"
 #include "Student.h"
 
-class Professor {
+class Professor : public User {
 // list of courses
 //access grades list
 
