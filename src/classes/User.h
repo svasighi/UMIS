@@ -27,16 +27,17 @@ public:
     User(){}; // it won't do anything :)
     ~User(){}; // it won't do anything :)
     void setID(const unsigned);
-    inline unsigned int getID(void) const {return ID;};
+    inline unsigned int getID(void) const {return ID;}
     void setFirstName(const std::string); //forward definition
-    std::string getFirstName(void) const {return first_name;};
+    std::string getFirstName(void) const {return first_name;}
     void setLastName(const std::string); //forward definition
-    std::string getLastName(void) const {return last_name;};
+    std::string getLastName(void) const {return last_name;}
     void setField(const Field); //forward definition
     Field getField(void) const {return field;};    
     void setPassword(const std::string); //forward definition
+    void std::string getPassword(void) const {return password;}
     void CheckPassword(); //forward definition
     virtual void ChangePassword(); //forward definition
 };
 
-#endif
+#endif // USER_H
