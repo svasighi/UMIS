@@ -35,8 +35,8 @@ public:
     std::string Getlast_name(void) const {return last_name;};
     void SetField(const Field); //forward definition
     Field GetField(void) const {return field;};    
-    void SetPassword(const std::string); //forward definition
-    void CheckPassword(); //forward definition
+    virtual void SetPassword(const std::string); //forward definition
+    virtual void CheckPassword(); //forward definition
     virtual void ChangePassword(); //forward definition
 };
 
