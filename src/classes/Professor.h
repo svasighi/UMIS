@@ -14,7 +14,7 @@ class AdjunctProfessor : public Professor {
 };
 
 class Faculty : public AdjunctProfessor {
-//is supervisor?? -> apply enrollments
+// is supervisor?? -> apply enrollments
 // degree
 
 };
