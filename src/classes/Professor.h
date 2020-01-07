@@ -1,4 +1,3 @@
-#include <iostream>
 #include "AcademicAffairs.h"
 #include "User.h"
 #include "Student.h"
@@ -8,11 +7,12 @@
 // .............................PROFESSOR......................................
 
 class Professor : public User {
+protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 	std::vector<Students*> course_students; //
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
-    void EnterGrades(Presented_Course presented_course , float grade){
+    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+    void EnterGrades(Presented_Course presented_course , float grade) {
         
         MyTerm myterm;
         myterm.courses.insert.insert(pair<Presented_Course*, float>(presented_course, grade));
