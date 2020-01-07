@@ -10,9 +10,9 @@ class Field{
     std::string FieldName;
 public:
     inline void SetID(int FieldID){ ID = FieldID;}
-    inline std::String GetID(void) const {FieldName = fieldname;}
+    inline std::String GetID(void) const {return FieldName;}
     inline void SetFieldName(std::String fieldname){FieldName = fieldname;}
-    inline std::String GetFieldName(void) const {FieldName = fieldname;}
+    inline std::String GetFieldName(void) const {return FieldName;}
 };
 // .............................USER......................................
 
@@ -35,8 +35,8 @@ public:
     std::string Getlast_name(void) const {return last_name;};
     void SetField(const Field); //forward definition
     Field GetField(void) const {return field;};    
-    virtual void SetPassword(const std::string); //forward definition
-    virtual void CheckPassword(); //forward definition
+    void SetPassword(const std::string); //forward definition
+    void CheckPassword(); //forward definition
     virtual void ChangePassword(); //forward definition
 };
 
