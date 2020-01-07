@@ -7,8 +7,8 @@
 
 // .............................PROFESSOR......................................
 
-class Professor : public User{
-    std::vector<Presented_Course*> courses; //list of presented courses
+class Professor : public User {
+	std::vector<Presented_Course*> courses; //list of presented courses
 	std::vector<Students*> course_students; //
 public:
     void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
@@ -53,12 +53,8 @@ class Faculty : public AdjunctProfessor{
 };
 // .............................DepartmentAcademicAffairsStaff......................................
 
-class DepartmentAcademicAffairsStaff :public AcademicAffairsStaff{
+class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
     std::vector<Presented_Course*> courses;
 public:
     void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
 };
-
-int main(){
-
-}
