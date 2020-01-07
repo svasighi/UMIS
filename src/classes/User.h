@@ -4,12 +4,12 @@
 #include <string>
 
 // .............................FIELD......................................
-class Field{ 
+class Field { 
     int ID;
     std::string fieldname;
 public:
     inline void setID(int FieldID){ ID = FieldID;}
-    inline std::string getID(void) const {return fieldname;}
+    inline std::string getID(void) const {return ID;}
     inline void setFieldName(std::string _fieldname){fieldname = _fieldname;}
     inline std::string getFieldName(void) const {return fieldname;}
 };
