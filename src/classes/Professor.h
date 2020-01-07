@@ -6,12 +6,12 @@
 
 // .............................PROFESSOR......................................
 
-class Professor : public User{
+class Professor : public User {
 
 public:
     void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
     std::vector<Presented_Course*> courses;
-	std::vector<Presented_Course*> course_students;
+	std::vector<Student*> course_students;
 };
 // .............................AdjunctProfessor......................................
 
