@@ -31,10 +31,10 @@ public:
     void setFirstName(const std::string); //forward definition
     std::string getFirstName(void) const {return first_name;};
     void setLastName(const std::string); //forward definition
-    std::string Getlast_name(void) const {return last_name;};
-    void SetField(const Field); //forward definition
-    Field GetField(void) const {return field;};    
-    void SetPassword(const std::string); //forward definition
+    std::string getLastName(void) const {return last_name;};
+    void setField(const Field); //forward definition
+    Field getField(void) const {return field;};    
+    void setPassword(const std::string); //forward definition
     void CheckPassword(); //forward definition
     virtual void ChangePassword(); //forward definition
 };
