@@ -1,11 +1,10 @@
-#include <iostream>
-#include <string>
-
 #ifndef USER_H
 #define USER_H
 
+#include <string>
+
 // .............................FIELD......................................
-class Field{ 
+class Field { 
     int ID;
     std::string FieldName;
 public:
@@ -27,8 +26,8 @@ private:
 public:
     User(){}; // it won't do anything :)
     ~User(){}; // it won't do anything :)
-    void Setuser_name(const user_name);
-    inline unsigned Getuser_name(void) const {return user_name;};
+    void setUserName(const user_name);
+    inline unsigned int Getuser_name(void) const {return user_name;};
     void Setfirst_name(const std::string); //forward definition
     std::string Getfirst_name(void) const {return first_name;};
     void Setlast_name(const std::string); //forward definition
@@ -40,4 +39,4 @@ public:
     virtual void ChangePassword(); //forward definition
 };
 
-#endif
+#endif // USER_H
