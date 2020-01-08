@@ -10,7 +10,7 @@ class Field {
 public:
     inline void setID(int FieldID) { ID = FieldID;}
     inline std::string getID(void) const {return FieldName;}
-    inline void setFieldName(std::String fieldname) {FieldName = fieldname;}
+    inline void setFieldName(std::string fieldname) {FieldName = fieldname;}
     inline std::string setFieldName(void) const {return FieldName;}
 };
 // .............................USER......................................
@@ -26,7 +26,7 @@ private:
 public:
     User(){}; // it won't do anything :)
     ~User(){}; // it won't do anything :)
-    void setUserName(const user_name);
+    void setUserName(const _username);
     inline unsigned int getUserName(void) const {return user_name;}
     void setFirstName(const std::string); //forward definition
     std::string getFirstName(void) const {return first_name;}
