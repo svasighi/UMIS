@@ -1,4 +1,5 @@
-#include<iostream>
+#include <iostream>
+#include "..\models\AcademicAffairsModel.cpp"
 
 class AcademicAffairsStaff{
 //change password
