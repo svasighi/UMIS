@@ -1,8 +1,10 @@
+#ifndef PROF
+#define PROF
 #include "AcademicAffairs.h"
 #include "User.h"
 #include "Student.h"
 #include "Course.h"
-#include "..\include\md5.h"
+#include "..\classes\md5.cpp"
 
 // .............................PROFESSOR......................................
 
@@ -58,3 +60,4 @@ class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 public:
     void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
 };
+#endif // PROF
