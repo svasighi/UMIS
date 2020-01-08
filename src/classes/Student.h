@@ -28,9 +28,7 @@ protected:
 	float grade;
 	std::vector<MyTerm> terms;
 public:
-	// FullInformation;
-	// WeeklySchedule;
-	// ExamsSchedule;
+	Student();
 	void setField(std::string _field);
 	std::string getField();
 	void setGrade(float _grade);
