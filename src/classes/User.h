@@ -8,10 +8,10 @@ class Field {
     int ID;
     std::string FieldName;
 public:
-    inline void SetID(int FieldID){ ID = FieldID;}
-    inline std::String GetID(void) const {return FieldName;}
-    inline void SetFieldName(std::String fieldname){FieldName = fieldname;}
-    inline std::String GetFieldName(void) const {return FieldName;}
+    inline void setID(int FieldID) { ID = FieldID;}
+    inline std::string getID(void) const {return FieldName;}
+    inline void setFieldName(std::String fieldname) {FieldName = fieldname;}
+    inline std::string setFieldName(void) const {return FieldName;}
 };
 // .............................USER......................................
 
@@ -27,14 +27,14 @@ public:
     User(){}; // it won't do anything :)
     ~User(){}; // it won't do anything :)
     void setUserName(const user_name);
-    inline unsigned int Getuser_name(void) const {return user_name;};
-    void Setfirst_name(const std::string); //forward definition
-    std::string Getfirst_name(void) const {return first_name;};
-    void Setlast_name(const std::string); //forward definition
-    std::string Getlast_name(void) const {return last_name;};
-    void SetField(const Field); //forward definition
-    Field GetField(void) const {return field;};    
-    void SetPassword(const std::string); //forward definition
+    inline unsigned int getUserName(void) const {return user_name;}
+    void setFirstName(const std::string); //forward definition
+    std::string getFirstName(void) const {return first_name;}
+    void setLastName(const std::string); //forward definition
+    std::string getLastName(void) const {return last_name;}
+    void setField(const Field); //forward definition
+    Field getField(void) const {return field;}
+    void setPassword(const std::string); //forward definition
     void CheckPassword(); //forward definition
     virtual void ChangePassword(); //forward definition
 };
