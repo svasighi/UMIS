@@ -1,13 +1,17 @@
 #include <iostream>
 #include "..\models\AcademicAffairsModel.cpp"
+<<<<<<< HEAD
+=======
+#include "User.h"
+>>>>>>> 10f3851f879d1ecd7d4591616906b693a1ca8344
 
-class AcademicAffairsStaff{
-//change password
-//Personal info {username , pass , fname, lname , role}
-// list of students with respect to their role
+class AcademicAffairsStaff :public User{
+    std::vector<Studnet*> students;
 
 };
 class WholeAcademicAffairsStaff :public AcademicAffairsStaff{
 // list of all students 
-// change the departments head
+    std::vector<Presented_Course*> courses;
+public:
+    void ChangeDepartmentHead(Professor prof); //forward definitions
 };
