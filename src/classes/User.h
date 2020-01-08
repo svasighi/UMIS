@@ -26,8 +26,8 @@ private:
 public:
     User(){}; // it won't do anything :)
     ~User(){}; // it won't do anything :)
-    void setUserName(const _username);
-    inline unsigned int getUserName(void) const {return user_name;}
+    void setUserName(const unsigned int _username);
+    unsigned int getUserName(void) const {return user_name;}
     void setFirstName(const std::string); //forward definition
     std::string getFirstName(void) const {return first_name;}
     void setLastName(const std::string); //forward definition
