@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
-#include "Professor.h"
 #include "TimeDate.h"
+
+class Professor;
 
 class Course {
 protected:
