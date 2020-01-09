@@ -1,5 +1,5 @@
-#ifndef Student_H
-#define Student_H
+#ifndef STUDENT_H
+#define STUDENT_H
 
 #include <string>
 #include <vector>
@@ -46,4 +46,4 @@ public:
 	// compute tuition
 };
 
-#endif // Student_H
+#endif // STUDENT_H
