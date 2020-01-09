@@ -54,7 +54,8 @@ class Faculty : public Professor {
 // .............................DepartmentAcademicAffairsStaff......................................
 
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
-	std::vector<Presented_Course*> presented_courses;
+protected:
+	std::vector<Course*> courses;
 	std::vector<Presented_Course*> presented_courses;
 public:
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
