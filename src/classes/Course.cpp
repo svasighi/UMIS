@@ -1,4 +1,4 @@
-#include "Course.h"
+#include "../include/Course.h"
 
 Course::Course() {
 

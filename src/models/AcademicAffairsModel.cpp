@@ -1,6 +1,6 @@
 #include <sqlite3.h>
 #include"BaseModel.cpp"
-
+#include<vector>
 
 
 class AcademicAffairsModel :public BaseModel{

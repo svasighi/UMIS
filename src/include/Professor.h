@@ -55,6 +55,10 @@ protected:
 	std::vector<Course*> courses;
 	std::vector<Presented_Course*> presented_courses;
 public:
+	std::vector<Course*> getCourses(void)const;		
+	void setCourses(std::vector<Course*>);
+	std::vector<Presented_Course*> getPresentedCourses(void)const;
+	void setPresentedCourses(std::vector<Presented_Course*>);
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
