@@ -17,7 +17,7 @@ protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
 	void setCourses(std::vector<Presented_Course*> _courses) {
-	courses = _courses;
+		courses = _courses;
 	}
 
 	std::vector<Presented_Course*> getCourses() const {
@@ -32,10 +32,10 @@ public:
 		courses.erase(find(courses.begin(), courses.end(), course));
 	}
 	
-	
 	void enterScore(Presented_Course* presented_course , Student* student, float score) {
 		student->setScoreofCourse(presented_course, score);
 	}
+	
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 // .............................AdjunctProfessor......................................
