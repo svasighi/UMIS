@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "Course.h"
 #include "User.h"
+#include "Course.h"
 
 class MyTerm {
 protected:
@@ -19,6 +19,7 @@ public:
 	void setCourses(std::map<Presented_Course*, float> _courses);
 	std::map<Presented_Course*, float> getCourses() const;
 	void addCourse(Presented_Course* course, float score);
+	void removeCourse(Presented_Course* course);
 	float getScoreofCourse(Presented_Course* course) const;
 };
 
@@ -28,6 +29,9 @@ protected:
 	float grade;
 	std::vector<MyTerm> terms;
 public:
+	// FullInformation;
+	// WeeklySchedule;
+	// ExamsSchedule;
 	Student();
 	void setField(std::string _field);
 	std::string getField() const;
