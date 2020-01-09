@@ -28,6 +28,10 @@ void MyTerm::addCourse(Presented_Course* course, float score) {
 	courses[course] = score;
 }
 
+void MyTerm::removeCourse(Presented_Course* course) {
+	courses.erase(course);
+}
+
 float MyTerm::getScoreofCourse(Presented_Course* course) const {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
@@ -74,5 +78,5 @@ void Student::setScoreofCourse(Presented_Course* course, float score) {
 }
 
 float Student::getScoreofCourse(Presented_Course* course) const {
-	terms[course->getTerm_no()].getScoreofCourse(course);
+	return terms[course->getTerm_no()].getScoreofCourse(course);
 }
