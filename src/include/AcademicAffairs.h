@@ -3,16 +3,20 @@
 
 #include "..\models\AcademicAffairsModel.cpp"
 #include "User.h"
+#include "Student.h"
 
 class AcademicAffairsStaff : public User {
+protected:
+    std::string career;
     std::vector<Student*> students;
-
+public:
+    
 };
-class WholeAcademicAffairsStaff : public AcademicAffairsStaff {
+class TopAcademicAffairsStaff : public AcademicAffairsStaff {
 // list of all students 
     std::vector<Presented_Course*> courses;
 public:
-    void ChangeDepartmentHead(Professor prof); //forward definitions
+    void changeDepartmentHead(Professor* prof); //forward definitions
 };
 
 #endif // ACADEMIC
