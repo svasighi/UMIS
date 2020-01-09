@@ -6,5 +6,5 @@
 class AcademicAffairsModel :public BaseModel{
 public:
     std::vector<Student*> getStudentsbyDepartment(int _department_id)const{} //forward definition 
-    int getFee(void)const{}
+    int static getFee(void){}
 };
