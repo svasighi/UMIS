@@ -1,5 +1,5 @@
-#ifndef TimeDate_H
-#define TimeDate_H
+#ifndef TIMEDATE_H
+#define TIMEDATE_H
 
 #include <string>
 #include <vector>
@@ -35,4 +35,4 @@ public:
 	int getmmo() const;
 };
 
-#endif // TimeDate_H
+#endif // TIMEDATE_H
