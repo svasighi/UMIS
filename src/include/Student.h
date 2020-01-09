@@ -15,11 +15,11 @@ public:
 	MyTerm();
 	MyTerm(int _no);
 	void setno(int _no);
-	int getno();
+	int getno() const;
 	void setCourses(std::map<Presented_Course*, float> _courses);
-	std::map<Presented_Course*, float> getCourses();
+	std::map<Presented_Course*, float> getCourses() const;
 	void addCourse(Presented_Course* course, float score);
-	float getScoreofCourse(Presented_Course* course);
+	float getScoreofCourse(Presented_Course* course) const;
 };
 
 class Student : public User {
@@ -30,12 +30,14 @@ protected:
 public:
 	Student();
 	void setField(std::string _field);
-	std::string getField();
+	std::string getField() const;
 	void setGrade(float _grade);
-	float getGrade();
+	float getGrade() const;
 	void setTerms(std::vector<MyTerm> _terms);
-	std::vector<MyTerm> getTerms();
+	std::vector<MyTerm> getTerms() const;
 	void addTerm(MyTerm term);
+	void setScoreofCourse(Presented_Course* course, float score);
+	float getScoreofCourse(Presented_Course* course) const;
 };
 
 class Guest_Student : public Student {
