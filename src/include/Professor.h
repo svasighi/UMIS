@@ -14,12 +14,12 @@
 
 class Professor : public User {
 protected:
-	std::map<Presented_Course*, std::vector<Student*>> courses; //list of presented courses
+	std::map<Presented_Course*, std::vector<Student*>> courses; //list of presented courses with their students
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
-    void enterScore(Presented_Course* presented_course , Student* student, float score) {
-        courses[presented_course][student] = score;
-    }
+	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+	void enterScore(Presented_Course* presented_course , Student* student, float score) {
+		courses[presented_course][student] = score;
+	}
 };
 // .............................AdjunctProfessor......................................
 
@@ -31,14 +31,14 @@ class AdjunctProfessor : public Professor {
 class Degree
 {
 priavte:
-    int ID;
-    std::string DegreeName;
+	int ID;
+	std::string DegreeName;
 
 public:
-    inline void SetID(int FieldID){ ID = FieldID;}
-    inline std::String GetID(void) const {return ID;}
-    inline void SetDegreeName(std::String fieldname){FieldName = fieldname;}
-    inline std::String GetDegreeName(void) const {return DegreeName;}
+	inline void SetID(int FieldID){ ID = FieldID;}
+	inline std::String GetID(void) const {return ID;}
+	inline void SetDegreeName(std::String fieldname){FieldName = fieldname;}
+	inline std::String GetDegreeName(void) const {return DegreeName;}
 
 
 };
@@ -54,9 +54,10 @@ class Faculty : public Professor {
 // .............................DepartmentAcademicAffairsStaff......................................
 
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
-    std::vector<Presented_Course*> courses;
+	std::vector<Presented_Course*> presented_courses;
+	std::vector<Presented_Course*> presented_courses;
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // PROFESSOR_H
