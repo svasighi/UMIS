@@ -19,8 +19,8 @@ public:
     std::string getFirstName() const;
     void setLastName(std::string _lastname);
     std::string getLastName() const;
-    void CheckPassword();
-    virtual void ChangePassword(); //forward definition
+    void checkPassword();
+    virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // USER_H
