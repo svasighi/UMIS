@@ -6,14 +6,15 @@
 #include "TimeDate.h"
 
 class Professor;
+class Student;
 
 class Course {
 protected:
 	short credit;
 	std::string name;
 	short type;
-	std::vector<Course*> prerequisite;
-	std::vector<Course*> corequisite;
+	std::vector<Course*> prerequisites;
+	std::vector<Course*> corequisites;
 public:
 	Course();
 	void setCredit(short _credit);
@@ -22,17 +23,20 @@ public:
 	std::string getName() const;
 	void setType(short _type);
 	short getType() const;
-	void setPrerequisite(std::vector<Course*> _prerequisite);
+	void setPrerequisites(std::vector<Course*> _prerequisites);
+	std::vector<Course*> getPrerequisites() const;
 	void addPrerequisite(Course* course);
-	std::vector<Course*> getPrerequisite() const;
-	void setCorequisite(std::vector<Course*> _corequisite);
+	void removePrerequisite(Course* course);
+	void setCorequisites(std::vector<Course*> _corequisites);
+	std::vector<Course*> getCorequisites() const;
 	void addCorequisite(Course* course);
-	std::vector<Course*> getCorequisite() const;
+	void removeCorequisite(Course* course);
 };
 
 class Presented_Course : public Course {
 protected:
 	Professor* course_professor;
+	std::vector<Student*> course_students;
 	int capacity;
 	int term_no;
 	Course_Time course_time;
@@ -42,6 +46,10 @@ public:
 	Presented_Course();
 	void setCourseProfessor(Professor* _course_professor);
 	Professor* getCourseProfessor() const;
+	void setCourseStudents(std::vector<Student*> _course_students);
+	std::vector<Student*> getCourseStudents() const;
+	void addStudent(Student* student);
+	void removeStudent(Student* student);
 	void setCapacity(int _capacity);
 	int getCapacity() const;
 	void setTerm_no(int _term_no);
