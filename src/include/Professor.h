@@ -18,7 +18,7 @@ protected:
 public:
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 	void enterScore(Presented_Course* presented_course , Student* student, float score) {
-		courses[presented_course][student] = score;
+		
 	}
 };
 // .............................AdjunctProfessor......................................
