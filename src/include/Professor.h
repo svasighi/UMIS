@@ -15,30 +15,10 @@ class Professor : public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
-<<<<<<< HEAD
 	void setCourses(std::vector<Presented_Course*>);
 	std::vector<Presented_Course*> getCourses() const;
 	void addCourse(Presented_Course*);
 	void removeCourse(Presented_Course*);
-	void enterScore(Presented_Course* , Student*, float);
-=======
-	void setCourses(std::vector<Presented_Course*> _courses) {
-		courses = _courses;
-	}
-
-	std::vector<Presented_Course*> getCourses() const {
-		return courses;
-	}
-
-	void addCourse(Presented_Course* course) {
-		courses.push_back(course);
-	}
-
-	void removeCourse(Presented_Course* course) {
-		courses.erase(find(courses.begin(), courses.end(), course));
-	}
-	
->>>>>>> d433c210ebd7b54b1192673e6238ea9c4f1264fc
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 // .............................AdjunctProfessor......................................
