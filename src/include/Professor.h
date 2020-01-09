@@ -1,5 +1,8 @@
-#ifndef PROF
-#define PROF
+#ifndef PROFESSOR_H
+#define PROFESSOR_H
+#include <string>
+#include <vector>
+#include <map>
 #include "AcademicAffairs.h"
 #include "User.h"
 #include "Student.h"
@@ -10,15 +13,11 @@
 
 class Professor : public User {
 protected:
-	std::vector<Presented_Course*> courses; //list of presented courses
-	std::vector<Students*> course_students; //
+	std::map<Presented_Course*, std::vector<Student*>> courses; //list of presented courses
 public:
     void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
-    void EnterGrades(Presented_Course presented_course , float grade) {
-        
-        MyTerm myterm;
-        myterm.courses.insert.insert(pair<Presented_Course*, float>(presented_course, grade));
-   
+    void EnterGrades(Presented_Course* presented_course , Student* student, float score) {
+        courses[presented_course][student] = score;
     }
 };
 // .............................AdjunctProfessor......................................
@@ -60,4 +59,4 @@ class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 public:
     void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
 };
-#endif // PROF
+#endif // PROFESSOR_H
