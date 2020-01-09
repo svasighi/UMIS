@@ -1,5 +1,6 @@
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
+
 #include <string>
 #include <vector>
 #include <map>
@@ -44,7 +45,7 @@ public:
 
 };
 // .............................Faculty......................................
-class Faculty : public AdjunctProfessor{
+class Faculty : public Professor {
 //?? -> apply enrollments
 	Degree degree;
 	bool IsSupervisor;
@@ -59,4 +60,5 @@ class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 public:
     void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
 };
+
 #endif // PROFESSOR_H
