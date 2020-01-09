@@ -17,7 +17,7 @@ protected:
 	std::map<Presented_Course*, std::vector<Student*>> courses; //list of presented courses
 public:
     void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
-    void EnterGrades(Presented_Course* presented_course , Student* student, float score) {
+    void enterScore(Presented_Course* presented_course , Student* student, float score) {
         courses[presented_course][student] = score;
     }
 };
@@ -25,8 +25,6 @@ public:
 
 class AdjunctProfessor : public Professor { 
 
-
-//access grades list
 
 };
 // .............................Degree......................................
@@ -48,8 +46,8 @@ public:
 class Faculty : public Professor {
 //?? -> apply enrollments
 	Degree degree;
-	bool IsSupervisor;
-	bool IsHead; 
+	bool isSupervisor;
+	bool isHead; 
 	std::vector<Student*> supervised_students;
 
 };
@@ -58,7 +56,7 @@ class Faculty : public Professor {
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
     std::vector<Presented_Course*> courses;
 public:
-    void ChangePassword(std::string current_pass, std::string new_pass){}; //forward definition
+    void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // PROFESSOR_H
