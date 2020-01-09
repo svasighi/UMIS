@@ -14,7 +14,7 @@
 
 class Professor : public User {
 protected:
-	std::map<Presented_Course*, std::vector<Student*>> courses; //list of presented courses with their students
+	std::vector<Presented_Course*> courses; //list of presented courses
 public:
 	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
 	void enterScore(Presented_Course* presented_course , Student* student, float score) {
