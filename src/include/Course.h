@@ -1,5 +1,5 @@
-#ifndef Course_H
-#define Course_H
+#ifndef COURSE_H
+#define COURSE_H
 
 #include <string>
 #include <vector>
@@ -53,4 +53,4 @@ public:
 	Time getFinalExamTime() const;
 };
 
-#endif // Course_H
+#endif // COURSE_H
