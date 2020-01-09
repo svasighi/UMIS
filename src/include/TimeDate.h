@@ -12,11 +12,11 @@ public:
 	Time(int _year, int _month, int _day, int _hour, int _minute);
 	void setDate(int _year, int _month, int _day);
 	void setTime(int _hour, int _minute);
-	int getYear();
-	int getMonth();
-	int getDay();
-	int getHour();
-	int getMinute();
+	int getYear() const;
+	int getMonth() const;
+	int getDay() const;
+	int getHour() const;
+	int getMinute() const;
 };
 
 class Course_Time {
@@ -27,11 +27,12 @@ public:
 	Course_Time();
 	Course_Time(std::vector<std::string> _wday, int _hhi, int _mmi, int _hho, int _mmo);
 	void setDay(std::vector<std::string> _wday);
-	std::vector<std::string> getDay();
+	std::vector<std::string> getDay() const;
 	void setTime(int _hhi, int _mmi, int _hho, int _mmo);
-	int gethhi();
-	int getmmi();
-	int gethho();
-	int getmmo();
+	int gethhi() const;
+	int getmmi() const;
+	int gethho() const;
+	int getmmo() const;
 };
+
 #endif // TimeDate_H
