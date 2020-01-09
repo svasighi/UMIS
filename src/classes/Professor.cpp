@@ -13,10 +13,6 @@
     void Professor::removeCourse(Presented_Course* course) {
 		courses.erase(find(courses.begin(), courses.end(), course));
 	}
-	
-	void  Professor::enterScore(Presented_Course* presented_course , Student* student, float score) {
-		student->setScoreofCourse(presented_course, score);
-	}
     int Faculty::getDegree (void) const{
         return degree;
     }
