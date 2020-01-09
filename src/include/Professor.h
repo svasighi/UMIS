@@ -27,25 +27,11 @@ class AdjunctProfessor : public Professor {
 
 
 };
-// .............................Degree......................................
-class Degree
-{
-priavte:
-	int ID;
-	std::string DegreeName;
 
-public:
-	inline void SetID(int FieldID){ ID = FieldID;}
-	inline std::String GetID(void) const {return ID;}
-	inline void SetDegreeName(std::String fieldname){FieldName = fieldname;}
-	inline std::String GetDegreeName(void) const {return DegreeName;}
-
-
-};
 // .............................Faculty......................................
 class Faculty : public Professor {
 //?? -> apply enrollments
-	Degree degree;
+	int degree;
 	bool isSupervisor;
 	bool isHead; 
 	std::vector<Student*> supervised_students;
