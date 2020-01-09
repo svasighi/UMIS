@@ -16,38 +16,41 @@ protected:
 public:
 	Course();
 	void setCredit(short _credit);
-	short getCredit();
+	short getCredit() const;
 	void setName(std::string _name);
-	std::string getName();
+	std::string getName() const;
 	void setType(short _type);
-	short getType();
+	short getType() const;
 	void setPrerequisite(std::vector<Course*> _prerequisite);
 	void addPrerequisite(Course* course);
-	std::vector<Course*> getPrerequisite();
+	std::vector<Course*> getPrerequisite() const;
 	void setCorequisite(std::vector<Course*> _corequisite);
 	void addCorequisite(Course* course);
-	std::vector<Course*> getCorequisite();
+	std::vector<Course*> getCorequisite() const;
 };
 
 class Presented_Course : public Course {
 protected:
 	Professor* course_professor;
 	int capacity;
+	int term_no;
 	Course_Time course_time;
 	std::string course_location;
 	Time finalexam_time;
 public:
 	Presented_Course();
 	void setCourseProfessor(Professor* _course_professor);
-	Professor* getCourseProfessor();
+	Professor* getCourseProfessor() const;
 	void setCapacity(int _capacity);
-	int getCapacity();
+	int getCapacity() const;
+	void setTerm_no(int _term_no);
+	int getTerm_no() const;
 	void setCourseTime(Course_Time _course_time);
-	Course_Time getCourseTime();
+	Course_Time getCourseTime() const;
 	void setCourseLocation(std::string _course_location);
-	std::string getCourseLocation();
+	std::string getCourseLocation() const;
 	void setFinalExamTime(Time _finalexam_time);
-	Time getFinalExamTime();
+	Time getFinalExamTime() const;
 };
 
 #endif // Course_H
