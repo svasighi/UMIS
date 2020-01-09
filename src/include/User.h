@@ -9,17 +9,20 @@ protected:
     std::string password;
     std::string firstname;
     std::string lastname;
+    int departmentcode;
 public:
     User();
     void setUserName(int _username);
-    int getUserName() const;
+    int getUserName(void) const;
     void setPassword(std::string _password);
-     std::string getPassword();
+     std::string getPassword(void);
     void setFirstName(std::string _firstname);
-    std::string getFirstName() const;
+    std::string getFirstName(void) const;
     void setLastName(std::string _lastname);
-    std::string getLastName() const;
-    void checkPassword();
+    std::string getLastName(void) const;
+    void checkPassword(void);
+    void setDepartmentCode(int);
+    int getDepartmentCode(void) const;
     virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 

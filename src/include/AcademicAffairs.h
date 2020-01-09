@@ -13,7 +13,6 @@ public:
 
 };
 class TopAcademicAffairsStaff : public AcademicAffairsStaff {
-// list of all students 
 	std::vector<Presented_Course*> presented_courses;
 public:
 	void changeDepartmentHead(Professor* prof); //forward definitions
