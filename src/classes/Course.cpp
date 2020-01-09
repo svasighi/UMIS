@@ -28,28 +28,36 @@ short Course::getType() const {
 	return type;
 }
 
-void Course::setPrerequisite(std::vector<Course*> _prerequisite) {
-	prerequisite = _prerequisite;
+void Course::setPrerequisites(std::vector<Course*> _prerequisites) {
+	prerequisites = _prerequisites;
+}
+
+std::vector<Course*> Course::getPrerequisites() const {
+	return prerequisites;
 }
 
 void Course::addPrerequisite(Course* course) {
-	prerequisite.push_back(course);
+	prerequisites.push_back(course);
 }
 
-std::vector<Course*> Course::getPrerequisite() const {
-	return prerequisite;
+void Course::removePrerequisite(Course* course) {
+	prerequisites.erase(find(prerequisites.begin(), prerequisites.end(), course));
 }
 
-void Course::setCorequisite(std::vector<Course*> _corequisite) {
-	corequisite = _corequisite;
+void Course::setCorequisites(std::vector<Course*> _corequisites) {
+	corequisites = _corequisites;
+}
+
+std::vector<Course*> Course::getCorequisites() const {
+	return corequisites;
 }
 
 void Course::addCorequisite(Course* course) {
-	corequisite.push_back(course);
+	corequisites.push_back(course);
 }
 
-std::vector<Course*> Course::getCorequisite() const {
-	return corequisite;
+void Course::removeCorequisite(Course* course) {
+	corequisites.erase(find(corequisites.begin(), corequisites.end(), course));
 }
 
 
@@ -65,6 +73,22 @@ void Presented_Course::setCourseProfessor(Professor* _course_professor) {
 
 Professor* Presented_Course::getCourseProfessor() const {
 	return course_professor;
+}
+
+void Presented_Course::setCourseStudents(std::vector<Student*> _course_students) {
+	course_students = _course_students;
+}
+
+std::vector<Student*> Presented_Course::getCourseStudents() const {
+	return course_students;
+}
+
+void Presented_Course::addStudent(Student* student) {
+	course_students.push_back(student);
+}
+
+void Presented_Course::removeStudent(Student* student) {
+	course_students.erase(find(course_students.begin(), course_students.end(), student));
 }
 
 void Presented_Course::setCapacity(int _capacity) {
