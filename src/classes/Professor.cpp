@@ -13,6 +13,7 @@
     void Professor::removeCourse(Presented_Course* course) {
 		courses.erase(find(courses.begin(), courses.end(), course));
 	}
+
     int Faculty::getDegree (void) const{
         return degree;
     }
