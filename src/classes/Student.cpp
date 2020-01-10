@@ -1,5 +1,6 @@
 #include <stdexcept>
-#include "Student.h"
+#include "../include/Student.h"
+#include "../models/AcademicAffairsModel.cpp"
 
 MyTerm::MyTerm() {
 
@@ -38,6 +39,14 @@ float MyTerm::getScoreofCourse(Presented_Course* course) const {
 	return courses.at(course);
 }
 
+int MyTerm::numberofcredits() const {
+	int n = 0;
+	for (auto& x : courses) {
+		n += x.first->getCredit();
+	}
+	return n;
+}
+
 
 
 
@@ -61,16 +70,16 @@ float Student::getGrade() const {
 	return grade;
 }
 
-void Student::setTerms(std::vector<MyTerm> _terms) {
+void Student::setTerms(std::map<int, MyTerm> _terms) {
 	terms = _terms;
 }
 
-std::vector<MyTerm> Student::getTerms() const {
+std::map<int, MyTerm> Student::getTerms() const {
 	return terms;
 }
 
 void Student::addTerm(MyTerm term) {
-	terms.push_back(term);
+	terms[term.getno()] = term;
 }
 
 void Student::setScoreofCourse(Presented_Course* course, float score) {
@@ -78,5 +87,9 @@ void Student::setScoreofCourse(Presented_Course* course, float score) {
 }
 
 float Student::getScoreofCourse(Presented_Course* course) const {
-	return terms[course->getTerm_no()].getScoreofCourse(course);
+	return terms.at(course->getTerm_no()).getScoreofCourse(course);
+}
+
+int Tuition_Student::computeTuition(int term_no) {
+	return terms[term_no].numberofcredits() * AcademicAffairsModel::getFee();
 }
