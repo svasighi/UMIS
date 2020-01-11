@@ -5,25 +5,25 @@
 
 class User {
 protected:
-    int username;
-    std::string password;
-    std::string firstname;
-    std::string lastname;
-    int departmentcode;
+	int username;
+	std::string password;
+	std::string firstname;
+	std::string lastname;
+	int departmentcode;
 public:
-    User();
-    void setUserName(int _username);
-    int getUserName(void) const;
-    void setPassword(std::string _password);
-     std::string getPassword(void);
-    void setFirstName(std::string _firstname);
-    std::string getFirstName(void) const;
-    void setLastName(std::string _lastname);
-    std::string getLastName(void) const;
-    void setDepartmentCode(int);
-    int getDepartmentCode(void) const;
-    bool checkPassword(std::string _password);
-    virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
+	User();
+	void setUserName(int _username);
+	int getUserName(void) const;
+	void setPassword(std::string _password);
+	std::string getPassword(void);
+	void setFirstName(std::string _firstname);
+	std::string getFirstName(void) const;
+	void setLastName(std::string _lastname);
+	std::string getLastName(void) const;
+	void setDepartmentCode(int);
+	int getDepartmentCode(void) const;
+	bool checkPassword(std::string _password);
+	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // USER_H
