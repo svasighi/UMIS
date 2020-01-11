@@ -20,9 +20,9 @@ public:
     std::string getFirstName(void) const;
     void setLastName(std::string _lastname);
     std::string getLastName(void) const;
-    void checkPassword(void);
     void setDepartmentCode(int);
     int getDepartmentCode(void) const;
+    void checkPassword(void);
     virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
