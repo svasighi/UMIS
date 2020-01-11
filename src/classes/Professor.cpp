@@ -25,19 +25,19 @@ int Faculty::getDegree(void) const {
 }
 
 void Faculty::setAsSupervisor(void) {
-	this->isSupervisor = true;
+	this->is_supervisor = true;
 }
 
 bool Faculty::isSupervisor(void) const {
-	return isSupervisor;
+	return is_supervisor;
 }
 
 void Faculty::setAsHead(void) {
-	this->isHead = true;
+	this->is_head = true;
 }
 
 bool Faculty::isHead(void) const {
-	return isHead;
+	return is_head;
 }
 
 void Faculty::setSupervisedStudents(std::vector<Student*> _supervised_students) {
