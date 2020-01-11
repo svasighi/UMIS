@@ -22,7 +22,7 @@ public:
     std::string getLastName(void) const;
     void setDepartmentCode(int);
     int getDepartmentCode(void) const;
-    void checkPassword(void);
+    bool checkPassword(std::string _password);
     virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
