@@ -4,7 +4,7 @@
 #include "../classes/Course.cpp"
 #include <vector>
 
-std::vector<Student*> AcademicAffairsStaff::getStudents() {
+std::vector<Student*> AcademicAffairsStaff::getStudents(void) {
     return students;
 }
 
@@ -16,6 +16,6 @@ void AcademicAffairsStaff::setCareer(std::string _career) {
     career = _career;
 }
 
-std::string AcademicAffairsStaff::getCareer() {
+std::string AcademicAffairsStaff::getCareer(void) {
     return career;
 }
