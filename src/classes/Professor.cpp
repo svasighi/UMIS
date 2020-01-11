@@ -62,7 +62,7 @@ void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
 	courses = _courses;
 }
 
-std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses() const {
+std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses(void) const {
 	return courses;
 }
 
@@ -70,6 +70,6 @@ void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<Presented_C
 	presented_courses = _presented_courses;
 }
 
-std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses() const {
+std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
 	return presented_courses;
 }
