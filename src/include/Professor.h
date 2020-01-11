@@ -31,8 +31,8 @@ class AdjunctProfessor : public Professor {
 class Faculty : public Professor {
 protected:
 	int degree;
-	bool isSupervisor;
-	bool isHead; 
+	bool is_supervisor;
+	bool is_head; 
 	std::vector<Student*> supervised_students;
 public:
 	void setDegree(int _degree);
