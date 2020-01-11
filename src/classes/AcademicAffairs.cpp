@@ -4,16 +4,18 @@
 #include "../classes/Course.cpp"
 #include <vector>
 
-
-std::vector<Student *> AcademicAffairsStaff::getStudents(){
+std::vector<Student*> AcademicAffairsStaff::getStudents() {
     return students;
 }
-void AcademicAffairsStaff::setStudents(std::vector<Student *> _students){
+
+void AcademicAffairsStaff::setStudents(std::vector<Student*> _students) {
    students = _students; 
 }
-void AcademicAffairsStaff::setCareer(std::string _career){
+
+void AcademicAffairsStaff::setCareer(std::string _career) {
     career = _career;
 }
-std::string AcademicAffairsStaff::getCareer(void){
+
+std::string AcademicAffairsStaff::getCareer() {
     return career;
 }
