@@ -22,8 +22,7 @@ std::string User::getPassword(void) const {
 }
 
 bool User::checkPassword(std::string _password) const {
-	if (md5(_password) == getPassword())
-	{
+	if (md5(_password) == getPassword()) {
 		return true;
 	}
 	else {
