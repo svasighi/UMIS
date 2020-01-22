@@ -1,3 +1,4 @@
+
 /*
 	*******	IMPORTANT POINT : yout class must have int GetID(void); method ******** 
 	created by shadmehr vasighi under MIT lICENSE 
@@ -5,6 +6,9 @@
 	get in touch through my blog : https://svasighi.github.io
 
 */
+#ifndef BINARYFILE_H
+#define BINARYFILE_HBINARYFILE_H
+
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -22,3 +26,4 @@ public:
     void UpdateRecordByID(int, Object);
 
 };
+#endif // BINARYFILE_H
