@@ -21,13 +21,14 @@ public:
 	void addCourse(Presented_Course* course, float score);
 	void removeCourse(Presented_Course* course);
 	float getScoreofCourse(Presented_Course* course) const;
+	int numberofcredits() const;
 };
 
 class Student : public User {
 protected:
 	std::string field;
 	float grade;
-	std::vector<MyTerm> terms;
+	std::map<int, MyTerm> terms;
 public:
 	// FullInformation;
 	// WeeklySchedule;
@@ -37,17 +38,18 @@ public:
 	std::string getField() const;
 	void setGrade(float _grade);
 	float getGrade() const;
-	void setTerms(std::vector<MyTerm> _terms);
-	std::vector<MyTerm> getTerms() const;
+	void setTerms(std::map<int, MyTerm> _terms);
+	std::map<int, MyTerm> getTerms() const;
 	void addTerm(MyTerm term);
 	void setScoreofCourse(Presented_Course* course, float score);
 	float getScoreofCourse(Presented_Course* course) const;
 };
 
-class Guest_Student : public Student {
+class Tuition_Student : public Student {
+protected:
+	int type; // guest(0) or transitional(1) or night(2)
 public:
-	// TuitionStatus;
-	// compute tuition
+	int computeTuition(int term_no);
 };
 
 #endif // STUDENT_H

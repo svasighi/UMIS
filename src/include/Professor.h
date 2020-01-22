@@ -4,13 +4,12 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "AcademicAffairs.h"
 #include "User.h"
-#include "Student.h"
 #include "Course.h"
+#include "Student.h"
+#include "AcademicAffairs.h"
 
 // .............................PROFESSOR......................................
-
 class Professor : public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
@@ -19,10 +18,10 @@ public:
 	std::vector<Presented_Course*> getCourses() const;
 	void addCourse(Presented_Course*);
 	void removeCourse(Presented_Course*);
-	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+	void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
-// .............................AdjunctProfessor......................................
 
+// .............................AdjunctProfessor......................................
 class AdjunctProfessor : public Professor { 
 
 
@@ -32,34 +31,34 @@ class AdjunctProfessor : public Professor {
 class Faculty : public Professor {
 protected:
 	int degree;
-	bool isSupervisor;
-	bool isHead; 
+	bool is_supervisor;
+	bool is_head; 
 	std::vector<Student*> supervised_students;
 public:
-	int getDegree (void) const;
-	void setDegree(const int);
-	bool isSupervisor (void) const;
+	void setDegree(int _degree);
+	int getDegree(void) const;
 	void setAsSupervisor(void);
-	bool isHead (void) const;
+	bool isSupervisor (void) const;
 	void setAsHead(void);
-	void setSupervised_Students(std::vector<Student*>);
-	std::vector<Student*> getSupervised_Students(void) const;
-	void addSupervised_Students(Student*);
-	void removeSupervised_Students(Student*);
+	bool isHead (void) const;
+	void setSupervisedStudents(std::vector<Student*>);
+	std::vector<Student*> getSupervisedStudents(void) const;
+	void addSupervisedStudents(Student*);
+	void removeSupervisedStudents(Student*);
 	void applyEnrollment(Student);
 };
-// .............................DepartmentAcademicAffairsStaff......................................
 
+// .............................DepartmentAcademicAffairsStaff......................................
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 protected:
 	std::vector<Course*> courses;
 	std::vector<Presented_Course*> presented_courses;
 public:
-	std::vector<Course*> getCourses(void)const;		
 	void setCourses(std::vector<Course*>);
-	std::vector<Presented_Course*> getPresentedCourses(void)const;
+	std::vector<Course*> getCourses(void) const;
 	void setPresentedCourses(std::vector<Presented_Course*>);
-	void ChangePassword(std::string current_pass, std::string new_pass); //forward definition
+	std::vector<Presented_Course*> getPresentedCourses(void) const;
+	void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // PROFESSOR_H

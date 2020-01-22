@@ -21,14 +21,13 @@ std::string User::getPassword(void) const {
 	return password;
 }
 
-bool User::checkPassword(std::string _password) const{
-	if(md5(_password) == getPassword())
-	{
+bool User::checkPassword(std::string _password) const {
+	if (md5(_password) == getPassword()) {
 		return true;
-	}else{
+	}
+	else {
 		return false;
 	}
-	
 } 
 
 void User::setFirstName(std::string _firstname) {
@@ -46,9 +45,11 @@ void User::setLastName(std::string _lastname) {
 std::string User::getLastName(void) const {
 	return lastname;
 }
-void User::setDepartmentCode(int _departmentcode){
+
+void User::setDepartmentCode(int _departmentcode) {
 	departmentcode = _departmentcode;
 }
-int User::getDepartmentCode(void) const{
+
+int User::getDepartmentCode(void) const {
 	return departmentcode;
 }
