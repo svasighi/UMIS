@@ -10,6 +10,9 @@ class Student;
 
 class Course {
 protected:
+	short course_no;
+	short group_id;
+	short department_id;
 	short credit;
 	std::string name;
 	short type;
@@ -17,6 +20,12 @@ protected:
 	std::vector<Course*> corequisites;
 public:
 	Course();
+	void setCourse_no(short _course_no);
+	short getCourse_no() const;
+	void setGroup_id(short _group_id);
+	short getGroup_id() const;
+	void setDepartment_id(short _department_id);
+	short getDepartment_id() const;
 	void setCredit(short _credit);
 	short getCredit() const;
 	void setName(std::string _name);
