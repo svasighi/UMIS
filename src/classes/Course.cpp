@@ -91,6 +91,10 @@ void Presented_Course::removeStudent(Student* student) {
 	course_students.erase(find(course_students.begin(), course_students.end(), student));
 }
 
+int Presented_Course::getNumberofStudents() const {
+	return course_students.size();
+}
+
 void Presented_Course::setCapacity(int _capacity) {
 	capacity = _capacity;
 }
@@ -129,4 +133,12 @@ void Presented_Course::setFinalExamTime(Time _finalexam_time) {
 
 Time Presented_Course::getFinalExamTime() const {
 	return finalexam_time;
+}
+
+void Presented_Course::setFinalExamLocation(std::string _finalexam_location) {
+	finalexam_location = _finalexam_location;
+}
+
+std::string Presented_Course::getFinalExamLocation() const {
+	return finalexam_location;
 }
