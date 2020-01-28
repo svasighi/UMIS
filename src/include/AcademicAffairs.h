@@ -4,7 +4,7 @@
 #include "User.h"
 #include "Student.h"
 
-class AcademicAffairsStaff : public User {
+class AcademicAffairsStaff : public virtual User {
 protected:
 	std::string career;
 	std::vector<Student*> students;

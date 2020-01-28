@@ -7,7 +7,7 @@
 
 */
 #ifndef BINARYFILE_H
-#define BINARYFILE_HBINARYFILE_H
+#define BINARYFILE_H
 
 #include<iostream>
 #include<fstream>

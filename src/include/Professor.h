@@ -10,7 +10,7 @@
 #include "AcademicAffairs.h"
 
 // .............................PROFESSOR......................................
-class Professor : public User {
+class Professor : public virtual User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
@@ -47,6 +47,22 @@ public:
 	void removeSupervisedStudents(Student*);
 	void applyEnrollment(Student);
 };
+// .............................DepartmentManager......................................
+class DepartmentManager : public Faculty {
+	//PreEnrollment_Stats
+	//gozaresh 110 baraye daneshkade khod
+};
+// .............................DepartmentManager......................................
+class DepartmentChief: public Faculty , AcademicAffairsStaff{
+
+};
+// .............................DepartmentHead......................................
+
+class DepartmentHead : public Faculty {
+	//arzeshyabi har ostad
+	//add prof
+	//access to all proff & calc salary
+};
 
 // .............................DepartmentAcademicAffairsStaff......................................
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
@@ -54,6 +70,8 @@ protected:
 	std::vector<Course*> courses;
 	std::vector<Presented_Course*> presented_courses;
 public:
+	//active or diactive time conflict
+	//activate prequisit
 	void setCourses(std::vector<Course*>);
 	std::vector<Course*> getCourses(void) const;
 	void setPresentedCourses(std::vector<Presented_Course*>);
