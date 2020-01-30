@@ -50,11 +50,7 @@ protected:
 	int term_no;
 	Course_Time course_time;
 	std::string course_location;
-<<<<<<< HEAD
-	Time finalexam_time; 
-=======
 	Time finalexam_time;
->>>>>>> 25a7800932a014c0f005c82dcf60c948648e22ec
 	std::string finalexam_location;
 public:
 	Presented_Course();

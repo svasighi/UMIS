@@ -55,7 +55,7 @@ class DepartmentManager : public Faculty {
 };
 
 // .............................DepartmentManager......................................
-class DepartmentChief: public Faculty, public DepartmentAcademicAffairsStaff {
+class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
 
 };
 
