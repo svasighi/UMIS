@@ -11,7 +11,16 @@ protected:
 	std::string lastname;
 	int departmentcode;
 public:
-	User();
+	User() {
+	}
+	User(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode){
+		username = _username;
+		password = _password;
+		firstname = _firstname;
+		lastname = _lastname;
+		departmentcode = _departmentcode;
+	}
+
 	void setUserName(int _username);
 	int getUserName(void) const;
 	void setPassword(std::string _password);
