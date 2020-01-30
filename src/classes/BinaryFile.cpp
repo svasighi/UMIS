@@ -82,7 +82,31 @@ void BinaryFile<Object>::DeleteRecordByID(int _id)
 	remove("temp.dat");
 
 }
-
+template <class Professor>
+void BinaryFile<Professor>::DeleteRecordByID(int _id)
+{
+	Professor _object;
+	std::ifstream _ifstream;
+	std::ofstream _ofstream;
+	_ifstream.open(file_address, std::ios::binary | std::ios::app);
+	_ofstream.open("temp.dat", std::ios::binary | std::ios::out);
+	while (_ifstream.read((char*)& _object, sizeof(_object)))
+	{
+		if (_object.getUserName() != _id) {
+			_ofstream.write((char*)& _object, sizeof(_object));
+		}
+	}
+	_ifstream.close();
+	_ofstream.close();
+	remove(file_address);
+	_ifstream.open("temp.dat", std::ios::binary | std::ios::app);
+	_ofstream.open(file_address, std::ios::binary | std::ios::out);
+	while (_ifstream.read((char*)& _object, sizeof(_object)))
+		_ofstream.write((char*)& _object, sizeof(_object));
+	_ofstream.close();
+	_ifstream.close();
+	remove("temp.dat");
+}
 template <class Object>
 void BinaryFile<Object>::UpdateRecordByID(int _id, Object _object) {
 	std::fstream _fstream;
@@ -100,7 +124,23 @@ void BinaryFile<Object>::UpdateRecordByID(int _id, Object _object) {
 	}
 	_fstream.close();
 }
-
+template <class Professor>
+void BinaryFile<Professor>::UpdateRecordByID(int _id, Professor _object) {
+	std::fstream _fstream;
+	bool found = false;
+	_fstream.open(file_address, std::ios::in | std::ios::out);
+	while (_fstream.read((char*)& _object, sizeof(_object)) && found == false)
+	{
+		if (_object.getUserName() == _id)
+		{
+			int position = -1 * sizeof(_object);
+			_fstream.seekp(position, std::ios::cur);
+			_fstream.write((char*)& _object, sizeof(_object));
+			found = true;
+		}
+	}
+	_fstream.close();
+}
 /*
 usage by example 
 
