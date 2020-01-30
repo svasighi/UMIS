@@ -1,12 +1,34 @@
 #include <stdexcept>
 #include "../include/Student.h"
 
-MyTerm::MyTerm() {
+MyCourse::MyCourse() {
 
 }
 
+void MyCourse::setScore(float _score) {
+	score = _score;
+}
+
+float MyCourse::getScore() const {
+	return score;
+}
+
+void MyCourse::setStatus(short _status) {
+	status = _status;
+}
+
+short MyCourse::getStatus() const {
+	return status;
+}
+
+
+
+
+MyTerm::MyTerm()
+	: no(0), status(0) {}
+
 MyTerm::MyTerm(int _no)
-	: no(_no) {}
+	: no(_no), status(0) {}
 
 void MyTerm::setno(int _no) {
 	no = _no;
@@ -24,26 +46,38 @@ short MyTerm::getStatus() const {
 	return status;
 }
 
-void MyTerm::setCourses(std::map<Presented_Course*, float> _courses) {
+void MyTerm::setRegistrationBeginTime(Time _registration_begin_time) {
+	registration_begin_time = _registration_begin_time;
+}
+
+Time MyTerm::getRegistrationBeginTime() const {
+	return registration_begin_time;
+}
+
+void MyTerm::setCourses(std::map<Presented_Course*, MyCourse> _courses) {
 	courses = _courses;
 }
 
-std::map<Presented_Course*, float> MyTerm::getCourses() const {
+std::map<Presented_Course*, MyCourse> MyTerm::getCourses() const {
 	return courses;
 }
 
-void MyTerm::addCourse(Presented_Course* course, float score) {
-	courses[course] = score;
+void MyTerm::addCourse(Presented_Course* course) {
+	courses[course] = MyCourse();
 }
 
 void MyTerm::removeCourse(Presented_Course* course) {
 	courses.erase(course);
 }
 
+void MyTerm::setScoreofCourse(Presented_Course* course, float score) {
+	courses[course].setScore(score);
+}
+
 float MyTerm::getScoreofCourse(Presented_Course* course) const {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
-	return courses.at(course);
+	return courses.at(course).getScore();
 }
 
 int MyTerm::numberofcredits() const {
@@ -90,7 +124,7 @@ void Student::addTerm(MyTerm term) {
 }
 
 void Student::setScoreofCourse(Presented_Course* course, float score) {
-	terms[course->getTerm_no()].addCourse(course, score);
+	terms[course->getTerm_no()].setScoreofCourse(course, score);
 }
 
 float Student::getScoreofCourse(Presented_Course* course) const {
@@ -105,6 +139,29 @@ short Student::getTermStatus(int term_no) const {
 	return terms.at(term_no).getStatus();
 }
 
+void Student::setTermRegistrationBeginTime(int term_no, Time registration_begin_time) {
+	terms[term_no].setRegistrationBeginTime(registration_begin_time);
+}
+
+Time Student::getTermRegistrationBeginTime(int term_no) const {
+	return terms.at(term_no).getRegistrationBeginTime();
+}
+
+
+
+
+Tuition_Student::Tuition_Student() {
+
+}
+
+void Tuition_Student::setType(short _type) {
+	type = _type;
+}
+
+short Tuition_Student::getType() const {
+	return type;
+}
+
 int Tuition_Student::computeTuition(int term_no) {
-	return terms[term_no].numberofcredits();// * getFee(type);
+	return terms[term_no].numberofcredits();// * credit_fee[type] + const_tuition;
 }
