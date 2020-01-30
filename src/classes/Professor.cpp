@@ -1,5 +1,6 @@
 #include "../include/Professor.h"
 
+
 void Professor::setCourses(std::vector<Presented_Course*> _courses) {
 	courses = _courses;
 }
@@ -72,4 +73,31 @@ void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<Presented_C
 
 std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
 	return presented_courses;
+}
+// returns an int <= 5 which shows each professor assessment
+int DepartmentHead::ProfessorAssessment(Professor _professor){
+		
+}
+
+void DepartmentHead::addProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode){
+
+	Professor professor(_username ,md5(_password) ,_firstname ,_lastname ,_departmentcode);
+	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat" );
+	binary_file.AddRecord(professor);
+}
+
+void DepartmentHead::calcSalary(int* _degree_base_pay ,int _max_assesment_addition ){
+	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
+	std::vector<Professor*> professors = binary_file.FetchAllRecords();
+	for(int i = 0 ; i < professors.size(); i++){
+		Faculty* faculty = dynamic_cast<Faculty*> (professors[i]);
+		int salary = 0;
+		if(faculty){
+			salary = _degree_base_pay[(*faculty).getDegree()] + (ProfessorAssessment(*professors[i]) / 5) * _max_assesment_addition;
+		}else{
+			salary = _degree_base_pay[0] + (ProfessorAssessment(*professors[i]) / 5) * _max_assesment_addition;
+		}
+		BinaryFile <std::string>salaries((char*) "../storage/Professors.dat");
+		salaries.AddRecord( to_string((*professors[i]).getUserName()) + to_string(salary));
+	}
 }
