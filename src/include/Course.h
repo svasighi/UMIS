@@ -11,18 +11,24 @@ class Student;
 
 class Course {
 protected:
-	short course_no;
+	short course_id;
 	short group_id;
 	short department_id;
 	short credit;
 	std::string name;
 	short type;
+	// type:
+	// 0 : core(basic) course
+	// 1 : general course
+	// 2 : required(main) course
+	// 3 : Specialized course
+	// 4 : elective(optional) course
 	std::vector<Course*> prerequisites;
 	std::vector<Course*> corequisites;
 public:
 	Course();
-	void setCourse_no(short _course_no);
-	short getCourse_no() const;
+	void setCourse_id(short _course_id);
+	short getCourse_id() const;
 	void setGroup_id(short _group_id);
 	short getGroup_id() const;
 	void setDepartment_id(short _department_id);

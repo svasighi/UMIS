@@ -4,12 +4,12 @@ Course::Course() {
 
 }
 
-void Course::setCourse_no(short _course_no) {
-	course_no = _course_no;
+void Course::setCourse_id(short _course_id) {
+	course_id = _course_id;
 }
 
-short Course::getCourse_no() const {
-	return course_no;
+short Course::getCourse_id() const {
+	return course_id;
 }
 
 void Course::setGroup_id(short _group_id) {
