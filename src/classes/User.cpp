@@ -1,9 +1,6 @@
 #include "../include/User.h"
 #include "md5.cpp"
 
-User::User() {
-
-}
 
 void User::setUserName(int _username) {
 	username = _username;
