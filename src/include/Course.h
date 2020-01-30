@@ -41,7 +41,8 @@ protected:
 	int term_no;
 	Course_Time course_time;
 	std::string course_location;
-	Time finalexam_time;
+	Time finalexam_time; 
+	std::string finalexam_location;
 public:
 	Presented_Course();
 	void setCourseProfessor(Professor* _course_professor);
@@ -50,6 +51,7 @@ public:
 	std::vector<Student*> getCourseStudents() const;
 	void addStudent(Student* student);
 	void removeStudent(Student* student);
+	int getNumberofStudents() const;
 	void setCapacity(int _capacity);
 	int getCapacity() const;
 	void setTerm_no(int _term_no);
@@ -60,6 +62,8 @@ public:
 	std::string getCourseLocation() const;
 	void setFinalExamTime(Time _finalexam_time);
 	Time getFinalExamTime() const;
+	void setFinalExamLocation(std::string _finalexam_location);
+	std::string getFinalExamLocation() const;
 };
 
 #endif // COURSE_H

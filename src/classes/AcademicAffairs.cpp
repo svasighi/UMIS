@@ -1,5 +1,4 @@
 #include "../include/AcademicAffairs.h"
-#include "../models/AcademicAffairsModel.cpp"
 
 std::string AcademicAffairsStaff::getCareer() const {
 	return career;
