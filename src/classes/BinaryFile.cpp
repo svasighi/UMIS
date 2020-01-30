@@ -5,8 +5,7 @@
 	get in touch through my blog : https://svasighi.github.io
 
 */
-#include <fstream>
-#include <string>
+
 #include "../include/BinaryFile.h"
 
 template <class Object>
@@ -30,13 +29,17 @@ void BinaryFile<Object>::AddRecord(Object _object) {
 }
 
 template <class Object>
-Object* BinaryFile<Object>::BinaryFile::FetchAllRecords(int count) const {
-	Object _array[count];
+std::vector<Object*> BinaryFile<Object>::BinaryFile::FetchAllRecords() const {
+	std::vector<Object> _objects;
 	std::ifstream _ifstream;
 	_ifstream.open(file_address, std::ios::binary);
-	for (int i = 0; _ifstream.read((char*)& _array[i], sizeof(_array[i])); i++);
+	Object* temp;
+	for (int i = 0; _ifstream.read((char*) temp, sizeof(Object)); i++)
+	{
+		_objects.push_back(temp);
+	}
 	_ifstream.close();
-	return _array;
+	return _objects;
 }
 
 template <class Object>
