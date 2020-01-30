@@ -8,12 +8,18 @@
 #include "Course.h"
 #include "Student.h"
 #include "AcademicAffairs.h"
+#include "md5.h"
+#include "BinaryFile.h"
+#include <algorithm>
 
 // .............................PROFESSOR......................................
 class Professor : virtual public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
+	Professor(){}
+	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode) : User(_username, _password, _firstname, _lastname, _departmentcode){
+	}
 	void setCourses(std::vector<Presented_Course*>);
 	std::vector<Presented_Course*> getCourses() const;
 	void addCourse(Presented_Course*);
@@ -35,6 +41,8 @@ protected:
 	bool is_head; 
 	std::vector<Student*> supervised_students;
 public:
+	Faculty(){} //default constructor
+	
 	void setDegree(int _degree);
 	int getDegree(void) const;
 	void setAsSupervisor(void);
@@ -61,9 +69,9 @@ class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
-	//arzeshyabi har ostad
-	//add prof
-	//access to all proff & calc salary
+	int ProfessorAssessment(Professor);
+	void addProfessor(int,std::string,std::string,std::string,int);
+	void calcSalary(int* ,int );
 };
 
 // .............................DepartmentAcademicAffairsStaff......................................
@@ -78,7 +86,6 @@ public:
 	std::vector<Course*> getCourses(void) const;
 	void setPresentedCourses(std::vector<Presented_Course*>);
 	std::vector<Presented_Course*> getPresentedCourses(void) const;
-	void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 #endif // PROFESSOR_H
