@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include "../include/Student.h"
-#include "../models/AcademicAffairsModel.cpp"
 
 MyTerm::MyTerm() {
 
@@ -15,6 +14,14 @@ void MyTerm::setno(int _no) {
 
 int MyTerm::getno() const {
 	return no;
+}
+
+void MyTerm::setStatus(short _status) {
+	status = _status;
+}
+
+short MyTerm::getStatus() const {
+	return status;
 }
 
 void MyTerm::setCourses(std::map<Presented_Course*, float> _courses) {
@@ -90,6 +97,14 @@ float Student::getScoreofCourse(Presented_Course* course) const {
 	return terms.at(course->getTerm_no()).getScoreofCourse(course);
 }
 
+void Student::setTermStatus(int term_no, short status) {
+	terms[term_no].setStatus(status);
+}
+
+short Student::getTermStatus(int term_no) const {
+	return terms.at(term_no).getStatus();
+}
+
 int Tuition_Student::computeTuition(int term_no) {
-	return terms[term_no].numberofcredits() * AcademicAffairsModel::getFee();
+	return terms[term_no].numberofcredits();// * getFee(type);
 }

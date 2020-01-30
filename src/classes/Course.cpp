@@ -4,6 +4,30 @@ Course::Course() {
 
 }
 
+void Course::setCourse_no(short _course_no) {
+	course_no = _course_no;
+}
+
+short Course::getCourse_no() const {
+	return course_no;
+}
+
+void Course::setGroup_id(short _group_id) {
+	group_id = _group_id;
+}
+
+short Course::getGroup_id() const {
+	return group_id;
+}
+
+void Course::setDepartment_id(short _department_id) {
+	department_id = _department_id;
+}
+
+short Course::getDepartment_id() const {
+	return department_id;
+}
+
 void Course::setCredit(short _credit) {
 	credit = _credit;
 }

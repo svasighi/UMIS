@@ -10,7 +10,7 @@
 #include "AcademicAffairs.h"
 
 // .............................PROFESSOR......................................
-class Professor : public virtual User {
+class Professor : virtual public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
@@ -47,17 +47,19 @@ public:
 	void removeSupervisedStudents(Student*);
 	void applyEnrollment(Student);
 };
+
 // .............................DepartmentManager......................................
 class DepartmentManager : public Faculty {
 	//PreEnrollment_Stats
 	//gozaresh 110 baraye daneshkade khod
 };
+
 // .............................DepartmentManager......................................
-class DepartmentChief: public Faculty , AcademicAffairsStaff{
+class DepartmentChief: public Faculty, public DepartmentAcademicAffairsStaff {
 
 };
-// .............................DepartmentHead......................................
 
+// .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
 	//arzeshyabi har ostad
 	//add prof

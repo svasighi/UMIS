@@ -1,10 +1,11 @@
 #ifndef ACADEMIC_H
 #define ACADEMIC_H
 
+#include <vector>
 #include "User.h"
 #include "Student.h"
 
-class AcademicAffairsStaff : public virtual User {
+class AcademicAffairsStaff : virtual public User {
 protected:
 	std::string career;
 	std::vector<Student*> students;
