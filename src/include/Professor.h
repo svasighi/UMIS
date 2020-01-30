@@ -69,9 +69,16 @@ class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
-	int ProfessorAssessment(Professor);
+ 	std::vector<Professor*> professors;
+public:
+	int CalculateProfessorAssessmentSum(Professor) const;
+	std::vector<Professor*> getProfessors(void) const;
+	void setProfessors(std::vector<Professor*>);
+	std::map<Presented_Course*, std::vector <short>> ProfessorAssessment(Professor) const;
 	void addProfessor(int,std::string,std::string,std::string,int);
-	void calcSalary(int* ,int );
+	void deleteProfessor(Professor);
+	void ReadAllProfessor(void);
+	void calcSalary(int* ,int ) const;
 };
 
 // .............................DepartmentAcademicAffairsStaff......................................
