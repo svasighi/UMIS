@@ -10,7 +10,7 @@
 class MyTerm {
 protected:
 	int no;
-	short status;
+		short status;
 	// term created, not registered(0)
 	// preliminary registration confirmed by student(1)
 	// preliminary registration rejected by professor(-1)
@@ -43,6 +43,9 @@ protected:
 	float grade;
 	std::map<int, MyTerm> terms;
 public:
+	// FullInformation;
+	// WeeklySchedule;
+	// ExamsSchedule;
 	Student();
 	void setField(std::string _field);
 	std::string getField() const;
@@ -55,7 +58,7 @@ public:
 	float getScoreofCourse(Presented_Course* course) const;
 	void setTermStatus(int term_no, short status);
 	short getTermStatus(int term_no) const;
-};
+	};
 
 class Tuition_Student : public Student {
 protected:
