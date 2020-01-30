@@ -12,6 +12,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<vector>
 
 template<class Object>
 class BinaryFile{
@@ -20,7 +21,7 @@ public:
     BinaryFile(char*);
 	~BinaryFile();
     void AddRecord(Object);
-    Object* FetchAllRecords(int) const;
+    std::vector<Object*> FetchAllRecords() const;
     Object FetchByID(int) const;
     void DeleteRecordByID(int);
     void UpdateRecordByID(int, Object);
