@@ -11,7 +11,7 @@
 class MyCourse {
 protected:
 	float score;
-	short status;
+	char status;
 	// status:
 	// 0 : suggested in preliminary enrollment
 	// 1 : added in preliminary enrollment
@@ -22,24 +22,30 @@ protected:
 	// 6 : passed
 	// 7 : refused
 	// 8 : emergency drop
-	std::vector<short> assessment_answers;
+	std::vector<char> assessment_answers;
 	std::string review;
+	bool is_objector;
+	std::string objection_text;
 public:
 	MyCourse();
 	void setScore(float _score);
 	float getScore() const;
-	void setStatus(short _status);
-	short getStatus() const;
-	void setAssessmentAnswers(std::vector<short> _assessment_answers);
-	std::vector<short> getAssessmentAnswers() const;
+	void setStatus(char _status);
+	char getStatus() const;
+	void setAssessmentAnswers(std::vector<char> _assessment_answers);
+	std::vector<char> getAssessmentAnswers() const;
 	void setReview(std::string _review);
 	std::string getReview() const;
+	void setIsObjector(bool _is_objector);
+	bool getIsObjector() const;
+	void setObjectionText(std::string _objection_text);
+	std::string getObjectionText() const;
 };
 
 class MyTerm {
 protected:
 	int no;
-	short status;
+	char status;
 	// status:
 	// 0 : term created
 	// 1 : preliminary enrollment confirmed by student
@@ -58,22 +64,24 @@ public:
 	MyTerm(int _no);
 	void setno(int _no);
 	int getno() const;
-	void setStatus(short _status);
-	short getStatus() const;
+	void setStatus(char _status);
+	char getStatus() const;
 	void setEnrollmentBeginTime(Time _enrollment_begin_time);
 	Time getEnrollmentBeginTime() const;
 	void setCourses(std::map<Presented_Course*, MyCourse> _courses);
 	std::map<Presented_Course*, MyCourse> getCourses() const;
 	int numberofCredits() const;
-	// course functions
+	// course functions:
 	void addCourse(Presented_Course* course);
 	void removeCourse(Presented_Course* course);
 	void setCourseProperties(Presented_Course* course, MyCourse properties);
 	MyCourse getCourseProperties(Presented_Course* course) const;
 	void setScoreofCourse(Presented_Course* course, float score);
-	void setStatusofCourse(Presented_Course* course, short status);
-	void setAssessmentAnswersofCourse(Presented_Course* course, std::vector<short> answers);
+	void setStatusofCourse(Presented_Course* course, char status);
+	void setAssessmentAnswersofCourse(Presented_Course* course, std::vector<char> answers);
 	void setReviewofCourse(Presented_Course* course, std::string review);
+	void setIsObjectorofCourse(Presented_Course* course, bool is_objector);
+	void setObjectionTextofCourse(Presented_Course* course, std::string objection_text);
 };
 
 class Student : public User {
@@ -89,42 +97,47 @@ public:
 	float getGrade() const;
 	void setTerms(std::map<int, MyTerm> _terms);
 	std::map<int, MyTerm> getTerms() const;
-	// term functions
+	// term functions:
 	void addTerm(MyTerm term);
 	void addTerm(int term_no);
 	void setTerm(int term_no, MyTerm term);
 	MyTerm getTerm(int term_no) const;
-	void setTermStatus(int term_no, short status);
-	short getTermStatus(int term_no) const;
+	void setTermStatus(int term_no, char status);
+	char getTermStatus(int term_no) const;
 	void setTermEnrollmentBeginTime(int term_no, Time enrollment_begin_time);
 	Time getTermEnrollmentBeginTime(int term_no) const;
+	std::map<Presented_Course*, MyCourse> getTermCourses(int term_no) const;
 	int numberofCredits(int term_no) const;
-	// course functions
+	// course functions:
 	void addCourse(Presented_Course* course);
 	void removeCourse(Presented_Course* course);
 	void setCourseProperties(Presented_Course* course, MyCourse properties);
 	MyCourse getCourseProperties(Presented_Course* course) const;
 	void setScoreofCourse(Presented_Course* course, float score);
 	float getScoreofCourse(Presented_Course* course) const;
-	void setStatusofCourse(Presented_Course* course, short status);
-	short getStatusofCourse(Presented_Course* course) const;
-	void setAssessmentAnswersofCourse(Presented_Course* course, std::vector<short> answers);
-	std::vector<short> getAssessmentAnswersofCourse(Presented_Course* course) const;
+	void setStatusofCourse(Presented_Course* course, char status);
+	char getStatusofCourse(Presented_Course* course) const;
+	void setAssessmentAnswersofCourse(Presented_Course* course, std::vector<char> answers);
+	std::vector<char> getAssessmentAnswersofCourse(Presented_Course* course) const;
 	void setReviewofCourse(Presented_Course* course, std::string review);
 	std::string getReviewofCourse(Presented_Course* course) const;
+	void setIsObjectorofCourse(Presented_Course* course, bool is_objector);
+	bool getIsObjectorofCourse(Presented_Course* course) const;
+	void setObjectionTextofCourse(Presented_Course* course, std::string objection_text);
+	std::string getObjectionTextofCourse(Presented_Course* course) const;
 };
 
 class Tuition_Student : public Student {
 protected:
-	int type;
+	char type;
 	// type:
 	// 0 : guest student
 	// 1 : transitional student
 	// 2 : night student
 public:
 	Tuition_Student();
-	void setType(short _type);
-	short getType() const;
+	void setType(char _type);
+	char getType() const;
 	int computeTuition(int term_no);
 };
 
