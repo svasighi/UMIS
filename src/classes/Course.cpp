@@ -1,15 +1,17 @@
 #include "../include/Course.h"
 
-Course::Course() {
+Course::Course()
+	: department_id(0), group_id(0), course_id(0), credit(0), type(-1) {}
 
+Course::Course(short _department_id, short _group_id, short _course_id, char _credit, std::string _name, char _type)
+	: department_id(_department_id), group_id(_group_id), course_id(_course_id), credit(_credit), name(_name), type(-1) {}
+
+void Course::setDepartment_id(short _department_id) {
+	department_id = _department_id;
 }
 
-void Course::setCourse_id(short _course_id) {
-	course_id = _course_id;
-}
-
-short Course::getCourse_id() const {
-	return course_id;
+short Course::getDepartment_id() const {
+	return department_id;
 }
 
 void Course::setGroup_id(short _group_id) {
@@ -20,19 +22,19 @@ short Course::getGroup_id() const {
 	return group_id;
 }
 
-void Course::setDepartment_id(short _department_id) {
-	department_id = _department_id;
+void Course::setCourse_id(short _course_id) {
+	course_id = _course_id;
 }
 
-short Course::getDepartment_id() const {
-	return department_id;
+short Course::getCourse_id() const {
+	return course_id;
 }
 
-void Course::setCredit(short _credit) {
+void Course::setCredit(char _credit) {
 	credit = _credit;
 }
 
-short Course::getCredit() const {
+char Course::getCredit() const {
 	return credit;
 }
 
@@ -44,11 +46,11 @@ std::string Course::getName() const {
 	return name;
 }
 
-void Course::setType(short _type) {
+void Course::setType(char _type) {
 	type = _type;
 }
 
-short Course::getType() const {
+char Course::getType() const {
 	return type;
 }
 
@@ -87,9 +89,11 @@ void Course::removeCorequisite(Course* course) {
 
 
 
-Presented_Course::Presented_Course() {
+Presented_Course::Presented_Course()
+	: course_professor(nullptr), capacity(0), term_no(0) {}
 
-}
+Presented_Course::Presented_Course(Course* course, int _term_no, Professor* _course_professor, int _capacity)
+	: course_professor(_course_professor), capacity(_capacity), term_no(_term_no), Course(*course) {}
 
 void Presented_Course::setCourseProfessor(Professor* _course_professor) {
 	course_professor = _course_professor;
