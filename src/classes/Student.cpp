@@ -1,9 +1,8 @@
 #include <stdexcept>
 #include "../include/Student.h"
 
-MyCourse::MyCourse() {
-
-}
+MyCourse::MyCourse(char _status)
+	: score(-1.0F), status(_status), is_objector(false) {}
 
 void MyCourse::setScore(float _score) {
 	score = _score;
@@ -56,9 +55,6 @@ std::string MyCourse::getObjectionText() const {
 
 
 
-MyTerm::MyTerm()
-	: no(0), status(0) {}
-
 MyTerm::MyTerm(int _no)
 	: no(_no), status(0) {}
 
@@ -96,7 +92,7 @@ std::map<Presented_Course*, MyCourse> MyTerm::getCourses() const {
 
 int MyTerm::numberofCredits() const {
 	int n = 0;
-	for (auto& x : courses) {
+	for (const auto& x : courses) {
 		n += x.first->getCredit();
 	}
 	return n;
@@ -147,9 +143,11 @@ void MyTerm::setObjectionTextofCourse(Presented_Course* course, std::string obje
 
 
 
-Student::Student() {
+Student::Student()
+	: grade(-1.0F), supervisor(nullptr) {}
 
-}
+Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, std::string _field)
+	: field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
 
 void Student::setField(std::string _field) {
 	field = _field;
@@ -165,6 +163,14 @@ void Student::setGrade(float _grade) {
 
 float Student::getGrade() const {
 	return grade;
+}
+
+void Student::setSupervisor(Faculty* _supervisor) {
+	supervisor = _supervisor;
+}
+
+Faculty* Student::getSupervisor() const {
+	return supervisor;
 }
 
 void Student::setTerms(std::map<int, MyTerm> _terms) {
@@ -209,6 +215,17 @@ Time Student::getTermEnrollmentBeginTime(int term_no) const {
 
 std::map<Presented_Course*, MyCourse> Student::getTermCourses(int term_no) const {
 	return terms.at(term_no).getCourses();
+}
+
+std::vector<Presented_Course*> Student::getTermCoursesWithoutResult(int term_no) const {
+	std::map<Presented_Course*, MyCourse>* m = &terms.at(term_no).getCourses();
+	std::vector<Presented_Course*> keys;
+	keys.reserve(m->size());
+	transform(m->begin(), m->end(), std::back_inserter(keys),
+		[](const auto& pair) {
+			return pair.first;
+		});
+	return keys;
 }
 
 int Student::numberofCredits(int term_no) const {
@@ -284,9 +301,8 @@ std::string Student::getObjectionTextofCourse(Presented_Course* course) const {
 
 
 
-Tuition_Student::Tuition_Student() {
-
-}
+Tuition_Student::Tuition_Student(char _type)
+	: type(_type) {}
 
 void Tuition_Student::setType(char _type) {
 	type = _type;
