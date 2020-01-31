@@ -125,10 +125,9 @@ void DepartmentHead::addProfessor(int _username, std::string _password, std::str
 	binary_file.AddRecord(*professor);
 	professors.push_back(professor);
 }
-void DepartmentHead::deleteProfessor(Professor _professor)  {
-
+void DepartmentHead::deleteProfessor(Professor* _professor)  {
 	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
-	binary_file.DeleteRecordByID(_professor.getUserName());
+	binary_file.DeleteRecordByID(_professor->getUserName());
 	professors.erase(find(professors.begin(), professors.end(), _professor));
 }
 void DepartmentHead::ReadAllProfessors()  {
