@@ -11,13 +11,14 @@ class Student;
 
 class Course {
 protected:
-	short course_id;
-	short group_id;
 	short department_id;
-	short credit;
+	short group_id;
+	short course_id;
+	char credit;
 	std::string name;
-	short type;
+	char type;
 	// type:
+	//-1 : unknown
 	// 0 : core(basic) course
 	// 1 : general course
 	// 2 : required(main) course
@@ -27,18 +28,19 @@ protected:
 	std::vector<Course*> corequisites;
 public:
 	Course();
-	void setCourse_id(short _course_id);
-	short getCourse_id() const;
-	void setGroup_id(short _group_id);
-	short getGroup_id() const;
+	Course(short _department_id, short _group_id, short _course_id, char _credit = 0, std::string _name = "", char _type = -1);
 	void setDepartment_id(short _department_id);
 	short getDepartment_id() const;
-	void setCredit(short _credit);
-	short getCredit() const;
+	void setGroup_id(short _group_id);
+	short getGroup_id() const;
+	void setCourse_id(short _course_id);
+	short getCourse_id() const;
+	void setCredit(char _credit);
+	char getCredit() const;
 	void setName(std::string _name);
 	std::string getName() const;
-	void setType(short _type);
-	short getType() const;
+	void setType(char _type);
+	char getType() const;
 	void setPrerequisites(std::vector<Course*> _prerequisites);
 	std::vector<Course*> getPrerequisites() const;
 	void addPrerequisite(Course* course);
@@ -61,6 +63,7 @@ protected:
 	std::string finalexam_location;
 public:
 	Presented_Course();
+	Presented_Course(Course* course, int _term_no = 0, Professor* _course_professor = nullptr, int _capacity = 0);
 	void setCourseProfessor(Professor* _course_professor);
 	Professor* getCourseProfessor() const;
 	void setCourseStudents(std::vector<Student*> _course_students);
