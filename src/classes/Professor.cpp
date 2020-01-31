@@ -81,11 +81,11 @@ int DepartmentHead::CalculateProfessorAssessmentSum(Professor _professor) const 
 	 for (int i = 0; i < courses.size(); i++) {
 		std::vector<Student*> students = courses[i]->getCourseStudents();
 		for (int j = 0 ; j < students.size(); j++) {
-			std::vector<short> assessment = students[j]->getAssessmentAnswersofCourse(courses[i]);
+			std::vector<char> assessment = students[j]->getAssessmentAnswersofCourse(courses[i]);
 			int temp = 0;
-			for (int k =0 ; k < assessment.size(); k++)
+			for (int k = 0; k < assessment.size(); k++)
 				temp += assessment[k];
-			assessments_sum += (temp / 5);
+			assessments_sum += (temp / assessment.size());
 			students_count++;			
 		}
 	 }
@@ -106,13 +106,13 @@ std::map<Presented_Course*, std::vector<char>> DepartmentHead::ProfessorAssessme
 	 for (int i = 0; i < courses.size(); i++) {
 		std::vector<Student*> students = (*courses[i]).getCourseStudents();
 		
-		for(int j =0 ; j < students.size(); j++){
+		for (int j = 0; j < students.size(); j++) {
 			std::vector<short> assessment_sum;
 			std::vector<short> assessment_temp = students[j]->getAssessmentAnswersofCourse(courses[i]);
-			for (int k = 0 ; k < assessment_temp.size(); k++) {
+			for (int k = 0; k < assessment_temp.size(); k++) {
 				assessment_sum[k] += assessment_temp[k];
 				if (j == (students.size() - 1))
-					assessment_sum[k] /= 5;
+					assessment_sum[k] /= assessment_temp.size();
 			}
 			assessments.insert(std::pair<Presented_Course*,std::vector <short>>(courses[i], assessment_sum));
 		}
@@ -134,8 +134,8 @@ void DepartmentHead::ReadAllProfessors()  {
 	std::vector<Professor*> department_professors;
 	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
-	for(int i = 0 ; i < professors.size(); i++){
-		if(professors[i]->getDepartmentCode() == departmentcode && professors[i]->getUserName() != username )
+	for (int i = 0; i < professors.size(); i++) {
+		if (professors[i]->getDepartmentCode() == departmentcode && professors[i]->getUserName() != username )
 			department_professors.push_back(professors[i]);
 	}
 	setProfessors(department_professors);
