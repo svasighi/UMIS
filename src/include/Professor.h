@@ -17,9 +17,9 @@ class Professor : virtual public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
-	Professor(){}
-	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode) : User(_username, _password, _firstname, _lastname, _departmentcode){
-	}
+	Professor() {}
+	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
+		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
 	void setCourses(std::vector<Presented_Course*>);
 	std::vector<Presented_Course*> getCourses() const;
 	void addCourse(Presented_Course*);
@@ -77,7 +77,7 @@ public:
 	std::map<Presented_Course*, std::vector <short>> ProfessorAssessment(Professor) const;
 	void addProfessor(int,std::string,std::string,std::string,int);
 	void deleteProfessor(Professor);
-	void ReadAllProfessor(void);
+	void ReadAllProfessors(void);
 	void calcSalary(int* ,int ) const;
 };
 
