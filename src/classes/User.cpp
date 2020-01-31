@@ -1,6 +1,11 @@
 #include "../include/User.h"
-#include "md5.cpp"
+#include "../include/md5.h"
 
+User::User()
+	: username(0), departmentcode(0) {}
+
+User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
+	: username(_username), password(_password), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode) {}
 
 void User::setUserName(int _username) {
 	username = _username;
