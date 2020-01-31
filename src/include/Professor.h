@@ -41,7 +41,7 @@ protected:
 	bool is_head; 
 	std::vector<Student*> supervised_students;
 public:
-	Faculty(){} //default constructor
+	Faculty() {} //default constructor
 	
 	void setDegree(int _degree);
 	int getDegree(void) const;
@@ -75,10 +75,10 @@ public:
 	std::vector<Professor*> getProfessors(void) const;
 	void setProfessors(std::vector<Professor*>);
 	std::map<Presented_Course*, std::vector <short>> ProfessorAssessment(Professor) const;
-	void addProfessor(int,std::string,std::string,std::string,int);
-	void deleteProfessor(Professor);
+	void addProfessor(int, std::string, std::string, std::string);
+	void deleteProfessor(Professor*);
 	void ReadAllProfessors(void);
-	void calcSalary(int* ,int ) const;
+	void calcSalary(int*, int ) const;
 };
 
 // .............................DepartmentAcademicAffairsStaff......................................
