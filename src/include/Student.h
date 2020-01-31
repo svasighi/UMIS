@@ -8,11 +8,14 @@
 #include "Course.h"
 #include "TimeDate.h"
 
+class Faculty;
+
 class MyCourse {
 protected:
 	float score;
 	char status;
 	// status:
+	//-1 : unknown
 	// 0 : suggested in preliminary enrollment
 	// 1 : added in preliminary enrollment
 	// 2 : enrolled
@@ -27,7 +30,7 @@ protected:
 	bool is_objector;
 	std::string objection_text;
 public:
-	MyCourse();
+	MyCourse(char _status = -1);
 	void setScore(float _score);
 	float getScore() const;
 	void setStatus(char _status);
@@ -60,8 +63,7 @@ protected:
 	Time enrollment_begin_time;
 	std::map<Presented_Course*, MyCourse> courses;
 public:
-	MyTerm();
-	MyTerm(int _no);
+	MyTerm(int _no = 0);
 	void setno(int _no);
 	int getno() const;
 	void setStatus(char _status);
@@ -88,13 +90,17 @@ class Student : public User {
 protected:
 	std::string field;
 	float grade;
+	Faculty* supervisor;
 	std::map<int, MyTerm> terms;
 public:
 	Student();
+	Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, std::string _field = "");
 	void setField(std::string _field);
 	std::string getField() const;
 	void setGrade(float _grade);
 	float getGrade() const;
+	void setSupervisor(Faculty* _supervisor);
+	Faculty* getSupervisor() const;
 	void setTerms(std::map<int, MyTerm> _terms);
 	std::map<int, MyTerm> getTerms() const;
 	// term functions:
@@ -107,6 +113,7 @@ public:
 	void setTermEnrollmentBeginTime(int term_no, Time enrollment_begin_time);
 	Time getTermEnrollmentBeginTime(int term_no) const;
 	std::map<Presented_Course*, MyCourse> getTermCourses(int term_no) const;
+	std::vector<Presented_Course*> getTermCoursesWithoutResult(int term_no) const; // for reports no 78(Week Schedule) and 428(Exams Schedule)
 	int numberofCredits(int term_no) const;
 	// course functions:
 	void addCourse(Presented_Course* course);
@@ -131,11 +138,12 @@ class Tuition_Student : public Student {
 protected:
 	char type;
 	// type:
+	//-1 : unknown
 	// 0 : guest student
 	// 1 : transitional student
 	// 2 : night student
 public:
-	Tuition_Student();
+	Tuition_Student(char _type = -1);
 	void setType(char _type);
 	char getType() const;
 	int computeTuition(int term_no);
