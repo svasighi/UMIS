@@ -5,7 +5,7 @@ User::User()
 	: username(0), departmentcode(0) {}
 
 User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
-	: username(_username), password(_password), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode) {}
+	: username(_username), password(md5(_password)), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode) {}
 
 void User::setUserName(int _username) {
 	username = _username;
@@ -16,7 +16,7 @@ int User::getUserName(void) const {
 }
 
 void User::setPassword(std::string _password) {
-	password = _password;
+	password = md5(_password);
 }
 
 std::string User::getPassword(void) const {
