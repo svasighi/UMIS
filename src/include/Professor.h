@@ -8,7 +8,6 @@
 #include "Course.h"
 #include "Student.h"
 #include "AcademicAffairs.h"
-#include "md5.h"
 #include "BinaryFile.h"
 #include <algorithm>
 
@@ -71,14 +70,14 @@ class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
 class DepartmentHead : public Faculty {
  	std::vector<Professor*> professors;
 public:
-	int CalculateProfessorAssessmentSum(Professor) const;
+	int CalculateProfessorAssessmentSum(Professor*) const;
 	std::vector<Professor*> getProfessors(void) const;
 	void setProfessors(std::vector<Professor*>);
-	std::map<Presented_Course*, std::vector <short>> ProfessorAssessment(Professor) const;
+	std::map<Presented_Course*, std::vector<char>> ProfessorAssessment(Professor*) const;
 	void addProfessor(int, std::string, std::string, std::string);
 	void deleteProfessor(Professor*);
 	void ReadAllProfessors(void);
-	void calcSalary(int*, int ) const;
+	void calcSalary(int*, int) const;
 };
 
 // .............................DepartmentAcademicAffairsStaff......................................
