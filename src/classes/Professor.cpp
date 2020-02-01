@@ -120,19 +120,21 @@ std::map<Presented_Course*, std::vector<char>> DepartmentHead::ProfessorAssessme
 
 void DepartmentHead::addProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname) {
 
-	Professor * professor = new Professor(_username, md5(_password), _firstname, _lastname, this->departmentcode);
-	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
+	Professor * professor = new Professor(_username, _password, _firstname, _lastname, this->departmentcode);
+	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	binary_file.AddRecord(*professor);
 	professors.push_back(professor);
 }
-void DepartmentHead::deleteProfessor(Professor* _professor)  {
-	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
+
+void DepartmentHead::deleteProfessor(Professor* _professor) {
+	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	binary_file.DeleteRecordByID(_professor->getUserName());
 	professors.erase(find(professors.begin(), professors.end(), _professor));
 }
-void DepartmentHead::ReadAllProfessors()  {
+
+void DepartmentHead::ReadAllProfessors() {
 	std::vector<Professor*> department_professors;
-	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
+	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
 	for (int i = 0; i < professors.size(); i++) {
 		if (professors[i]->getDepartmentCode() == departmentcode && professors[i]->getUserName() != username )
@@ -140,18 +142,19 @@ void DepartmentHead::ReadAllProfessors()  {
 	}
 	setProfessors(department_professors);
 }
+
 void DepartmentHead::calcSalary(int* _degree_base_pay, int _max_assesment_addition) const {
-	BinaryFile <Professor>binary_file((char*) "../storage/Professors.dat");
+	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
 	for (int i = 0; i < professors.size(); i++) {
 		Faculty* faculty = dynamic_cast<Faculty*> (professors[i]);
 		int salary = 0;
 		if (faculty) {
-			salary = _degree_base_pay[faculty->getDegree()] + (CalculateProfessorAssessmentSum(*professors[i]) / 5) * _max_assesment_addition;
+			salary = _degree_base_pay[faculty->getDegree()] + (CalculateProfessorAssessmentSum(professors[i]) / 5) * _max_assesment_addition;
 		} else {
-			salary = _degree_base_pay[0] + (CalculateProfessorAssessmentSum(*professors[i]) / 5) * _max_assesment_addition;
+			salary = _degree_base_pay[0] + (CalculateProfessorAssessmentSum(professors[i]) / 5) * _max_assesment_addition;
 		}
-		BinaryFile <std::string>salaries((char*) "../storage/Professors.dat");
+		BinaryFile<std::string> salaries((char*) "../storage/Professors.dat");
 		salaries.AddRecord(std::to_string(professors[i]->getUserName()) + std::to_string(salary));
 	}
 }
