@@ -51,13 +51,16 @@ void MyCourse::setObjectionText(std::string _objection_text) {
 std::string MyCourse::getObjectionText() const {
 	return objection_text;
 }
-void MyCourse::setObjectonReplyText(std::string _objection_reply_text) {
+
+void MyCourse::setObjectionReplyText(std::string _objection_reply_text) {
 	objection_reply_text = _objection_reply_text;
 }
 
-std::string MyCourse::getObjectonReplyText() const {
-	return  objection_reply_text;
+std::string MyCourse::getObjectionReplyText() const {
+	return objection_reply_text;
 }
+
+
 
 
 MyTerm::MyTerm(int _no)
@@ -95,6 +98,30 @@ std::map<Presented_Course*, MyCourse> MyTerm::getCourses() const {
 	return courses;
 }
 
+std::vector<Presented_Course*> MyTerm::getCoursesWithoutResult() const {
+	std::vector<Presented_Course*> keys;
+	keys.reserve(courses.size());
+	transform(courses.begin(), courses.end(), std::back_inserter(keys),
+		[](const auto& pair) {
+			return pair.first;
+		});
+	return keys;
+}
+
+int MyTerm::numberofCourses() const {
+	return courses.size();
+}
+
+int MyTerm::numberofCoursesWithStatus(char _status) const {
+	int n = 0;
+	for (const auto& x : courses) {
+		if (x.second.getStatus() == _status) {
+			n++;
+		}
+	}
+	return n;
+}
+
 int MyTerm::numberofCredits() const {
 	int n = 0;
 	for (const auto& x : courses) {
@@ -103,15 +130,31 @@ int MyTerm::numberofCredits() const {
 	return n;
 }
 
-void MyTerm::addCourse(Presented_Course* course) {
-	courses[course] = MyCourse();
+int MyTerm::numberofCreditsWithStatus(char _status) const {
+	int n = 0;
+	for (const auto& x : courses) {
+		if (x.second.getStatus() == _status) {
+			n += x.first->getCredit();
+		}
+	}
+	return n;
+}
+
+void MyTerm::addCourse(Presented_Course* course, char _status) {
+	courses[course] = MyCourse(_status);
 }
 
 void MyTerm::removeCourse(Presented_Course* course) {
 	courses.erase(course);
 }
 
+bool MyTerm::hasCourse(Presented_Course* course) const {
+	return courses.count(course);
+}
+
 void MyTerm::setCourseProperties(Presented_Course* course, MyCourse properties) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
 	courses[course] = properties;
 }
 
@@ -121,39 +164,64 @@ MyCourse MyTerm::getCourseProperties(Presented_Course* course) const {
 	return courses.at(course);
 }
 
-void MyTerm::setScoreofCourse(Presented_Course* course, float score) {
-	courses[course].setScore(score);
+void MyTerm::setScoreofCourse(Presented_Course* course, float _score) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
+	courses[course].setScore(_score);
 }
 
-void MyTerm::setStatusofCourse(Presented_Course* course, char status) {
-	courses[course].setStatus(status);
+void MyTerm::setStatusofCourse(Presented_Course* course, char _status) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
+	courses[course].setStatus(_status);
 }
 
 void MyTerm::setAssessmentAnswersofCourse(Presented_Course* course, std::vector<char> answers) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
 	courses[course].setAssessmentAnswers(answers);
 }
 
 void MyTerm::setReviewofCourse(Presented_Course* course, std::string review) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
 	courses[course].setReview(review);
 }
 
 void MyTerm::setIsObjectorofCourse(Presented_Course* course, bool is_objector) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
 	courses[course].setIsObjector(is_objector);
 }
 
 void MyTerm::setObjectionTextofCourse(Presented_Course* course, std::string objection_text) {
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
 	courses[course].setObjectionText(objection_text);
 }
 
 void MyTerm::setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text) {
-	courses[course].setObjectonReplyText(objection_reply_text);
+	if (courses.count(course) == 0)
+		throw std::invalid_argument("course not found");
+	courses[course].setObjectionReplyText(objection_reply_text);
 }
 
-Student::Student()
-	: grade(-1.0F), supervisor(nullptr) {}
 
-Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, std::string _field)
-	: field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
+
+
+Student::Student()
+	: type(-1), grade(-1.0F), supervisor(nullptr) {}
+
+Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, char _type, std::string _field)
+	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
+
+void Student::setType(char _type) {
+	type = _type;
+}
+
+char Student::getType() const {
+	return type;
+}
 
 void Student::setField(std::string _field) {
 	field = _field;
@@ -187,6 +255,24 @@ std::map<int, MyTerm> Student::getTerms() const {
 	return terms;
 }
 
+int Student::numberofTermsonProbation() const {
+	int n = 0;
+	for (const auto& x : terms) {
+		if (x.second.getStatus() == 7) {
+			n++;
+		}
+	}
+	return n;
+}
+
+int Student::numberofAllCreditsWithStatus(char _status) const {
+	int n = 0;
+	for (const auto& x : terms) {
+		n += x.second.numberofCreditsWithStatus(_status);
+	}
+	return n;
+}
+
 void Student::addTerm(MyTerm term) {
 	terms[term.getno()] = term;
 }
@@ -203,8 +289,8 @@ MyTerm Student::getTerm(int term_no) const {
 	return terms.at(term_no);
 }
 
-void Student::setTermStatus(int term_no, char status) {
-	terms[term_no].setStatus(status);
+void Student::setTermStatus(int term_no, char _status) {
+	terms[term_no].setStatus(_status);
 }
 
 char Student::getTermStatus(int term_no) const {
@@ -224,28 +310,37 @@ std::map<Presented_Course*, MyCourse> Student::getTermCourses(int term_no) const
 }
 
 std::vector<Presented_Course*> Student::getTermCoursesWithoutResult(int term_no) const {
-	std::map<Presented_Course*, MyCourse>* m = &terms.at(term_no).getCourses();
-	std::vector<Presented_Course*> keys;
-	keys.reserve(m->size());
-	transform(m->begin(), m->end(), std::back_inserter(keys),
-		[](const auto& pair) {
-			return pair.first;
-		});
-	return keys;
+	return terms.at(term_no).getCoursesWithoutResult();
+}
+
+int Student::numberofCourses(int term_no) const {
+	return terms.at(term_no).numberofCourses();
+}
+
+int Student::numberofCoursesWithStatus(int term_no, char _status) const {
+	return terms.at(term_no).numberofCoursesWithStatus(_status);
 }
 
 int Student::numberofCredits(int term_no) const {
 	return terms.at(term_no).numberofCredits();
 }
 
-void Student::addCourse(Presented_Course* course) {
-	terms[course->getTerm_no()].addCourse(course);
+int Student::numberofCreditsWithStatus(int term_no, char _status) const {
+	return terms.at(term_no).numberofCreditsWithStatus(_status);
+}
+
+void Student::addCourse(Presented_Course* course, char _status) {
+	terms[course->getTerm_no()].addCourse(course, _status);
 	// course->addStudent(this);
 }
 
 void Student::removeCourse(Presented_Course* course) {
 	terms[course->getTerm_no()].removeCourse(course);
 	// course->removeStudent(this);
+}
+
+bool Student::hasCourse(Presented_Course* course) const {
+	return terms.at(course->getTerm_no()).hasCourse(course);
 }
 
 void Student::setCourseProperties(Presented_Course* course, MyCourse properties) {
@@ -256,16 +351,16 @@ MyCourse Student::getCourseProperties(Presented_Course* course) const {
 	return terms.at(course->getTerm_no()).getCourseProperties(course);
 }
 
-void Student::setScoreofCourse(Presented_Course* course, float score) {
-	terms[course->getTerm_no()].setScoreofCourse(course, score);
+void Student::setScoreofCourse(Presented_Course* course, float _score) {
+	terms[course->getTerm_no()].setScoreofCourse(course, _score);
 }
 
 float Student::getScoreofCourse(Presented_Course* course) const {
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getScore();
 }
 
-void Student::setStatusofCourse(Presented_Course* course, char status) {
-	terms[course->getTerm_no()].setStatusofCourse(course, status);
+void Student::setStatusofCourse(Presented_Course* course, char _status) {
+	terms[course->getTerm_no()].setStatusofCourse(course, _status);
 }
 
 char Student::getStatusofCourse(Presented_Course* course) const {
@@ -304,23 +399,16 @@ std::string Student::getObjectionTextofCourse(Presented_Course* course) const {
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectionText();
 }
 
-std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) const{
-	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectonReplyText();
+void Student::setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text) {
+	terms[course->getTerm_no()].setObjectionReplyTextofCourse(course, objection_reply_text);
 }
 
-
-
-Tuition_Student::Tuition_Student(char _type)
-	: type(_type) {}
-
-void Tuition_Student::setType(char _type) {
-	type = _type;
+std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) const {
+	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectionReplyText();
 }
 
-char Tuition_Student::getType() const {
-	return type;
-}
-
-int Tuition_Student::computeTuition(int term_no) {
+int Student::computeTuition(int term_no) {
+	if (type == 3)
+		return 0;
 	return terms[term_no].numberofCredits();// * credit_fee[type] + const_tuition;
 }
