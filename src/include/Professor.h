@@ -20,7 +20,7 @@ public:
 	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
 		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
 	void setCourses(std::vector<Presented_Course*>);
-	std::vector<Presented_Course*> getCourses() const;
+	std::vector<Presented_Course*> getCourses(void) const;
 	void addCourse(Presented_Course*);
 	void removeCourse(Presented_Course*);
 	void replyToObjecton(Student*, Presented_Course*, std::string);
@@ -39,7 +39,6 @@ class Faculty : public Professor {
 protected:
 	int degree;
 	bool is_supervisor;
-	bool is_head; 
 	std::vector<Student*> supervised_students;
 public:
 	Faculty() {} //default constructor
@@ -47,24 +46,22 @@ public:
 	void setDegree(int _degree);
 	int getDegree(void) const;
 	void setAsSupervisor(void);
-	bool isSupervisor (void) const;
-	void setAsHead(void);
-	bool isHead (void) const;
+	bool getisSupervisor (void) const;
 	void setSupervisedStudents(std::vector<Student*>);
 	std::vector<Student*> getSupervisedStudents(void) const;
 	void addSupervisedStudents(Student*);
 	void removeSupervisedStudents(Student*);
-	void applyEnrollment(Student);
+	void applyEnrollment(Student*);
 };
 
 // .............................DepartmentManager......................................
-class DepartmentManager : public Faculty {
+class GroupManager : public Faculty {
 	//PreEnrollment_Stats
 	//gozaresh 110 baraye daneshkade khod
 };
 
 // .............................DepartmentManager......................................
-class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
+class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
 
 };
 
@@ -72,6 +69,7 @@ class DepartmentChief : public Faculty, public DepartmentAcademicAffairsStaff {
 class DepartmentHead : public Faculty {
  	std::vector<Professor*> professors;
 public:
+	DepartmentHead::DepartmentHead(Faculty*);
 	int CalculateProfessorAssessmentSum(Professor*) const;
 	std::vector<Professor*> getProfessors(void) const;
 	void setProfessors(std::vector<Professor*>);

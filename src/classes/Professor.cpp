@@ -35,16 +35,8 @@ void Faculty::setAsSupervisor(void) {
 	this->is_supervisor = true;
 }
 
-bool Faculty::isSupervisor(void) const {
+bool Faculty::getisSupervisor(void) const {
 	return is_supervisor;
-}
-
-void Faculty::setAsHead(void) {
-	this->is_head = true;
-}
-
-bool Faculty::isHead(void) const {
-	return is_head;
 }
 
 void Faculty::setSupervisedStudents(std::vector<Student*> _supervised_students) {
@@ -63,7 +55,7 @@ void Faculty::removeSupervisedStudents(Student* _supervised_student) {
 	supervised_students.erase(find(supervised_students.begin(), supervised_students.end(), _supervised_student));
 }
 
-void Faculty::applyEnrollment(Student _student) {} //forward definition
+void Faculty::applyEnrollment(Student* _student) {} //forward definition
 
 void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
 	courses = _courses;
@@ -79,6 +71,19 @@ void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<Presented_C
 
 std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
 	return presented_courses;
+}
+
+DepartmentHead::DepartmentHead(Faculty* _faculty)
+{
+	username = _faculty->getUserName();
+	firstname = _faculty->getFirstName();
+	lastname = _faculty->getLastName();
+	degree = _faculty->getDegree();
+	departmentcode = _faculty->getDepartmentCode();
+	password = _faculty->getPassword();
+	courses = _faculty->getCourses();
+	supervised_students = _faculty->getSupervisedStudents;
+	is_supervisor = _faculty->getisSupervisor();
 }
 // returns an int <= 5 which shows each professor assessment
 int DepartmentHead::CalculateProfessorAssessmentSum(Professor* _professor) const {
