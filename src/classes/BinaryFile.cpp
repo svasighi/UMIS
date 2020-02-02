@@ -7,8 +7,8 @@
 */
 
 #include "../include/BinaryFile.h"
-#include<course.h>
-#include<professor.h>
+#include "../include/Course.h"
+#include "../include/Professor.h"
 
 template <class Object>
 BinaryFile<Object>::BinaryFile(char* _file_address) {
