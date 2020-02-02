@@ -305,7 +305,7 @@ std::string Student::getObjectionTextofCourse(Presented_Course* course) const {
 }
 
 std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) const{
-	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectorReplyText();
+	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectonReplyText();
 }
 
 
