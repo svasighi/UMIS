@@ -10,6 +10,7 @@ protected:
 	std::string firstname;
 	std::string lastname;
 	int departmentcode;
+	int groupcode;
 public:
 	User();
 	User(int _username, std::string _password, std::string _firstname = "", std::string _lastname = "", int _departmentcode = 0);
@@ -23,6 +24,8 @@ public:
 	std::string getLastName(void) const;
 	void setDepartmentCode(int);
 	int getDepartmentCode(void) const;
+	void setGroupCode(int);
+	int getGroupCode(void) const;
 	bool checkPassword(std::string _password) const;
 	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
