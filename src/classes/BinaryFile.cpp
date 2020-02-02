@@ -7,6 +7,8 @@
 */
 
 #include "../include/BinaryFile.h"
+#include<course.h>
+#include<professor.h>
 
 template <class Object>
 BinaryFile<Object>::BinaryFile(char* _file_address) {
@@ -140,7 +142,7 @@ void BinaryFile<Object>::UpdateRecord(Object temp_object) {
 	_fstream.open(file_address, std::ios::in | std::ios::out);
 	while (_fstream.read((char*)& _object, sizeof(_object)) && found == false)
 	{
-		if (_object.GetID() == _id)
+		if (_object.GetID() == temp_object.GetID())
 		{
 			int position = -1 * sizeof(_object);
 			_fstream.seekp(position, std::ios::cur);
