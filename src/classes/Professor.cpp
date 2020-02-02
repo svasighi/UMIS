@@ -16,10 +16,11 @@ void Professor::removeCourse(Presented_Course* course) {
 	courses.erase(find(courses.begin(), courses.end(), course));
 }
 void Professor::replyToObjecton(Student* _student,Presented_Course* _course, std::string _objection_reply_text){
-	_student->getTerm(_course->getTerm_no()).setObjectionReplyTextofCourse(_course, _objection_reply_text);
+	_student->setObjectionReplyTextofCourse(_course ,_objection_reply_text);
 		
 }
 std::string Professor::viewObjectonReply(Student* _student,Presented_Course* _course) const{
+	
 	return	_student->getObjectionReplyTextofCourse(_course);
 }
  std::map<int,Professor*>  Professor::readAllProfessors(void){
