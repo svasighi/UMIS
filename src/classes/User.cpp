@@ -2,10 +2,10 @@
 #include "../include/md5.h"
 
 User::User()
-	: username(0), departmentcode(0) {}
+	: username(0), departmentcode(0), groupcode(0) {}
 
-User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
-	: username(_username), password(md5(_password)), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode) {}
+User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+	: username(_username), password(md5(_password)), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode), groupcode(0) {}
 
 void User::setUserName(int _username) {
 	username = _username;
@@ -48,18 +48,18 @@ std::string User::getLastName(void) const {
 	return lastname;
 }
 
-void User::setDepartmentCode(int _departmentcode) {
+void User::setDepartmentCode(short _departmentcode) {
 	departmentcode = _departmentcode;
 }
 
-int User::getDepartmentCode(void) const {
+short User::getDepartmentCode(void) const {
 	return departmentcode;
 }
 
-void User::setGroupCode(int _groupcode) {
+void User::setGroupCode(short _groupcode) {
 	groupcode = _groupcode;
 }
 
-int User::getGroupCode(void) const {
+short User::getGroupCode(void) const {
 	return groupcode;
 }
