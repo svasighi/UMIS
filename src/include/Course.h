@@ -3,8 +3,10 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include "TimeDate.h"
+#include "BinaryFile.h"
 
 class Professor;
 class Student;
@@ -29,6 +31,7 @@ protected:
 public:
 	Course();
 	Course(short _department_id, short _group_id, short _course_id, char _credit = 0, std::string _name = "", char _type = -1);
+	static std::map<int,Course*>  readAllCourses(void) ;
 	void setDepartment_id(short _department_id);
 	short getDepartment_id() const;
 	void setGroup_id(short _group_id);
