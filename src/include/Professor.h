@@ -25,6 +25,7 @@ public:
 	void removeCourse(Presented_Course*);
 	void replyToObjecton(Student*, Presented_Course*, std::string);
 	std::string viewObjectonReply(Student*, Presented_Course*) const;
+	static std::map<int,Professor*> readAllProfessors(void);
 	void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
@@ -57,26 +58,36 @@ public:
 // .............................DepartmentManager......................................
 class GroupManager : public Faculty {
 	//PreEnrollment_Stats
-	//gozaresh 110 baraye daneshkade khod
+	std::map<int,Presented_Course*> group_courses;
+public:
+	GroupManager(){}
+	std::map<int,Presented_Course*> getGroupCourses();
+	void setGroupCourses(std::map<int,Presented_Course*>);
+	void createGroupCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);
+	void deleteGroupCourse(Presented_Course*);
+	void updateGroupCourse(Presented_Course*);
+
 };
 
 // .............................DepartmentManager......................................
 class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
 
+public:
+	DepartmentAcademicAssistant(){};
 };
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
- 	std::vector<Professor*> professors;
+ 	std::map<int,Professor*> professors;
 public:
 	DepartmentHead::DepartmentHead(Faculty*);
 	int CalculateProfessorAssessmentSum(Professor*) const;
-	std::vector<Professor*> getProfessors(void) const;
-	void setProfessors(std::vector<Professor*>);
+	std::map<int,Professor*> getDepartmentProfessors(void) const;
+	void setDepartmentProfessors(std::map<int,Professor*>);
 	std::map<Presented_Course*, std::vector<char>> ProfessorAssessment(Professor*) const;
 	void addProfessor(int, std::string, std::string, std::string);
 	void deleteProfessor(Professor*);
-	void ReadAllProfessors(void);
+	void ReadAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;
 };
 
