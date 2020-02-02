@@ -22,6 +22,17 @@ void Professor::replyToObjecton(Student* _student,Presented_Course* _course, std
 std::string Professor::viewObjectonReply(Student* _student,Presented_Course* _course) const{
 	return	_student->getTerm(_course->getTerm_no()).getCourseProperties(_course).getObjectonReplyText();
 }
+ std::map<int,Professor*>  Professor::readAllProfessors(void){
+	std::map<int,Professor*> TempProfessors;
+	
+	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
+	std::vector<Professor*> professors = binary_file.FetchAllRecords();
+	
+	for (int i = 0; i < professors.size(); i++) {
+		TempProfessors.insert(std::pair(professors[i]->getUserName(),professors[i]));
+	}
+	return TempProfessors;	
+}
 
 void Faculty::setDegree(int _degree) {
 	degree = _degree;
@@ -57,20 +68,50 @@ void Faculty::removeSupervisedStudents(Student* _supervised_student) {
 
 void Faculty::applyEnrollment(Student* _student) {} //forward definition
 
-void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
-	courses = _courses;
-}
 
-std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses(void) const {
-	return courses;
+std::map<int,Presented_Course*> GroupManager::getGroupCourses(){
+	return group_courses;
 }
-
-void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<Presented_Course*> _presented_courses) {
-	presented_courses = _presented_courses;
+void GroupManager::setGroupCourses(std::map<int,Presented_Course*> _group_courses){
+	group_courses = _group_courses;
 }
+void GroupManager::createGroupCourse(int _course_id ,std::string _name, int _credit, int _type, int _term_no, Professor* _course_professor, int _capacity , std::vector<Course*> prerequisites, std::vector<Course*> corequisites){
+	
+	Course* temp_course = nullptr;
+	Presented_Course* temp_presented_course = nullptr;
+	BinaryFile<Course> binary_file((char*) "../storage/Professors.dat");
+	std::map<int, Course*> allcourses = Course::readAllCourses();
 
-std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
-	return presented_courses;
+	for(std::map<int, Course*>::iterator it = allcourses.begin(); it != allcourses.end(); it++) {
+		if( groupcode == (it->second)->getGroup_id() &&  departmentcode == (it->second)->getDepartment_id()  && _course_id == (it->second)->getCourse_id())
+		{
+			temp_course = (it->second);
+			break;
+		}
+	}
+	if(!temp_course){
+		temp_course = new Course(departmentcode, groupcode, _course_id, _credit, _name, _type);
+		temp_course->setCorequisites(corequisites);
+		temp_course->setPrerequisites(prerequisites);
+	}else{
+		Presented_Course* temp_presented_course = new Presented_Course(temp_course,_term_no,_course_professor,_capacity);
+		group_courses.insert(std::pair(temp_presented_course->getCourse_id() , temp_presented_course));
+	}
+}
+void GroupManager::deleteGroupCourse(Presented_Course* _course){
+	
+	std::map<int, Course*> allcourses = Course::readAllCourses();
+
+	BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
+	binary_file.DeleteRecordByID(_course->getCourse_id());
+	group_courses.erase(_course->getCourse_id());
+}
+void GroupManager::updateGroupCourse(Presented_Course* _course){
+	
+	BinaryFile <Presented_Course>binary_file((char*) "storage/Courses.dat" );
+	binary_file.AddRecord(_course);
+	group_courses.erase(_course->getCourse_id());
+	group_courses.insert(std::pair(_course->getCourse_id() , _course));
 }
 
 DepartmentHead::DepartmentHead(Faculty* _faculty)
@@ -103,11 +144,11 @@ int DepartmentHead::CalculateProfessorAssessmentSum(Professor* _professor) const
 	 return assessments_sum / students_count;
 }
 
-std::vector<Professor*> DepartmentHead::getProfessors() const {
+std::map<int,Professor*> DepartmentHead::getDepartmentProfessors(void) const {
 	return professors;
 }
 
-void DepartmentHead::setProfessors(std::vector<Professor*> _professors) {
+void DepartmentHead::setDepartmentProfessors(std::map<int,Professor*> _professors) {
 	professors = _professors;
 }
 
@@ -135,7 +176,7 @@ void DepartmentHead::addProfessor(int _username, std::string _password, std::str
 	Professor * professor = new Professor(_username, _password, _firstname, _lastname, this->departmentcode);
 	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	binary_file.AddRecord(*professor);
-	professors.push_back(professor);
+	professors.insert(std::pair(professor->getUserName(),professor));
 }
 
 void DepartmentHead::deleteProfessor(Professor* _professor) {
@@ -143,30 +184,48 @@ void DepartmentHead::deleteProfessor(Professor* _professor) {
 	binary_file.DeleteRecordByID(_professor->getUserName());
 	professors.erase(find(professors.begin(), professors.end(), _professor));
 }
-
-void DepartmentHead::ReadAllProfessors() {
-	std::vector<Professor*> department_professors;
+	std::vector<Professor*> getDepartmentProfessors(void);
+	void getDepartmentProfessors(std::vector<Professor*>);
+void DepartmentHead::ReadAllDepartmentProfessors() {
+	std::map<int,Professor*> department_professors;
+	
 	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
 	for (int i = 0; i < professors.size(); i++) {
 		if (professors[i]->getDepartmentCode() == departmentcode && professors[i]->getUserName() != username )
-			department_professors.push_back(professors[i]);
+			department_professors.insert(std::pair(professors[i]->getUserName(),professors[i]));
 	}
-	setProfessors(department_professors);
+	setDepartmentProfessors(department_professors);
 }
 
 void DepartmentHead::calcSalary(int* _degree_base_pay, int _max_assesment_addition) const {
-	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
-	std::vector<Professor*> professors = binary_file.FetchAllRecords();
-	for (int i = 0; i < professors.size(); i++) {
-		Faculty* faculty = dynamic_cast<Faculty*> (professors[i]);
+	std::map<int,Professor*> professors = getDepartmentProfessors();
+	for(std::map<int,Professor*>::iterator it = professors.begin(); it != professors.end(); it++) {
+		Faculty* faculty = dynamic_cast<Faculty*> (it->second);
 		int salary = 0;
 		if (faculty) {
-			salary = _degree_base_pay[faculty->getDegree()] + (CalculateProfessorAssessmentSum(professors[i]) / 5) * _max_assesment_addition;
+			salary = _degree_base_pay[faculty->getDegree()] + (CalculateProfessorAssessmentSum(it->second) / 5) * _max_assesment_addition;
 		} else {
-			salary = _degree_base_pay[0] + (CalculateProfessorAssessmentSum(professors[i]) / 5) * _max_assesment_addition;
+			salary = _degree_base_pay[0] + (CalculateProfessorAssessmentSum(it->second) / 5) * _max_assesment_addition;
 		}
-		BinaryFile<std::string> salaries((char*) "../storage/Professors.dat");
-		salaries.AddRecord(std::to_string(professors[i]->getUserName()) + std::to_string(salary));
+		BinaryFile<std::string> salaries((char*) "../storage/Salaries.dat");
+		salaries.AddRecord(std::to_string(it->second->getUserName()) + std::to_string(salary));
 	}
+	
+}
+
+void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
+	courses = _courses;
+}
+
+std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses(void) const {
+	return courses;
+}
+
+void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<Presented_Course*> _presented_courses) {
+	presented_courses = _presented_courses;
+}
+
+std::vector<Presented_Course*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
+	return presented_courses;
 }
