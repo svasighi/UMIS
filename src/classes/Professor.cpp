@@ -20,7 +20,7 @@ void Professor::replyToObjecton(Student* _student,Presented_Course* _course, std
 		
 }
 std::string Professor::viewObjectonReply(Student* _student,Presented_Course* _course) const{
-	return	_student->getTerm(_course->getTerm_no()).getCourseProperties(_course).getObjectonReplyText();
+	return	_student->getObjectionReplyTextofCourse(_course);
 }
  std::map<int,Professor*>  Professor::readAllProfessors(void){
 	std::map<int,Professor*> TempProfessors;
