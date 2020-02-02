@@ -4,7 +4,7 @@
 User::User()
 	: username(0), departmentcode(0), groupcode(0) {}
 
-User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
+User::User(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
 	: username(_username), password(md5(_password)), firstname(_firstname), lastname(_lastname), departmentcode(_departmentcode), groupcode(0) {}
 
 void User::setUserName(int _username) {
