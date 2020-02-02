@@ -23,6 +23,8 @@ public:
 	std::vector<Presented_Course*> getCourses() const;
 	void addCourse(Presented_Course*);
 	void removeCourse(Presented_Course*);
+	void replyToObjecton(Student*, Presented_Course*, std::string);
+	std::string viewObjectonReply(Student*, Presented_Course*) const;
 	void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 

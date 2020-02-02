@@ -51,8 +51,13 @@ void MyCourse::setObjectionText(std::string _objection_text) {
 std::string MyCourse::getObjectionText() const {
 	return objection_text;
 }
+void MyCourse::setObjectonReplyText(std::string _objection_reply_text) {
+	objection_reply_text = _objection_reply_text;
+}
 
-
+std::string MyCourse::getObjectonReplyText() const {
+	return  objection_reply_text;
+}
 
 
 MyTerm::MyTerm(int _no)
@@ -140,8 +145,9 @@ void MyTerm::setObjectionTextofCourse(Presented_Course* course, std::string obje
 	courses[course].setObjectionText(objection_text);
 }
 
-
-
+void MyTerm::setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text) {
+	courses[course].setObjectonReplyText(objection_reply_text);
+}
 
 Student::Student()
 	: grade(-1.0F), supervisor(nullptr) {}
@@ -298,6 +304,9 @@ std::string Student::getObjectionTextofCourse(Presented_Course* course) const {
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectionText();
 }
 
+std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) const{
+	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectorReplyText();
+}
 
 
 

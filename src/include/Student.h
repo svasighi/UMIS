@@ -29,6 +29,8 @@ protected:
 	std::string review;
 	bool is_objector;
 	std::string objection_text;
+	bool is_objector_replied;
+	std::string objection_reply_text;
 public:
 	MyCourse(char _status = -1);
 	void setScore(float _score);
@@ -40,9 +42,11 @@ public:
 	void setReview(std::string _review);
 	std::string getReview() const;
 	void setIsObjector(bool _is_objector);
+	std::string getObjectionText() const;
 	bool getIsObjector() const;
 	void setObjectionText(std::string _objection_text);
-	std::string getObjectionText() const;
+	void setObjectonReplyText(std::string _objection_text);
+	std::string getObjectonReplyText() const;
 };
 
 class MyTerm {
@@ -84,6 +88,7 @@ public:
 	void setReviewofCourse(Presented_Course* course, std::string review);
 	void setIsObjectorofCourse(Presented_Course* course, bool is_objector);
 	void setObjectionTextofCourse(Presented_Course* course, std::string objection_text);
+	void setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text);
 };
 
 class Student : public User {
@@ -132,6 +137,7 @@ public:
 	bool getIsObjectorofCourse(Presented_Course* course) const;
 	void setObjectionTextofCourse(Presented_Course* course, std::string objection_text);
 	std::string getObjectionTextofCourse(Presented_Course* course) const;
+	std::string getObjectionReplyTextofCourse(Presented_Course* course) const;
 };
 
 class Tuition_Student : public Student {
