@@ -82,6 +82,32 @@ void BinaryFile<Object>::DeleteRecordByID(int _id)
 	remove("temp.dat");
 
 }
+
+template <class Course>
+void BinaryFile<Course>::DeleteRecordByID(int _id)
+{
+	Course _object;
+	std::ifstream _ifstream;
+	std::ofstream _ofstream;
+	_ifstream.open(file_address, std::ios::binary | std::ios::app);
+	_ofstream.open("temp.dat", std::ios::binary | std::ios::out);
+	while (_ifstream.read((char*)& _object, sizeof(_object)))
+	{
+		if (_object.getCourse_id() != _id) {
+			_ofstream.write((char*)& _object, sizeof(_object));
+		}
+	}
+	_ifstream.close();
+	_ofstream.close();
+	remove(file_address);
+	_ifstream.open("temp.dat", std::ios::binary | std::ios::app);
+	_ofstream.open(file_address, std::ios::binary | std::ios::out);
+	while (_ifstream.read((char*)& _object, sizeof(_object)))
+		_ofstream.write((char*)& _object, sizeof(_object));
+	_ofstream.close();
+	_ifstream.close();
+	remove("temp.dat");
+}
 template <class Professor>
 void BinaryFile<Professor>::DeleteRecordByID(int _id)
 {
