@@ -13,7 +13,7 @@ protected:
 	short groupcode;
 public:
 	User();
-	User(int _username, std::string _password, std::string _firstname = "", std::string _lastname = "", int _departmentcode = 0);
+	User(int _username, std::string _password, std::string _firstname = "", std::string _lastname = "", short _departmentcode = 0);
 	void setUserName(int _username);
 	int getUserName(void) const;
 	void setPassword(std::string _password);
