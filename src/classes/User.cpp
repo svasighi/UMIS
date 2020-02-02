@@ -55,3 +55,11 @@ void User::setDepartmentCode(int _departmentcode) {
 int User::getDepartmentCode(void) const {
 	return departmentcode;
 }
+
+void User::setGroupCode(int _groupcode) {
+	groupcode = _groupcode;
+}
+
+int User::getGroupCode(void) const {
+	return groupcode;
+}
