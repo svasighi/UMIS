@@ -6,6 +6,17 @@ Course::Course()
 Course::Course(short _department_id, short _group_id, short _course_id, char _credit, std::string _name, char _type)
 	: department_id(_department_id), group_id(_group_id), course_id(_course_id), credit(_credit), name(_name), type(-1) {}
 
+std::map<int,Course*>  Course::readAllCourses(void) {
+	std::map<int,Course*> TempCourses;
+	
+	BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
+	std::vector<Course*> courses = binary_file.FetchAllRecords();
+	
+	for (int i = 0; i < courses.size(); i++) {
+		TempCourses.insert(std::pair(courses[i]->getCourse_id() ,courses[i]));
+	}
+	return TempCourses;	
+}
 void Course::setDepartment_id(short _department_id) {
 	department_id = _department_id;
 }
