@@ -23,8 +23,8 @@ public:
     void AddRecord(Object);
     std::vector<Object*> FetchAllRecords() const;
     Object FetchByID(int) const;
-    void DeleteRecordByID(int);
-    void UpdateRecordByID(int, Object);
+    void DeleteRecord(Object);
+    void UpdateRecord(Object);
 
 };
 #endif // BINARYFILE_H

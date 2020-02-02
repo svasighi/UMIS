@@ -96,7 +96,7 @@ void GroupManager::createGroupCourse(int _course_id ,std::string _name, int _cre
 		temp_course->setPrerequisites(prerequisites);
 	}else{
 		Presented_Course* temp_presented_course = new Presented_Course(temp_course,_term_no,_course_professor,_capacity);
-		group_courses.insert(std::pair(temp_presented_course->getCourse_id() , temp_presented_course));
+		group_courses.insert(std::make_pair(std::stoi(std::to_string(temp_presented_course->getDepartment_id()) + std::to_string(temp_presented_course->getGroup_id()) + std::to_string(temp_presented_course->getCourse_id())) , temp_presented_course));
 	}
 }
 void GroupManager::deleteGroupCourse(Presented_Course* _course){
@@ -104,15 +104,15 @@ void GroupManager::deleteGroupCourse(Presented_Course* _course){
 	std::map<int, Course*> allcourses = Course::readAllCourses();
 
 	BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
-	binary_file.DeleteRecordByID(_course->getCourse_id());
-	group_courses.erase(_course->getCourse_id());
+	binary_file.DeleteRecord(*_course);
+	group_courses.erase(std::stoi(std::to_string(_course->getDepartment_id()) + std::to_string(_course->getGroup_id()) + std::to_string(_course->getCourse_id())));
 }
 void GroupManager::updateGroupCourse(Presented_Course* _course){
 	
 	BinaryFile <Presented_Course>binary_file((char*) "storage/Courses.dat" );
-	binary_file.AddRecord(_course);
+	binary_file.UpdateRecord(_course);
 	group_courses.erase(_course->getCourse_id());
-	group_courses.insert(std::pair(_course->getCourse_id() , _course));
+	group_courses.insert(std::make_pair(std::stoi(std::to_string(_course->getDepartment_id()) + std::to_string(_course->getGroup_id()) + std::to_string(_course->getCourse_id())) , _course));
 }
 
 DepartmentHead::DepartmentHead(Faculty* _faculty)
@@ -182,7 +182,7 @@ void DepartmentHead::addProfessor(int _username, std::string _password, std::str
 
 void DepartmentHead::deleteProfessor(Professor* _professor) {
 	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
-	binary_file.DeleteRecordByID(_professor->getUserName());
+	binary_file.DeleteRecord(*_professor);
 	professors.erase(find(professors.begin(), professors.end(), _professor));
 }
 	std::vector<Professor*> getDepartmentProfessors(void);
