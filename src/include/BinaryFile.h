@@ -13,8 +13,7 @@
 #include<fstream>
 #include<string>
 #include<vector>
-#include<course.h>
-#include<professor.h>
+
 
 template<class Object>
 class BinaryFile{
