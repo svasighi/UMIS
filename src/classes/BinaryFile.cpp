@@ -82,8 +82,7 @@ void BinaryFile<Object>::DeleteRecord(Object _object)
 	remove("temp.dat");
 
 }
-
-template <class Course>
+template <>
 void BinaryFile<Course>::DeleteRecord(Course temp_object)
 {
 	Course _object;
@@ -108,7 +107,7 @@ void BinaryFile<Course>::DeleteRecord(Course temp_object)
 	_ifstream.close();
 	remove("temp.dat");
 }
-template <class Professor>
+template <>
 void BinaryFile<Professor>::DeleteRecord(Professor temp_object)
 {
 	Professor _object;
@@ -151,7 +150,7 @@ void BinaryFile<Object>::UpdateRecord(Object temp_object) {
 	}
 	_fstream.close();
 }
-template <class Professor>
+template <>
 void BinaryFile<Professor>::UpdateRecord(Professor temp_object) {
 	std::fstream _fstream;
 	Professor _object;
@@ -159,7 +158,7 @@ void BinaryFile<Professor>::UpdateRecord(Professor temp_object) {
 	_fstream.open(file_address, std::ios::in | std::ios::out);
 	while (_fstream.read((char*)& _object, sizeof(_object)) && found == false)
 	{
-		if (_object.getUserName() == temp_object->getUserName())
+		if (_object.getUserName() == temp_object.getUserName())
 		{
 			int position = -1 * sizeof(_object);
 			_fstream.seekp(position, std::ios::cur);
@@ -169,7 +168,7 @@ void BinaryFile<Professor>::UpdateRecord(Professor temp_object) {
 	}
 	_fstream.close();
 }
-template <class Course>
+template <>
 void BinaryFile<Course>::UpdateRecord(Course temp_object) {
 	std::fstream _fstream;
 	Course _object;
@@ -177,7 +176,7 @@ void BinaryFile<Course>::UpdateRecord(Course temp_object) {
 	_fstream.open(file_address, std::ios::in | std::ios::out);
 	while (_fstream.read((char*)& _object, sizeof(_object)) && found == false)
 	{
-		if (_object.getCourse_id() == temp_object->getCourse_id())
+		if (_object.getCourse_id() == temp_object.getCourse_id())
 		{
 			int position = -1 * sizeof(_object);
 			_fstream.seekp(position, std::ios::cur);
