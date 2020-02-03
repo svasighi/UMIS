@@ -1,86 +1,445 @@
+#include <stdexcept>
 #include "../include/TimeDate.h"
 
-Time::Time() {
+std::vector<std::string> Date::monthName = { "Farvardin","Ordibehesht","Khordad","Tir","Mordad","Shahrivar","Mehr","Aban","Azar","Dey","Bahman","Esfand" };
 
+Date::Date()
+	: year(1300), month(1), day(1) {}
+
+Date::Date(int _year, int _month, int _day) {
+	setDate(_year, _month, _day);
 }
 
-Time::Time(int _year, int _month, int _day, int _hour, int _minute)
-	: year(_year), month(_month), day(_day), hour(_hour), minute(_minute)
-{
-
-}
-
-void Time::setDate(int _year, int _month, int _day) {
+void Date::setDate(int _year, int _month, int _day) {
+	if (_month > 12 || _month < 1)
+		throw std::invalid_argument("Month must be 1-12");
+	if (_day > 31 || _day < 1)
+		throw std::invalid_argument("Day must be 1-31");
+	if (_month > 6 && _day == 31)
+		throw std::invalid_argument("Day can't be 31 in autumn and winter");
 	year = _year;
 	month = _month;
 	day = _day;
 }
 
-void Time::setTime(int _hour, int _minute) {
-	hour = _hour;
-	minute = _minute;
-}
+std::string Date::getDate(int mode) const {
+	std::string temp;
+	switch (mode) {
+	case 0:
+		temp = std::to_string(year) + "/" + std::to_string(month) + "/" + std::to_string(day);
+		break;
+	case 1:
+		temp = std::to_string(year % 100) + "/" + std::to_string(month) + "/" + std::to_string(day);
+		break;
+	case 2:
+		temp = std::to_string(year) + " " + monthName[month - 1] + " " + std::to_string(day);
+		break;
+	case 3:
+		temp = std::to_string(year % 100) + " " + monthName[month - 1] + " " + std::to_string(day);
+		break;
+	default:
+		break;
+	}
+	return temp;
+};
 
-int Time::getYear() const {
+int Date::getYear() const {
 	return year;
 }
 
-int Time::getMonth() const {
+int Date::getMonth() const {
 	return month;
 }
 
-int Time::getDay() const {
+int Date::getDay() const {
 	return day;
+}
+
+bool Date::operator==(const Date& right) const {
+	if (this->year == right.year && this->month == right.month && this->day == right.day) {
+		return true;
+	}
+	return false;
+}
+
+bool Date::operator>(const Date& right) const {
+	if (this->year > right.year)
+		return true;
+	if (this->year < right.year)
+		return false;
+	if (this->month > right.month)
+		return true;
+	if (this->month < right.month)
+		return false;
+	if (this->day > right.day)
+		return true;
+	return false;
+}
+
+bool Date::operator<(const Date& right) const {
+	if (this->year < right.year)
+		return true;
+	if (this->year > right.year)
+		return false;
+	if (this->month < right.month)
+		return true;
+	if (this->month > right.month)
+		return false;
+	if (this->day < right.day)
+		return true;
+	return false;
+}
+
+bool Date::operator!=(const Date& right) const {
+	if (this->year == right.year && this->month == right.month && this->day == right.day) {
+		return false;
+	}
+	return true;
+}
+
+bool Date::operator>=(const Date& right) const {
+	if (this->year > right.year)
+		return true;
+	if (this->year < right.year)
+		return false;
+	if (this->month > right.month)
+		return true;
+	if (this->month < right.month)
+		return false;
+	if (this->day > right.day)
+		return true;
+	if (this->day < right.day)
+		return false;
+	return true;
+}
+
+bool Date::operator<=(const Date& right) const {
+	if (this->year < right.year)
+		return true;
+	if (this->year > right.year)
+		return false;
+	if (this->month < right.month)
+		return true;
+	if (this->month > right.month)
+		return false;
+	if (this->day < right.day)
+		return true;
+	if (this->day > right.day)
+		return false;
+	return true;
+}
+
+
+
+
+Time::Time(int _hour, int _minute, int _second) {
+	setTime(_hour, _minute, _second);
+}
+
+void Time::setTime(int _hour, int _minute, int _second) {
+	if (_hour < 0 || _hour > 23)
+		throw std::invalid_argument("Hour must be 0-23");
+	if (_minute < 0 || _minute > 59)
+		throw std::invalid_argument("Minute must be 0-59");
+	if (_second < 0 || _second > 59)
+		throw std::invalid_argument("Second must be 0-59");
+	hour = _hour;
+	minute = _minute;
+	second = _second;
+}
+
+std::string Time::getTime(int mode) const {
+	std::string temp;
+	if (mode == 0 || mode == 24) {
+		temp = std::to_string(hour) + ":" + std::to_string(minute) + ":" + std::to_string(second);
+	}
+	else if (mode == 1 || mode == 12) {
+		temp = std::to_string(((hour == 0 || hour == 12) ? 12 : hour % 12)) + ":" + std::to_string(minute) + ":" + std::to_string(second) + " " + (hour < 12 ? "AM" : "PM");
+	}
+	return temp;
+}
+
+void Time::setHour(int _hour) {
+	if (_hour < 0 || _hour > 23)
+		throw std::invalid_argument("Hour must be 0-23");
+	hour = _hour;
 }
 
 int Time::getHour() const {
 	return hour;
 }
 
+void Time::setMinute(int _minute) {
+	if (_minute < 0 || _minute > 59)
+		throw std::invalid_argument("Minute must be 0-59");
+	minute = _minute;
+}
+
 int Time::getMinute() const {
 	return minute;
 }
 
-
-
-
-Course_Time::Course_Time() {
-
+void Time::setSecond(int _second) {
+	if (_second < 0 || _second > 59)
+		throw std::invalid_argument("Second must be 0-59");
+	second = _second;
 }
 
-Course_Time::Course_Time(std::vector<std::string> _wday, int _hhi, int _mmi, int _hho, int _mmo)
-	: wday(_wday), hhi(_hhi), mmi(_mmi), hho(_hho), mmo(_mmo)
-{
-
+int Time::getSecond() const {
+	return second;
 }
 
-void Course_Time::setDay(std::vector<std::string> _wday) {
+bool Time::operator==(const Time& right) const {
+	if (this->hour == right.hour && this->minute == right.minute && this->second == right.second) {
+		return true;
+	}
+	return false;
+}
+
+bool Time::operator>(const Time& right) const {
+	if (this->hour > right.hour)
+		return true;
+	if (this->hour < right.hour)
+		return false;
+	if (this->minute > right.minute)
+		return true;
+	if (this->minute < right.minute)
+		return false;
+	if (this->second > right.second)
+		return true;
+	return false;
+}
+
+bool Time::operator<(const Time& right) const {
+	if (this->hour < right.hour)
+		return true;
+	if (this->hour > right.hour)
+		return false;
+	if (this->minute < right.minute)
+		return true;
+	if (this->minute > right.minute)
+		return false;
+	if (this->second < right.second)
+		return true;
+	return false;
+}
+
+bool Time::operator!=(const Time& right) const {
+	if (this->hour == right.hour && this->minute == right.minute && this->second == right.second) {
+		return false;
+	}
+	return true;
+}
+
+bool Time::operator>=(const Time& right) const {
+	if (this->hour > right.hour)
+		return true;
+	if (this->hour < right.hour)
+		return false;
+	if (this->minute > right.minute)
+		return true;
+	if (this->minute < right.minute)
+		return false;
+	if (this->second > right.second)
+		return true;
+	if (this->second < right.second)
+		return false;
+	return true;
+}
+
+bool Time::operator<=(const Time& right) const {
+	if (this->hour < right.hour)
+		return true;
+	if (this->hour > right.hour)
+		return false;
+	if (this->minute < right.minute)
+		return true;
+	if (this->minute > right.minute)
+		return false;
+	if (this->second < right.second)
+		return true;
+	if (this->second > right.second)
+		return false;
+	return true;
+}
+
+
+
+
+TimeDate::TimeDate() {}
+
+TimeDate::TimeDate(int _year, int _month, int _day, int _hour, int _minute, int _second)
+	: date(Date(_year, _month, _day)), time(Time(_hour, _minute, _second)) {}
+
+TimeDate::TimeDate(const Date& _date, const Time& _time)
+	: date(_date), time(_time) {}
+
+void TimeDate::setDate(const Date& _date) {
+	date = _date;
+}
+
+Date TimeDate::getDate() {
+	return date;
+}
+
+void TimeDate::setTime(const Time& _time) {
+	time = _time;
+}
+
+Time TimeDate::getTime() const {
+	return time;
+}
+
+bool TimeDate::operator==(const TimeDate& right) const {
+	if (this->date == right.date && this->time == right.time) {
+		return true;
+	}
+	return false;
+}
+
+bool TimeDate::operator>(const TimeDate& right) const {
+	if (this->date > right.date)
+		return true;
+	if (this->date < right.date)
+		return false;
+	if (this->time > right.time)
+		return true;
+	return false;
+}
+
+bool TimeDate::operator<(const TimeDate& right) const {
+	if (this->date < right.date)
+		return true;
+	if (this->date > right.date)
+		return false;
+	if (this->time < right.time)
+		return true;
+	return false;
+}
+
+bool TimeDate::operator!=(const TimeDate& right) const {
+	if (this->date == right.date && this->time == right.time) {
+		return false;
+	}
+	return true;
+}
+
+bool TimeDate::operator>=(const TimeDate& right) const {
+	if (this->date > right.date)
+		return true;
+	if (this->date < right.date)
+		return false;
+	if (this->time > right.time)
+		return true;
+	if (this->time < right.time)
+		return false;
+	return true;
+}
+
+bool TimeDate::operator<=(const TimeDate& right) const {
+	if (this->date < right.date)
+		return true;
+	if (this->date > right.date)
+		return false;
+	if (this->time < right.time)
+		return true;
+	if (this->time > right.time)
+		return false;
+	return true;
+}
+
+
+
+
+TimePeriod::TimePeriod() {}
+
+TimePeriod::TimePeriod(const Time& _start, const Time& _finish) {
+	setPeriod(_start, _finish);
+}
+
+void TimePeriod::setPeriod(const Time& _start, const Time& _finish) {
+	if (start > finish)
+		throw std::invalid_argument("start must be less than finish");
+	start = _start;
+	finish = _finish;
+}
+
+Time TimePeriod::getStart() const {
+	return start;
+}
+
+Time TimePeriod::getFinish() const {
+	return finish;
+}
+
+bool TimePeriod::haveOverlapWith(const TimePeriod& right) const {
+	if (this->start < right.finish && right.start < this->finish) {
+		return true;
+	}
+	return false;
+}
+
+
+
+
+std::vector<std::string> CourseTime::weekdayName = { "Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday" };
+
+CourseTime::CourseTime() {}
+
+CourseTime::CourseTime(const std::vector<char>& _wday, const TimePeriod& _time)
+	: wday(_wday), time(_time) {}
+
+void CourseTime::setDay(const std::vector<char>& _wday) {
 	wday = _wday;
 }
 
-std::vector<std::string> Course_Time::getDay() const {
+std::vector<char> CourseTime::getDay() const {
 	return wday;
 }
 
-void Course_Time::setTime(int _hhi, int _mmi, int _hho, int _mmo) {
-	hhi = _hhi;
-	mmi = _mmi;
-	hho = _hho;
-	mmo = _mmo;
+void CourseTime::setTime(const TimePeriod& _time) {
+	time = _time;
 }
 
-int Course_Time::gethhi() const {
-	return hhi;
+TimePeriod CourseTime::getTime() const {
+	return time;
 }
 
-int Course_Time::getmmi() const {
-	return mmi;
+bool CourseTime::haveOverlapWith(const CourseTime& right) const {
+	if (std::find_first_of(right.wday.begin(), right.wday.end(), this->wday.begin(), this->wday.end()) != right.wday.end()
+		&& right.time.haveOverlapWith(this->time)) {
+		return true;
+	}
+	return false;
 }
 
-int Course_Time::gethho() const {
-	return hho;
+
+
+
+ExamTime::ExamTime() {}
+
+ExamTime::ExamTime(const Date& _date, const TimePeriod& _time)
+	: date(_date), time(_time) {}
+
+void ExamTime::setDate(const Date& _date) {
+	date = _date;
 }
 
-int Course_Time::getmmo() const {
-	return mmo;
+Date ExamTime::getDate() const {
+	return date;
+}
+
+void ExamTime::setTime(const TimePeriod& _time) {
+	time = _time;
+}
+
+TimePeriod ExamTime::getTime() const {
+	return time;
+}
+
+bool ExamTime::haveOverlapWith(const ExamTime& right) const {
+	if (this->date == right.date && this->time.haveOverlapWith(right.time)) {
+		return true;
+	}
+	return false;
 }
