@@ -10,6 +10,7 @@
 
 class Professor;
 class Student;
+class Presented_Course;
 
 class Course {
 protected:
@@ -31,7 +32,7 @@ protected:
 public:
 	Course();
 	Course(short _department_id, short _group_id, short _course_id, char _credit = 0, std::string _name = "", char _type = -1);
-	static std::map<int,Course*>  readAllCourses(void) ;
+	static std::map<int, Course*> readAllCourses(void);
 	void setDepartment_id(short _department_id);
 	short getDepartment_id() const;
 	void setGroup_id(short _group_id);
@@ -52,21 +53,29 @@ public:
 	std::vector<Course*> getCorequisites() const;
 	void addCorequisite(Course* course);
 	void removeCorequisite(Course* course);
+	bool haveSameID(Course* course) const;
+	bool searchSameIDin(const std::vector<Course*>&) const;
+	bool searchSameIDin(const std::vector<Presented_Course*>&) const;
 };
 
 class Presented_Course : public Course {
 protected:
+	int term_no;
+	char group_no;
 	Professor* course_professor;
 	std::vector<Student*> course_students;
 	int capacity;
-	int term_no;
-	Course_Time course_time;
+	CourseTime course_time;
 	std::string course_location;
-	Time finalexam_time;
+	ExamTime finalexam_time;
 	std::string finalexam_location;
 public:
 	Presented_Course();
-	Presented_Course(Course* course, int _term_no = 0, Professor* _course_professor = nullptr, int _capacity = 0);
+	Presented_Course(Course* course, int _term_no = 0, char _group_no = 0, Professor* _course_professor = nullptr, int _capacity = 0);
+	void setTerm_no(int _term_no);
+	int getTerm_no() const;
+	void setGroup_no(char _group_no);
+	char getGroup_no() const;
 	void setCourseProfessor(Professor* _course_professor);
 	Professor* getCourseProfessor() const;
 	void setCourseStudents(std::vector<Student*> _course_students);
@@ -74,16 +83,15 @@ public:
 	void addStudent(Student* student);
 	void removeStudent(Student* student);
 	int getNumberofStudents() const;
+	int getNumberofStudentsWithCourseStatus(char _status) const;
 	void setCapacity(int _capacity);
 	int getCapacity() const;
-	void setTerm_no(int _term_no);
-	int getTerm_no() const;
-	void setCourseTime(Course_Time _course_time);
-	Course_Time getCourseTime() const;
+	void setCourseTime(CourseTime _course_time);
+	CourseTime getCourseTime() const;
 	void setCourseLocation(std::string _course_location);
 	std::string getCourseLocation() const;
-	void setFinalExamTime(Time _finalexam_time);
-	Time getFinalExamTime() const;
+	void setFinalExamTime(ExamTime _finalexam_time);
+	ExamTime getFinalExamTime() const;
 	void setFinalExamLocation(std::string _finalexam_location);
 	std::string getFinalExamLocation() const;
 };
