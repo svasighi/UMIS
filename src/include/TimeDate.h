@@ -3,36 +3,111 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 
-class Time {
+class Date {
+protected:
 	int year, month, day;
-	int hour, minute;
+private:
+	static std::vector<std::string> monthName;
 public:
-	Time();
-	Time(int _year, int _month, int _day, int _hour, int _minute);
+	Date();
+	Date(int _year, int _month, int _day);
 	void setDate(int _year, int _month, int _day);
-	void setTime(int _hour, int _minute);
+	std::string getDate(int mode) const;
 	int getYear() const;
 	int getMonth() const;
 	int getDay() const;
-	int getHour() const;
-	int getMinute() const;
+	bool operator==(const Date&) const;
+	bool operator>(const Date&) const;
+	bool operator<(const Date&) const;
+	bool operator!=(const Date&) const;
+	bool operator>=(const Date&) const;
+	bool operator<=(const Date&) const;
 };
 
-class Course_Time {
-	std::vector<std::string> wday;
-	int hhi, mmi;
-	int hho, mmo;
+class Time {
+protected:
+	int hour, minute, second;
 public:
-	Course_Time();
-	Course_Time(std::vector<std::string> _wday, int _hhi, int _mmi, int _hho, int _mmo);
-	void setDay(std::vector<std::string> _wday);
-	std::vector<std::string> getDay() const;
-	void setTime(int _hhi, int _mmi, int _hho, int _mmo);
-	int gethhi() const;
-	int getmmi() const;
-	int gethho() const;
-	int getmmo() const;
+	Time(int _hour = 0, int _minute = 0, int _second = 0);
+	void setTime(int _hour, int _minute, int _second);
+	std::string getTime(int mode) const;
+	void setHour(int _hour);
+	int getHour() const;
+	void setMinute(int _minute);
+	int getMinute() const;
+	void setSecond(int _second);
+	int getSecond() const;
+	bool operator==(const Time&) const;
+	bool operator>(const Time&) const;
+	bool operator<(const Time&) const;
+	bool operator!=(const Time&) const;
+	bool operator>=(const Time&) const;
+	bool operator<=(const Time&) const;
+};
+
+class TimeDate {
+protected:
+	Date date;
+	Time time;
+public:
+	TimeDate();
+	TimeDate(int _year, int _month, int _day, int _hour, int _minute, int _second);
+	TimeDate(const Date& _date, const Time& _time);
+	void setDate(const Date& _date);
+	Date getDate();
+	void setTime(const Time& _time);
+	Time getTime() const;
+	bool operator==(const TimeDate&) const;
+	bool operator>(const TimeDate&) const;
+	bool operator<(const TimeDate&) const;
+	bool operator!=(const TimeDate&) const;
+	bool operator>=(const TimeDate&) const;
+	bool operator<=(const TimeDate&) const;
+};
+
+class TimePeriod {
+	Time start;
+	Time finish;
+public:
+	TimePeriod();
+	TimePeriod(const Time& _start, const Time& _finish);
+	void setPeriod(const Time& _start, const Time& _finish);
+	Time getStart() const;
+	Time getFinish() const;
+	bool haveOverlapWith(const TimePeriod&) const;
+};
+
+class CourseTime {
+protected:
+	std::vector<char> wday;
+	TimePeriod time;
+private:
+	static std::vector<std::string> weekdayName;
+public:
+	CourseTime();
+	CourseTime(const std::vector<char>& _wday, const TimePeriod& _time);
+	void setDay(const std::vector<char>& _wday);
+	std::vector<char> getDay() const;
+	void setTime(const TimePeriod& _time);
+	TimePeriod getTime() const;
+	bool haveOverlapWith(const CourseTime&) const;
+};
+
+class ExamTime {
+protected:
+	Date date;
+	TimePeriod time;
+public:
+	ExamTime();
+	ExamTime(const Date& _date, const TimePeriod& _time);
+	void setDate(const Date& _date);
+	Date getDate() const;
+	void setTime(const TimePeriod& _time);
+	TimePeriod getTime() const;
+	bool haveOverlapWith(const ExamTime&) const;
 };
 
 #endif // TIMEDATE_H
