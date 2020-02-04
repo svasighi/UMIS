@@ -56,6 +56,7 @@ public:
 	bool haveSameID(Course* course) const;
 	bool searchSameIDin(const std::vector<Course*>&) const;
 	bool searchSameIDin(const std::vector<Presented_Course*>&) const;
+	int getCompleteID() const;
 };
 
 class Presented_Course : public Course {
