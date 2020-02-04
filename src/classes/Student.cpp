@@ -358,36 +358,35 @@ std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_
 		if (this->haveCourseWithStatus(course, MyCourse::passed)) {
 			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course)));
 		}
-		if (course->getNumberofStudentsWithCourseStatus(MyCourse::enrolled) >= course->getCapacity()) {
-			bool flag = true;
-			//for (const auto& exc : exceptions) {
-				//if (exc.first->getErrorCode() == 6) {
-				//	if (dynamic_cast<FullCapacity*>(exc.first)->getSource()->haveSameID(course) && exc.second == 2) {
-				//		flag = false;
-				//		break;
-				//	}
-				//}
-			//}
-			if (flag) {
+		if (course->getEnrolledNumber() >= course->getCapacity()) {
+			if (FullCapacity::haveExceptionWithStatus(exceptions, course, 2) == false) {
 				errors.push_back(std::unique_ptr<EnrollmentError>(new FullCapacity(course)));
 			}
 		}
 		for (const auto& preR : course->getPrerequisites()) {
 			if (this->haveCourseWithStatus(preR, MyCourse::passed) == false) {
-				errors.push_back(std::unique_ptr<EnrollmentError>(new NotPassedPrerequisite(course, preR)));
+				if (NotPassedPrerequisite::haveExceptionWithStatus(exceptions, course, preR, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new NotPassedPrerequisite(course, preR)));
+				}
 			}
 		}
 		for (const auto& coR : course->getCorequisites()) {
 			if (coR->searchSameIDin(courses) == false && this->getTerm(term_no).haveCourse(coR) == false && this->haveCourseWithStatus(coR, MyCourse::passed) == false) {
-				errors.push_back(std::unique_ptr<EnrollmentError>(new NotTakenCorequisite(course, coR)));
+				if (NotTakenCorequisite::haveExceptionWithStatus(exceptions, course, coR, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new NotTakenCorequisite(course, coR)));
+				}
 			}
 		}
 		for (const auto& c : courses) {
 			if (c->getCourseTime().haveOverlapWith(course->getCourseTime())) {
-				errors.push_back(std::unique_ptr<EnrollmentError>(new CourseTimeOverlap(course, c)));
+				if (CourseTimeOverlap::haveExceptionWithStatus(exceptions, course, c, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new CourseTimeOverlap(course, c)));
+				}
 			}
 			if (c->getFinalExamTime().haveOverlapWith(course->getFinalExamTime())) {
-				errors.push_back(std::unique_ptr<EnrollmentError>(new ExamTimeOverlap(course, c)));
+				if (ExamTimeOverlap::haveExceptionWithStatus(exceptions, course, c, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new ExamTimeOverlap(course, c)));
+				}
 			}
 		}
 	}
