@@ -83,4 +83,4 @@ public:
 	std::string what() const;
 };
 
-#endif // ENROLLMENTERROE_H
+#endif // ENROLLMENTERROR_H
