@@ -4,6 +4,8 @@
 #include <vector>
 #include "User.h"
 #include "Student.h"
+#include "Professor.h"
+#include <exception>
 
 class AcademicAffairsStaff : virtual public User {
 protected:
@@ -19,8 +21,8 @@ public:
 class TopAcademicAffairsStaff : public AcademicAffairsStaff {
 	
 public:
-	void changeDepartmentHead(Professor* prof); //forward definitions
-	void readAllStudents(void) ;
+	void  changeDepartmentHead(Faculty*);
+	void readAllStudents(void);
 };
 
 #endif // ACADEMIC_H

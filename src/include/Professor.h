@@ -31,8 +31,8 @@ public:
 
 // .............................AdjunctProfessor......................................
 class AdjunctProfessor : public Professor { 
-
-
+	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
+		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
 };
 
 // .............................Faculty......................................
@@ -55,7 +55,7 @@ public:
 	void applyEnrollment(Student*);
 };
 
-// .............................DepartmentManager......................................
+// .............................GroupManager......................................
 class GroupManager : public Faculty {
 	//PreEnrollment_Stats
 	std::map<int,Presented_Course*> group_courses;
@@ -69,7 +69,7 @@ public:
 
 };
 
-// .............................DepartmentManager......................................
+// .............................DepartmentAcademicAssistant......................................
 class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
 
 public:
@@ -81,13 +81,19 @@ class DepartmentHead : public Faculty {
  	std::map<int,Professor*> professors;
 public:
 	DepartmentHead::DepartmentHead(Faculty*);
-	int CalculateProfessorAssessmentSum(Professor*) const;
+	int calculateProfessorAssessmentSum(Professor*) const;
 	std::map<int,Professor*> getDepartmentProfessors(void) const;
 	void setDepartmentProfessors(std::map<int,Professor*>);
 	std::map<Presented_Course*, std::vector<char>> ProfessorAssessment(Professor*) const;
 	void addProfessor(int, std::string, std::string, std::string);
+	void addAdjunctProfessor(int, std::string, std::string, std::string); //sadasdasdasd
+	void addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string);
+	
+	void changeToFacutly(Professor*); //sadasdasdasd
+	void changeToGroupManager(Faculty*); //sadasdasdasd
+	
 	void deleteProfessor(Professor*);
-	void ReadAllDepartmentProfessors(void);
+	void readAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;
 };
 
@@ -98,7 +104,7 @@ protected:
 	std::vector<Presented_Course*> presented_courses;
 public:
 	//active or diactive time conflict
-	//activate prequisit
+	//activate prequisit or co requisit
 	void setCourses(std::vector<Course*>);
 	std::vector<Course*> getCourses(void) const;
 	void setPresentedCourses(std::vector<Presented_Course*>);
