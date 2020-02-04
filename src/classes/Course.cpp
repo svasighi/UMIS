@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "../include/Course.h"
 #include "../include/Student.h"
 
@@ -148,10 +149,10 @@ int Course::getCompleteID() const {
 
 
 Presented_Course::Presented_Course()
-	: term_no(0), group_no(0), course_professor(nullptr), capacity(0) {}
+	: term_no(0), group_no(0), course_professor(nullptr), capacity(0), enrolled_number(0), waiting_number(0) {}
 
 Presented_Course::Presented_Course(Course* course, int _term_no, char _group_no, Professor* _course_professor, int _capacity)
-	: term_no(_term_no), group_no(_group_no), course_professor(_course_professor), capacity(_capacity), Course(*course) {}
+	: term_no(_term_no), group_no(_group_no), course_professor(_course_professor), capacity(_capacity), enrolled_number(0), waiting_number(0), Course(*course) {}
 
 void Presented_Course::setTerm_no(int _term_no) {
 	term_no = _term_no;
@@ -200,9 +201,10 @@ int Presented_Course::getNumberofStudents() const {
 }
 
 int Presented_Course::getNumberofStudentsWithCourseStatus(char _status) const {
+	Presented_Course* course = const_cast<Presented_Course*>(this);
 	int n = 0;
-	for (int i = 0; i < course_students.size(); i++) {
-		if (course_students.at(i)->getStatusofCourse(const_cast<Presented_Course*>(this)) == _status) {
+	for (const auto& student : course_students) {
+		if (student->getStatusofCourse(course) == _status) {
 			n++;
 		}
 	}
@@ -210,11 +212,55 @@ int Presented_Course::getNumberofStudentsWithCourseStatus(char _status) const {
 }
 
 void Presented_Course::setCapacity(int _capacity) {
+	if (_capacity < 0)
+		throw std::invalid_argument("capacity can't be negative");
 	capacity = _capacity;
 }
 
 int Presented_Course::getCapacity() const {
 	return capacity;
+}
+
+void Presented_Course::updateEnrolledAndWaitingNumbers() {
+	int _enrolled_number = 0, _waiting_number = 0;
+	for (const auto& student : course_students) {
+		if (student->getStatusofCourse(this) == MyCourse::enrolled) {
+			_enrolled_number++;
+		}
+		if (student->getStatusofCourse(this) == MyCourse::waiting) {
+			_waiting_number++;
+		}
+	}
+	enrolled_number = _enrolled_number;
+	waiting_number = _waiting_number;
+}
+
+void Presented_Course::setEnrolledNumber(int _enrolled_number) {
+	if (_enrolled_number < 0 || _enrolled_number > capacity)
+		throw std::invalid_argument("enrolled_number must be between 0 and capacity");
+	enrolled_number = _enrolled_number;
+}
+
+void Presented_Course::addEnrolledNumber(int x) {
+	setEnrolledNumber(enrolled_number + x);
+}
+
+int Presented_Course::getEnrolledNumber() const {
+	return enrolled_number;
+}
+
+void Presented_Course::setWaitingNumber(int _waiting_number) {
+	if (_waiting_number < 0)
+		throw std::invalid_argument("waiting_number can't be negative");
+	waiting_number = _waiting_number;
+}
+
+void Presented_Course::addWaitingNumber(int x) {
+	setWaitingNumber(waiting_number + x);
+}
+
+int Presented_Course::getWaitingNumber() const {
+	return waiting_number;
 }
 
 void Presented_Course::setCourseTime(CourseTime _course_time) {
