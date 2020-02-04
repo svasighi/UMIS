@@ -11,12 +11,12 @@ Course::Course(short _department_id, short _group_id, short _course_id, char _cr
 std::map<int, Course*> Course::readAllCourses(void) {
 	std::map<int, Course*> TempCourses;
 
-	//BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
-	//std::vector<Course*> courses = binary_file.FetchAllRecords();
+	BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
+	std::vector<Course*> courses = binary_file.FetchAllRecords();
 
-	//for (int i = 0; i < courses.size(); i++) {
-	//	TempCourses.insert(std::make_pair(courses[i]->getCompleteID(), courses[i]));
-	//}
+	for (int i = 0; i < courses.size(); i++) {
+		TempCourses.insert(std::make_pair(courses[i]->getCompleteID(), courses[i]));
+	}
 	return TempCourses;
 }
 
