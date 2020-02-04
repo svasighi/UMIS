@@ -1,5 +1,5 @@
-#ifndef ENROLLMENTERROE_H
-#define ENROLLMENTERROE_H
+#ifndef ENROLLMENTERROR_H
+#define ENROLLMENTERROR_H
 
 #include <string>
 #include "Course.h"
