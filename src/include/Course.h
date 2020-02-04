@@ -45,11 +45,11 @@ public:
 	std::string getName() const;
 	void setType(char _type);
 	char getType() const;
-	void setPrerequisites(std::vector<Course*> _prerequisites);
+	void setPrerequisites(const std::vector<Course*>& _prerequisites);
 	std::vector<Course*> getPrerequisites() const;
 	void addPrerequisite(Course* course);
 	void removePrerequisite(Course* course);
-	void setCorequisites(std::vector<Course*> _corequisites);
+	void setCorequisites(const std::vector<Course*>& _corequisites);
 	std::vector<Course*> getCorequisites() const;
 	void addCorequisite(Course* course);
 	void removeCorequisite(Course* course);
@@ -81,7 +81,7 @@ public:
 	char getGroup_no() const;
 	void setCourseProfessor(Professor* _course_professor);
 	Professor* getCourseProfessor() const;
-	void setCourseStudents(std::vector<Student*> _course_students);
+	void setCourseStudents(const std::vector<Student*>& _course_students);
 	std::vector<Student*> getCourseStudents() const;
 	void addStudent(Student* student);
 	void removeStudent(Student* student);
@@ -96,14 +96,15 @@ public:
 	void setWaitingNumber(int _waiting_number);
 	void addWaitingNumber(int = 1);
 	int getWaitingNumber() const;
-	void setCourseTime(CourseTime _course_time);
+	void setCourseTime(const CourseTime& _course_time);
 	CourseTime getCourseTime() const;
 	void setCourseLocation(std::string _course_location);
 	std::string getCourseLocation() const;
-	void setFinalExamTime(ExamTime _finalexam_time);
+	void setFinalExamTime(const ExamTime& _finalexam_time);
 	ExamTime getFinalExamTime() const;
 	void setFinalExamLocation(std::string _finalexam_location);
 	std::string getFinalExamLocation() const;
+	bool isSameWith(Presented_Course* course) const;
 };
 
 #endif // COURSE_H
