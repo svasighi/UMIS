@@ -14,7 +14,7 @@ std::map<int, Course*> Course::readAllCourses(void) {
 	std::vector<Course*> courses = binary_file.FetchAllRecords();
 
 	for (int i = 0; i < courses.size(); i++) {
-		TempCourses.insert(std::make_pair(std::stoi(std::to_string(courses[i]->getDepartment_id()) + std::to_string(courses[i]->getGroup_id()) + std::to_string(courses[i]->getCourse_id())), courses[i]));
+		TempCourses.insert(std::make_pair(courses[i]->getCompleteID(), courses[i]));
 	}
 	return TempCourses;
 }
@@ -138,6 +138,10 @@ bool Course::searchSameIDin(const std::vector<Presented_Course*>& v) const {
 		}
 	}
 	return false;
+}
+
+int Course::getCompleteID() const {
+	return std::stoi(std::to_string(department_id) + std::to_string(group_id) + std::to_string(course_id));
 }
 
 
