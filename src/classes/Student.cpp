@@ -64,7 +64,7 @@ std::string MyCourse::getObjectionReplyText() const {
 
 
 MyTerm::MyTerm(int _no)
-	: no(_no), status(0) {}
+	: no(_no), status(MyTerm::created) {}
 
 void MyTerm::setno(int _no) {
 	no = _no;
@@ -90,6 +90,34 @@ Time MyTerm::getEnrollmentBeginTime() const {
 	return enrollment_begin_time;
 }
 
+void MyTerm::setExceptions(std::map<EnrollmentError*, char> _exceptions) {
+	exceptions = _exceptions;
+}
+
+std::map<EnrollmentError*, char> MyTerm::getExceptions() const {
+	return exceptions;
+}
+
+void MyTerm::addException(EnrollmentError* exception) {
+	exceptions[exception] = 0;
+}
+
+void MyTerm::removeException(EnrollmentError* exception) {
+	exceptions.erase(exception);
+}
+
+void MyTerm::setExceptionStatus(EnrollmentError* exception, char _status) {
+	if (exceptions.count(exception) == 0)
+		throw std::invalid_argument("exception not found");
+	exceptions[exception] = _status;
+}
+
+char MyTerm::getExceptionStatus(EnrollmentError* exception) const {
+	if (exceptions.count(exception) == 0)
+		throw std::invalid_argument("exception not found");
+	return exceptions.at(exception);
+}
+
 void MyTerm::setCourses(std::map<Presented_Course*, MyCourse> _courses) {
 	courses = _courses;
 }
@@ -101,7 +129,7 @@ std::map<Presented_Course*, MyCourse> MyTerm::getCourses() const {
 std::vector<Presented_Course*> MyTerm::getCoursesWithoutResult() const {
 	std::vector<Presented_Course*> keys;
 	keys.reserve(courses.size());
-	transform(courses.begin(), courses.end(), std::back_inserter(keys),
+	std::transform(courses.begin(), courses.end(), std::back_inserter(keys),
 		[](const auto& pair) {
 			return pair.first;
 		});
@@ -148,8 +176,22 @@ void MyTerm::removeCourse(Presented_Course* course) {
 	courses.erase(course);
 }
 
-bool MyTerm::hasCourse(Presented_Course* course) const {
-	return courses.count(course);
+bool MyTerm::haveCourse(Course* course) const {
+	for (const auto& c : courses) {
+		if (c.first->haveSameID(course)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool MyTerm::haveCourseWithStatus(Course* course, char _status) const {
+	for (const auto& c : courses) {
+		if (c.first->haveSameID(course) && c.second.getStatus() == _status) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void MyTerm::setCourseProperties(Presented_Course* course, MyCourse properties) {
@@ -210,7 +252,7 @@ void MyTerm::setObjectionReplyTextofCourse(Presented_Course* course, std::string
 
 
 Student::Student()
-	: type(-1), grade(-1.0F), supervisor(nullptr) {}
+	: type(Student::unknown), grade(-1.0F), supervisor(nullptr) {}
 
 Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, char _type, std::string _field)
 	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
@@ -258,7 +300,7 @@ std::map<int, MyTerm> Student::getTerms() const {
 int Student::numberofTermsonProbation() const {
 	int n = 0;
 	for (const auto& x : terms) {
-		if (x.second.getStatus() == 7) {
+		if (x.second.getStatus() == MyTerm::on_probation) {
 			n++;
 		}
 	}
@@ -271,6 +313,95 @@ int Student::numberofAllCreditsWithStatus(char _status) const {
 		n += x.second.numberofCreditsWithStatus(_status);
 	}
 	return n;
+}
+
+bool Student::haveCourse(Course* course) const {
+	for (const auto& t : terms) {
+		for (const auto& c : t.second.getCourses()) {
+			if (c.first->haveSameID(course)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Student::haveCourseWithStatus(Course* course, char _status) const {
+	for (const auto& t : terms) {
+		for (const auto& c : t.second.getCourses()) {
+			if (c.first->haveSameID(course) && c.second.getStatus() == _status) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Student::haveCourseWithStatus(short department_id, short group_id, short course_id, char _status) const {
+	for (const auto& t : terms) {
+		for (const auto& c : t.second.getCourses()) {
+			if (c.first->getCourse_id() == department_id && c.first->getGroup_id() == group_id
+				&& c.first->getDepartment_id() == course_id && c.second.getStatus() == _status) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_no, std::vector<Presented_Course*> courses)
+{
+	std::vector<std::unique_ptr<EnrollmentError>> errors;
+	std::map<EnrollmentError*, char> exceptions = terms[term_no].getExceptions();
+	for (const auto& course : courses)
+	{
+		if (this->haveCourseWithStatus(course, MyCourse::passed)) {
+			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course)));
+		}
+		if (course->getNumberofStudentsWithCourseStatus(MyCourse::enrolled) >= course->getCapacity()) {
+			bool flag = true;
+			//for (const auto& exc : exceptions) {
+				//if (exc.first->getErrorCode() == 6) {
+				//	if (dynamic_cast<FullCapacity*>(exc.first)->getSource()->haveSameID(course) && exc.second == 2) {
+				//		flag = false;
+				//		break;
+				//	}
+				//}
+			//}
+			if (flag) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new FullCapacity(course)));
+			}
+		}
+		for (const auto& preR : course->getPrerequisites()) {
+			if (this->haveCourseWithStatus(preR, MyCourse::passed) == false) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new NotPassedPrerequisite(course, preR)));
+			}
+		}
+		for (const auto& coR : course->getCorequisites()) {
+			if (coR->searchSameIDin(courses) == false && this->getTerm(term_no).haveCourse(coR) == false && this->haveCourseWithStatus(coR, MyCourse::passed) == false) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new NotTakenCorequisite(course, coR)));
+			}
+		}
+		for (const auto& c : courses) {
+			if (c->getCourseTime().haveOverlapWith(course->getCourseTime())) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new CourseTimeOverlap(course, c)));
+			}
+			if (c->getFinalExamTime().haveOverlapWith(course->getFinalExamTime())) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new ExamTimeOverlap(course, c)));
+			}
+		}
+	}
+	return errors;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term_no, std::vector<Presented_Course*> courses) {
+	std::vector<std::unique_ptr<EnrollmentError>> temp = checkEnrollment(term_no, courses);
+	if (temp.empty()) {
+		for (const auto& c : courses) {
+			terms[term_no].addCourse(c, MyCourse::enrolled);
+		}
+	}
+	return temp;
 }
 
 void Student::addTerm(MyTerm term) {
@@ -305,28 +436,24 @@ Time Student::getTermEnrollmentBeginTime(int term_no) const {
 	return terms.at(term_no).getEnrollmentBeginTime();
 }
 
+void Student::addException(int term_no, EnrollmentError* exception) {
+	terms[term_no].addException(exception);
+}
+
+void Student::removeException(int term_no, EnrollmentError* exception) {
+	terms[term_no].removeException(exception);
+}
+
+void Student::setExceptionStatus(int term_no, EnrollmentError* exception, char _status) {
+	terms[term_no].setExceptionStatus(exception, _status);
+}
+
 std::map<Presented_Course*, MyCourse> Student::getTermCourses(int term_no) const {
 	return terms.at(term_no).getCourses();
 }
 
 std::vector<Presented_Course*> Student::getTermCoursesWithoutResult(int term_no) const {
 	return terms.at(term_no).getCoursesWithoutResult();
-}
-
-int Student::numberofCourses(int term_no) const {
-	return terms.at(term_no).numberofCourses();
-}
-
-int Student::numberofCoursesWithStatus(int term_no, char _status) const {
-	return terms.at(term_no).numberofCoursesWithStatus(_status);
-}
-
-int Student::numberofCredits(int term_no) const {
-	return terms.at(term_no).numberofCredits();
-}
-
-int Student::numberofCreditsWithStatus(int term_no, char _status) const {
-	return terms.at(term_no).numberofCreditsWithStatus(_status);
 }
 
 void Student::addCourse(Presented_Course* course, char _status) {
@@ -337,10 +464,6 @@ void Student::addCourse(Presented_Course* course, char _status) {
 void Student::removeCourse(Presented_Course* course) {
 	terms[course->getTerm_no()].removeCourse(course);
 	// course->removeStudent(this);
-}
-
-bool Student::hasCourse(Presented_Course* course) const {
-	return terms.at(course->getTerm_no()).hasCourse(course);
 }
 
 void Student::setCourseProperties(Presented_Course* course, MyCourse properties) {
@@ -408,7 +531,7 @@ std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) con
 }
 
 int Student::computeTuition(int term_no) {
-	if (type == 3)
+	if (type == Student::day)
 		return 0;
 	return terms[term_no].numberofCredits();// * credit_fee[type] + const_tuition;
 }
