@@ -66,6 +66,8 @@ protected:
 	Professor* course_professor;
 	std::vector<Student*> course_students;
 	int capacity;
+	int enrolled_number;
+	int waiting_number;
 	CourseTime course_time;
 	std::string course_location;
 	ExamTime finalexam_time;
@@ -87,6 +89,13 @@ public:
 	int getNumberofStudentsWithCourseStatus(char _status) const;
 	void setCapacity(int _capacity);
 	int getCapacity() const;
+	void updateEnrolledAndWaitingNumbers();
+	void setEnrolledNumber(int _enrolled_number);
+	void addEnrolledNumber(int = 1);
+	int getEnrolledNumber() const;
+	void setWaitingNumber(int _waiting_number);
+	void addWaitingNumber(int = 1);
+	int getWaitingNumber() const;
 	void setCourseTime(CourseTime _course_time);
 	CourseTime getCourseTime() const;
 	void setCourseLocation(std::string _course_location);
