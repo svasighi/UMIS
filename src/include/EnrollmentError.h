@@ -12,7 +12,8 @@ public:
 	short getErrorCode() const;
 	virtual std::string what() const = 0;
 public:
-	static constexpr char passed_before = 1;
+	static constexpr char passed_before = 0;
+	static constexpr char taken_same_course = 1;
 	static constexpr char not_passed_prerequisite = 2;
 	static constexpr char not_taken_corequisite = 3;
 	static constexpr char course_time_overlap = 4;
@@ -26,6 +27,18 @@ public:
 	PassedBefore(Presented_Course* _source = nullptr);
 	void setSource(Presented_Course* _source);
 	Presented_Course* getSource() const;
+	std::string what() const;
+};
+
+class TakenSameCourse : public EnrollmentError {
+	Presented_Course* source;
+	Presented_Course* destination;
+public:
+	TakenSameCourse(Presented_Course* _source = nullptr, Presented_Course* _destination = nullptr);
+	void setSource(Presented_Course* _source);
+	Presented_Course* getSource() const;
+	void setDestination(Presented_Course* _destination);
+	Presented_Course* getDestination() const;
 	std::string what() const;
 };
 
