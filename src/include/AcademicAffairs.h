@@ -1,7 +1,10 @@
 #ifndef ACADEMIC_H
 #define ACADEMIC_H
 
+#include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 #include "User.h"
 #include "Student.h"
 #include "Professor.h"
