@@ -124,7 +124,7 @@ DepartmentHead::DepartmentHead(Faculty* _faculty)
 	departmentcode = _faculty->getDepartmentCode();
 	password = _faculty->getPassword();
 	courses = _faculty->getCourses();
-	supervised_students = _faculty->getSupervisedStudents;
+	supervised_students = _faculty->getSupervisedStudents();
 	is_supervisor = _faculty->getisSupervisor();
 }
 // returns an int <= 5 which shows each professor assessment
