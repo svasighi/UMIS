@@ -38,16 +38,16 @@ public:
 	std::string getObjectionText() const;
 	void setObjectionReplyText(std::string _objection_reply_text);
 	std::string getObjectionReplyText() const;
-	// status:
-	static constexpr char unknown		 = -1;
-	static constexpr char suggested		 = 0; // suggested in preliminary enrollment
-	static constexpr char preliminary	 = 1; // added in preliminary enrollment
-	static constexpr char enrolled		 = 2;
-	static constexpr char waiting		 = 3;
-	static constexpr char notconfirmed	 = 4; // score inserted but not confirmed
-	static constexpr char confirmed		 = 5; // score confirmed by professor
-	static constexpr char passed		 = 6;
-	static constexpr char refused		 = 7;
+	// course status:
+	static constexpr char unknown = -1;
+	static constexpr char suggested = 0; // suggested in preliminary enrollment
+	static constexpr char preliminary = 1; // added in preliminary enrollment
+	static constexpr char enrolled = 2;
+	static constexpr char waiting = 3;
+	static constexpr char notconfirmed = 4; // score inserted but not confirmed
+	static constexpr char confirmed = 5; // score confirmed by professor
+	static constexpr char passed = 6;
+	static constexpr char refused = 7;
 	static constexpr char emergency_drop = 8;
 };
 
@@ -59,21 +59,21 @@ protected:
 	std::map<EnrollmentError*, char> exceptions;
 	std::map<Presented_Course*, MyCourse> courses;
 public:
-	MyTerm(int _no = 0);
+	MyTerm(int _no = 0, char _status = MyTerm::created);
 	void setno(int _no);
 	int getno() const;
 	void setStatus(char _status);
 	char getStatus() const;
 	void setEnrollmentBeginTime(Time _enrollment_begin_time);
 	Time getEnrollmentBeginTime() const;
-
+	// new
 	void setExceptions(std::map<EnrollmentError*, char> _exceptions);
 	std::map<EnrollmentError*, char> getExceptions() const;
 	void addException(EnrollmentError* exception);
 	void removeException(EnrollmentError* exception);
 	void setExceptionStatus(EnrollmentError* exception, char _status);
 	char getExceptionStatus(EnrollmentError* exception) const;
-
+	//
 	void setCourses(std::map<Presented_Course*, MyCourse> _courses);
 	std::map<Presented_Course*, MyCourse> getCourses() const;
 	std::vector<Presented_Course*> getCoursesWithoutResult() const;
@@ -95,13 +95,13 @@ public:
 	void setIsObjectorofCourse(Presented_Course* course, bool is_objector);
 	void setObjectionTextofCourse(Presented_Course* course, std::string objection_text);
 	void setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text);
-	// status:
+	// term status:
 	static constexpr char created = 0;
 	static constexpr char preliminary_enrollment_confirmed_by_student = 1;
 	static constexpr char preliminary_enrollment_rejected_by_professor = -1;
 	static constexpr char preliminary_enrollment_confirmed_by_professor = 2;
 	static constexpr char enrollment_in_action = 3;
-	static constexpr char amendment_in_action = 4; // tarmim
+	static constexpr char amendment_in_action = 4;
 	static constexpr char studying = 5;
 	static constexpr char passed = 6; // passed without probation
 	static constexpr char on_probation = 7;
@@ -122,6 +122,7 @@ public:
 	char getType() const;
 	void setField(std::string _field);
 	std::string getField() const;
+	void updateGrade();
 	void setGrade(float _grade);
 	float getGrade() const;
 	void setSupervisor(Faculty* _supervisor);
@@ -138,14 +139,14 @@ public:
 	int computeTuition(int term_no);
 	// term functions:
 	void addTerm(MyTerm term);
-	void addTerm(int term_no);
+	void addTerm(int term_no, char _status = MyTerm::created);
 	void setTerm(int term_no, MyTerm term);
 	MyTerm getTerm(int term_no) const;
 	void setTermStatus(int term_no, char _status);
 	char getTermStatus(int term_no) const;
 	void setTermEnrollmentBeginTime(int term_no, Time enrollment_begin_time);
 	Time getTermEnrollmentBeginTime(int term_no) const;
-	//
+	// new
 	void addException(int term_no, EnrollmentError* exception);
 	void removeException(int term_no, EnrollmentError* exception);
 	void setExceptionStatus(int term_no, EnrollmentError* exception, char _status);
@@ -171,12 +172,12 @@ public:
 	std::string getObjectionTextofCourse(Presented_Course* course) const;
 	void setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text);
 	std::string getObjectionReplyTextofCourse(Presented_Course* course) const;
-	// type:
-	static constexpr char unknown		= -1;
-	static constexpr char guest		= 0;
-	static constexpr char transitional	= 1;
-	static constexpr char night		= 2;
-	static constexpr char day		= 3;
+	// student type:
+	static constexpr char unknown = -1;
+	static constexpr char guest = 0;
+	static constexpr char transitional = 1;
+	static constexpr char night = 2;
+	static constexpr char day = 3;
 };
 
 #endif // STUDENT_H
