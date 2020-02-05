@@ -10,14 +10,14 @@ short EnrollmentError::getErrorCode() const {
 
 
 
-PassedBefore::PassedBefore(Presented_Course* _source)
+PassedBefore::PassedBefore(Course* _source)
 	: source(_source), EnrollmentError(EnrollmentError::passed_before) {}
 
-void PassedBefore::setSource(Presented_Course* _source) {
+void PassedBefore::setSource(Course* _source) {
 	source = _source;
 }
 
-Presented_Course* PassedBefore::getSource() const {
+Course* PassedBefore::getSource() const {
 	return source;
 }
 
