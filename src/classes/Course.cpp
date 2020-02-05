@@ -132,15 +132,6 @@ bool Course::searchSameIDin(const std::vector<Course*>& v) const {
 	return false;
 }
 
-bool Course::searchSameIDin(const std::vector<Presented_Course*>& v) const {
-	for (const auto& c : v) {
-		if (this->haveSameID(c)) {
-			return true;
-		}
-	}
-	return false;
-}
-
 int Course::getCompleteID() const {
 	return std::stoi(std::to_string(department_id) + std::to_string(group_id) + std::to_string(course_id));
 }
@@ -231,8 +222,13 @@ void Presented_Course::updateEnrolledAndWaitingNumbers() {
 			_waiting_number++;
 		}
 	}
+
 	enrolled_number = _enrolled_number;
 	waiting_number = _waiting_number;
+
+	if (capacity < enrolled_number) {
+		capacity = enrolled_number;
+	}
 }
 
 void Presented_Course::setEnrolledNumber(int _enrolled_number) {
@@ -242,7 +238,12 @@ void Presented_Course::setEnrolledNumber(int _enrolled_number) {
 }
 
 void Presented_Course::addEnrolledNumber(int x) {
-	setEnrolledNumber(enrolled_number + x);
+	enrolled_number += x;
+	if (enrolled_number < 0)
+		throw std::invalid_argument("enrolled_number can't be negative");
+	if (capacity < enrolled_number) {
+		capacity = enrolled_number;
+	}
 }
 
 int Presented_Course::getEnrolledNumber() const {
@@ -297,7 +298,7 @@ std::string Presented_Course::getFinalExamLocation() const {
 
 bool Presented_Course::isSameWith(Presented_Course* course) const {
 	if (this->course_id == course->course_id && this->group_id == course->group_id && this->department_id == course->department_id
-		&& this->term_no == course->term_no && this->group_no == course->term_no) {
+		&& this->term_no == course->term_no && this->group_no == course->group_no) {
 		return true;
 	}
 	return false;
