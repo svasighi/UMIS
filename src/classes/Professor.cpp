@@ -193,7 +193,7 @@ void DepartmentHead::addProfessor(int _username, std::string _password, std::str
 void DepartmentHead::deleteProfessor(Professor* _professor) {
 	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	binary_file.DeleteRecord(*_professor);
-	professors.erase(find(professors.begin(), professors.end(), _professor));
+	professors.erase(_professor->getUserName());
 }
 	std::vector<Professor*> getDepartmentProfessors(void);
 	void getDepartmentProfessors(std::vector<Professor*>);
