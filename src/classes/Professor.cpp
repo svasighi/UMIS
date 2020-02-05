@@ -76,7 +76,7 @@ std::map<int,Presented_Course*> GroupManager::getGroupCourses(){
 void GroupManager::setGroupCourses(std::map<int,Presented_Course*> _group_courses){
 	group_courses = _group_courses;
 }
-void GroupManager::createGroupCourse(int _course_id ,std::string _name, int _credit, int _type, int _term_no, Professor* _course_professor, int _capacity , std::vector<Course*> prerequisites, std::vector<Course*> corequisites){
+void GroupManager::createGroupCourse(int _course_id ,std::string _name, int _credit, int _type, int _term_no, int _group_no, Professor* _course_professor, int _capacity , std::vector<Course*> prerequisites, std::vector<Course*> corequisites){
 	
 	Course* temp_course = nullptr;
 	Presented_Course* temp_presented_course = nullptr;
@@ -95,7 +95,7 @@ void GroupManager::createGroupCourse(int _course_id ,std::string _name, int _cre
 		temp_course->setCorequisites(corequisites);
 		temp_course->setPrerequisites(prerequisites);
 	}else{
-		Presented_Course* temp_presented_course = new Presented_Course(temp_course,_term_no,_course_professor,_capacity);
+		Presented_Course* temp_presented_course = new Presented_Course(temp_course,_term_no, _group_no,_course_professor,_capacity);
 		group_courses.insert(std::make_pair(std::stoi(std::to_string(temp_presented_course->getDepartment_id()) + std::to_string(temp_presented_course->getGroup_id()) + std::to_string(temp_presented_course->getCourse_id())) , temp_presented_course));
 	}
 }
