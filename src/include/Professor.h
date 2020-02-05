@@ -30,7 +30,9 @@ public:
 };
 
 // .............................AdjunctProfessor......................................
-class AdjunctProfessor : public Professor { 
+class AdjunctProfessor : public Professor {
+public:
+	AdjunctProfessor() {}
 	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
 		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
 };
@@ -43,7 +45,8 @@ protected:
 	std::vector<Student*> supervised_students;
 public:
 	Faculty() {} //default constructor
-	
+	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, int _degree)
+		: degree(_degree), User(_username, _password, _firstname, _lastname, _departmentcode) {}
 	void setDegree(int _degree);
 	int getDegree(void) const;
 	void setAsSupervisor(void);
@@ -60,7 +63,7 @@ class GroupManager : public Faculty {
 	//PreEnrollment_Stats
 	std::map<int,Presented_Course*> group_courses;
 public:
-	GroupManager(){}
+	GroupManager() {}
 	std::map<int,Presented_Course*> getGroupCourses();
 	void setGroupCourses(std::map<int,Presented_Course*>);
 	void createGroupCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);
@@ -73,7 +76,7 @@ public:
 class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
 
 public:
-	DepartmentAcademicAssistant(){};
+	DepartmentAcademicAssistant() {}
 };
 
 // .............................DepartmentHead......................................
