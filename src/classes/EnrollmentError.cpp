@@ -22,7 +22,33 @@ Presented_Course* PassedBefore::getSource() const {
 }
 
 std::string PassedBefore::what() const {
-	return "Error #" + std::to_string(errorcode) + " : Course number " + std::to_string(source->getCompleteID()) + " passed before";
+	return "Error #" + std::to_string(errorcode) + " : course number " + std::to_string(source->getCompleteID()) + " passed before";
+}
+
+
+
+
+TakenSameCourse::TakenSameCourse(Presented_Course* _source, Presented_Course* _destination)
+	: source(_source), destination(_destination), EnrollmentError(EnrollmentError::taken_same_course) {}
+
+void TakenSameCourse::setSource(Presented_Course* _source) {
+	source = _source;
+}
+
+Presented_Course* TakenSameCourse::getSource() const {
+	return source;
+}
+
+void TakenSameCourse::setDestination(Presented_Course* _destination) {
+	destination = _destination;
+}
+
+Presented_Course* TakenSameCourse::getDestination() const {
+	return destination;
+}
+
+std::string TakenSameCourse::what() const {
+	return "Error #" + std::to_string(errorcode) + " : course number " + std::to_string(source->getCompleteID()) + "  is same as course number " + std::to_string(destination->getCompleteID());
 }
 
 
@@ -48,7 +74,7 @@ Course* NotPassedPrerequisite::getDestination() const {
 }
 
 std::string NotPassedPrerequisite::what() const {
-	return "Error #" + std::to_string(errorcode) + " : Not passing prerequisite course with number " + std::to_string(destination->getCompleteID()) + " for course number " + std::to_string(source->getCompleteID());
+	return "Error #" + std::to_string(errorcode) + " : not passing prerequisite course with number " + std::to_string(destination->getCompleteID()) + " for course number " + std::to_string(source->getCompleteID());
 }
 
 
@@ -74,7 +100,7 @@ Course* NotTakenCorequisite::getDestination() const {
 }
 
 std::string NotTakenCorequisite::what() const {
-	return "Error #" + std::to_string(errorcode) + " : Not passing or taking corequisite course with number " + std::to_string(destination->getCompleteID()) + " for course number " + std::to_string(source->getCompleteID());
+	return "Error #" + std::to_string(errorcode) + " : not passing or taking corequisite course with number " + std::to_string(destination->getCompleteID()) + " for course number " + std::to_string(source->getCompleteID());
 }
 
 
@@ -100,7 +126,7 @@ Presented_Course* CourseTimeOverlap::getDestination() const {
 }
 
 std::string CourseTimeOverlap::what() const {
-	return "Error #" + std::to_string(errorcode) + " : Course number " + std::to_string(source->getCompleteID()) + " has presentation time overlap with course number " + std::to_string(destination->getCompleteID());
+	return "Error #" + std::to_string(errorcode) + " : course number " + std::to_string(source->getCompleteID()) + " has presentation time overlap with course number " + std::to_string(destination->getCompleteID());
 }
 
 
@@ -144,7 +170,7 @@ Presented_Course* FullCapacity::getSource() const {
 }
 
 std::string FullCapacity::what() const {
-	return "Error #" + std::to_string(errorcode) + " : Course number " + std::to_string(source->getCompleteID()) + " has full capacity";
+	return "Error #" + std::to_string(errorcode) + " : course number " + std::to_string(source->getCompleteID()) + " has full capacity";
 }
 
 
