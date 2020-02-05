@@ -80,7 +80,7 @@ public:
 class DepartmentHead : public Faculty {
  	std::map<int,Professor*> professors;
 public:
-	DepartmentHead::DepartmentHead(Faculty*);
+	DepartmentHead(Faculty*);
 	int calculateProfessorAssessmentSum(Professor*) const;
 	std::map<int,Professor*> getDepartmentProfessors(void) const;
 	void setDepartmentProfessors(std::map<int,Professor*>);
