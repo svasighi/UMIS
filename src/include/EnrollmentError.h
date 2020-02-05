@@ -22,11 +22,11 @@ public:
 };
 
 class PassedBefore : public EnrollmentError {
-	Presented_Course* source;
+	Course* source;
 public:
-	PassedBefore(Presented_Course* _source = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
+	PassedBefore(Course* _source = nullptr);
+	void setSource(Course* _source);
+	Course* getSource() const;
 	std::string what() const;
 };
 
