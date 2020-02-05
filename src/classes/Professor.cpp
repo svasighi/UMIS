@@ -30,7 +30,7 @@ std::string Professor::viewObjectonReply(Student* _student,Presented_Course* _co
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
 	
 	for (int i = 0; i < professors.size(); i++) {
-		TempProfessors.insert(std::pair(professors[i]->getUserName(),professors[i]));
+		TempProfessors.insert(std::make_pair(professors[i]->getUserName(),professors[i]));
 	}
 	return TempProfessors;	
 }
@@ -167,15 +167,15 @@ std::map<Presented_Course*, std::vector<char>> DepartmentHead::ProfessorAssessme
 				if (j == (students.size() - 1))
 					assessment_sum[k] /= assessment_temp.size();
 			}
-			assessments.insert(std::pair<Presented_Course*, std::vector<char>>(courses[i], assessment_sum));
+			assessments.insert(std::make_pair<Presented_Course*, std::vector<char>>(courses[i], assessment_sum));
 		}
 	 }
 }
-void DepartmentHead::addAdjunctProfessor(int, std::string, std::string, std::string){
+void DepartmentHead::addAdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname){
 	Professor * professor = new AdjunctProfessor(_username, _password, _firstname, _lastname, this->departmentcode);
 	BinaryFile<Professor> binary_file((char*) "../storage/AdjunctProfessors.dat");
 	binary_file.AddRecord(*professor);
-	professors.insert(std::pair(professor->getUserName(),professor));
+	professors.insert(std::make_pair(professor->getUserName(),professor));
 }
 void DepartmentHead::addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string){}
 
@@ -186,7 +186,7 @@ void DepartmentHead::addProfessor(int _username, std::string _password, std::str
 	Professor * professor = new Professor(_username, _password, _firstname, _lastname, this->departmentcode);
 	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
 	binary_file.AddRecord(*professor);
-	professors.insert(std::pair(professor->getUserName(),professor));
+	professors.insert(std::make_pair(professor->getUserName(),professor));
 }
 
 void DepartmentHead::deleteProfessor(Professor* _professor) {
@@ -203,7 +203,7 @@ void DepartmentHead::readAllDepartmentProfessors() {
 	std::vector<Professor*> professors = binary_file.FetchAllRecords();
 	for (int i = 0; i < professors.size(); i++) {
 		if (professors[i]->getDepartmentCode() == departmentcode && professors[i]->getUserName() != username )
-			department_professors.insert(std::pair(professors[i]->getUserName(),professors[i]));
+			department_professors.insert(std::make_pair(professors[i]->getUserName(),professors[i]));
 	}
 	setDepartmentProfessors(department_professors);
 }
