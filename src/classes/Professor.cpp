@@ -129,12 +129,12 @@ DepartmentHead::DepartmentHead(Faculty* _faculty)
 }
 // returns an int <= 5 which shows each professor assessment
 int DepartmentHead::calculateProfessorAssessmentSum(Professor* _professor) const {
-	std::vector<Presented_Course*> courses = _professor->getCourses();
+	std::vector<Presented_Course*> _courses = _professor->getCourses();
 	int students_count = 0 , assessments_sum;
-	 for (int i = 0; i < courses.size(); i++) {
-		std::vector<Student*> students = courses[i]->getCourseStudents();
+	 for (int i = 0; i < _courses.size(); i++) {
+		std::vector<Student*> students = _courses[i]->getCourseStudents();
 		for (int j = 0 ; j < students.size(); j++) {
-			std::vector<char> assessment = students[j]->getAssessmentAnswersofCourse(courses[i]);
+			std::vector<char> assessment = students[j]->getAssessmentAnswersofCourse(_courses[i]);
 			int temp = 0;
 			for (int k = 0; k < assessment.size(); k++)
 				temp += assessment[k];
@@ -154,22 +154,23 @@ void DepartmentHead::setDepartmentProfessors(std::map<int,Professor*> _professor
 }
 
 std::map<Presented_Course*, std::vector<char>> DepartmentHead::ProfessorAssessment(Professor* _professor) const {
-	std::vector<Presented_Course*> courses = _professor->getCourses();
+	std::vector<Presented_Course*> _courses = _professor->getCourses();
 	std::map<Presented_Course*, std::vector<char>> assessments;
 	 for (int i = 0; i < courses.size(); i++) {
-		std::vector<Student*> students = courses[i]->getCourseStudents();
+		std::vector<Student*> students = _courses[i]->getCourseStudents();
 		
 		for (int j = 0; j < students.size(); j++) {
 			std::vector<char> assessment_sum;
-			std::vector<char> assessment_temp = students[j]->getAssessmentAnswersofCourse(courses[i]);
+			std::vector<char> assessment_temp = students[j]->getAssessmentAnswersofCourse(_courses[i]);
 			for (int k = 0; k < assessment_temp.size(); k++) {
 				assessment_sum[k] += assessment_temp[k];
 				if (j == (students.size() - 1))
 					assessment_sum[k] /= assessment_temp.size();
 			}
-			assessments.insert(std::make_pair<Presented_Course*, std::vector<char>>(courses[i], assessment_sum));
+			assessments.insert(std::make_pair<Presented_Course*, std::vector<char>>(_courses[i], assessment_sum));
 		}
 	 }
+	return assessments;
 }
 void DepartmentHead::addAdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname){
 	Professor * professor = new AdjunctProfessor(_username, _password, _firstname, _lastname, this->departmentcode);
