@@ -26,7 +26,7 @@ public:
 	void replyToObjecton(Student*, Presented_Course*, std::string);
 	std::string viewObjectonReply(Student*, Presented_Course*) const;
 	static std::map<int,Professor*> readAllProfessors(void);
-	void changePassword(std::string current_pass, std::string new_pass); //forward definition
+	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
 
 // .............................AdjunctProfessor......................................
@@ -66,7 +66,7 @@ public:
 	GroupManager() {}
 	std::map<int,Presented_Course*> getGroupCourses();
 	void setGroupCourses(std::map<int,Presented_Course*>);
-	void createGroupCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);
+	void createGroupCourse(int ,std::string ,int ,int ,int ,int, Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);
 	void deleteGroupCourse(Presented_Course*);
 	void updateGroupCourse(Presented_Course*);
 
