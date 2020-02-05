@@ -10,7 +10,6 @@
 
 class Professor;
 class Student;
-class Presented_Course;
 
 class Course {
 protected:
@@ -55,7 +54,6 @@ public:
 	void removeCorequisite(Course* course);
 	bool haveSameID(Course* course) const;
 	bool searchSameIDin(const std::vector<Course*>&) const;
-	bool searchSameIDin(const std::vector<Presented_Course*>&) const;
 	int getCompleteID() const;
 };
 
