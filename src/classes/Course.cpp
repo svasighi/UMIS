@@ -214,6 +214,12 @@ int Presented_Course::getNumberofStudentsWithCourseStatus(char _status) const {
 void Presented_Course::setCapacity(int _capacity) {
 	if (_capacity < 0)
 		throw std::invalid_argument("capacity can't be negative");
+	if (_capacity > capacity) {
+		enrollFirstStudentWaiting(_capacity - capacity);
+	}
+	else if (_capacity < capacity) {
+		removeLastStudentEnrolled(capacity - _capacity);
+	}
 	capacity = _capacity;
 }
 
@@ -241,18 +247,16 @@ void Presented_Course::updateEnrolledAndWaitingNumbers() {
 }
 
 void Presented_Course::setEnrolledNumber(int _enrolled_number) {
-	if (_enrolled_number < 0 || _enrolled_number > capacity)
-		throw std::invalid_argument("enrolled_number must be between 0 and capacity");
-	enrolled_number = _enrolled_number;
-}
-
-void Presented_Course::addEnrolledNumber(int x) {
-	enrolled_number += x;
-	if (enrolled_number < 0)
+	if (_enrolled_number < 0)
 		throw std::invalid_argument("enrolled_number can't be negative");
+	enrolled_number = _enrolled_number;
 	if (capacity < enrolled_number) {
 		capacity = enrolled_number;
 	}
+}
+
+void Presented_Course::addEnrolledNumber(int x) {
+	setEnrolledNumber(enrolled_number + x);
 }
 
 int Presented_Course::getEnrolledNumber() const {
@@ -271,6 +275,39 @@ void Presented_Course::addWaitingNumber(int x) {
 
 int Presented_Course::getWaitingNumber() const {
 	return waiting_number;
+}
+
+void Presented_Course::enrollFirstStudentWaiting(int n) {
+	int i = 0;
+	for (auto stu = course_students.begin(); stu != course_students.end() && i < n && waiting_number > 0; stu++) {
+		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::waiting) {
+			(*stu)->setStatusofCourse(this, MyCourse::enrolled);
+			addEnrolledNumber();
+			addWaitingNumber(-1);
+			i++;
+		}
+	}
+}
+
+void Presented_Course::removeLastStudentEnrolled(int n) {
+	int i = 0;
+	for (auto stu = course_students.end() - 1; stu >= course_students.begin() && i < n && enrolled_number > 0; stu--) {
+		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::enrolled) {
+			(*stu)->setStatusofCourse(this, MyCourse::waiting);
+			addEnrolledNumber(-1);
+			addWaitingNumber();
+			i++;
+		}
+	}
+}
+
+void Presented_Course::removeAllWaitingStudents() {
+	for (auto stu = course_students.begin(); stu != course_students.end(); stu++) {
+		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::waiting) {
+			course_students.erase(stu);
+		}
+	}
+	waiting_number = 0;
 }
 
 void Presented_Course::setCourseTime(const CourseTime& _course_time) {
