@@ -3,9 +3,6 @@
 
 std::vector<std::string> Date::monthName = { "Farvardin","Ordibehesht","Khordad","Tir","Mordad","Shahrivar","Mehr","Aban","Azar","Dey","Bahman","Esfand" };
 
-Date::Date()
-	: year(1300), month(1), day(1) {}
-
 Date::Date(int _year, int _month, int _day) {
 	setDate(_year, _month, _day);
 }
@@ -358,7 +355,7 @@ TimePeriod::TimePeriod(const Time& _start, const Time& _finish) {
 }
 
 void TimePeriod::setPeriod(const Time& _start, const Time& _finish) {
-	if (start > finish)
+	if (_start > _finish)
 		throw std::invalid_argument("start must be less than finish");
 	start = _start;
 	finish = _finish;
@@ -379,6 +376,13 @@ bool TimePeriod::haveOverlapWith(const TimePeriod& right) const {
 	return false;
 }
 
+bool TimePeriod::operator==(const TimePeriod& right) const {
+	if (this->start == right.start && this->finish == right.finish) {
+		return true;
+	}
+	return false;
+}
+
 
 
 
@@ -386,29 +390,67 @@ std::vector<std::string> CourseTime::weekdayName = { "Saturday","Sunday","Monday
 
 CourseTime::CourseTime() {}
 
-CourseTime::CourseTime(const std::vector<char>& _wday, const TimePeriod& _time)
-	: wday(_wday), time(_time) {}
-
-void CourseTime::setDay(const std::vector<char>& _wday) {
-	wday = _wday;
+CourseTime::CourseTime(const std::multimap<char, TimePeriod>& _times) {
+	setTimes(_times);
 }
 
-std::vector<char> CourseTime::getDay() const {
-	return wday;
+CourseTime::CourseTime(const std::set<char>& days, const Time& start, const Time& finish) {
+	for (const auto& day : days) {
+		times.insert(std::make_pair(day, TimePeriod(start, finish)));
+	}
 }
 
-void CourseTime::setTime(const TimePeriod& _time) {
-	time = _time;
+void CourseTime::setTimes(const std::multimap<char, TimePeriod>& _times) {
+	for (auto it1 = _times.begin(); it1 != _times.end(); it1++) {
+		for (auto it2 = std::next(it1, 1); it2 != _times.end(); it2++) {
+			if (it1->first == it2->first && it1->second.haveOverlapWith(it2->second)) {
+				throw std::invalid_argument("your input times have overlap");
+			}
+		}
+	}
+	times = _times;
 }
 
-TimePeriod CourseTime::getTime() const {
-	return time;
+std::multimap<char, TimePeriod> CourseTime::getTimes() const {
+	return times;
+}
+
+void CourseTime::addTime(char day, const TimePeriod& time) {
+	for (auto it = times.begin(); it != times.end(); it++) {
+		if (day == it->first && time.haveOverlapWith(it->second)) {
+			throw std::invalid_argument("your input time has overlap with one of the previous times");
+		}
+	}
+	times.insert(std::make_pair(day, time));
+}
+
+void CourseTime::addTime(char day, const Time& start, const Time& finish) {
+	addTime(day, TimePeriod(start, finish));
+}
+
+void CourseTime::removeTime(char day, const TimePeriod& time) {
+	auto iterpair = times.equal_range(day);
+	for (auto it = iterpair.first; it != iterpair.second; it++) {
+		if (it->second == time) {
+			times.erase(it);
+			break;
+		}
+	}
+}
+
+void CourseTime::removeDay(char day) {
+	if (times.count(day) != 0) {
+		times.erase(day);
+	}
 }
 
 bool CourseTime::haveOverlapWith(const CourseTime& right) const {
-	if (std::find_first_of(right.wday.begin(), right.wday.end(), this->wday.begin(), this->wday.end()) != right.wday.end()
-		&& right.time.haveOverlapWith(this->time)) {
-		return true;
+	for (const auto& t1 : this->times) {
+		for (const auto& t2 : right.times) {
+			if (t1.first == t2.first && t1.second.haveOverlapWith(t2.second)) {
+				return true;
+			}
+		}
 	}
 	return false;
 }
@@ -421,6 +463,9 @@ ExamTime::ExamTime() {}
 ExamTime::ExamTime(const Date& _date, const TimePeriod& _time)
 	: date(_date), time(_time) {}
 
+ExamTime::ExamTime(const Date& _date, const Time& _start, const Time& _finish)
+	: date(_date), time(TimePeriod(_start, _finish)) {}
+
 void ExamTime::setDate(const Date& _date) {
 	date = _date;
 }
@@ -431,6 +476,10 @@ Date ExamTime::getDate() const {
 
 void ExamTime::setTime(const TimePeriod& _time) {
 	time = _time;
+}
+
+void ExamTime::setTime(const Time& _start, const Time& _finish) {
+	time = TimePeriod(_start, _finish);
 }
 
 TimePeriod ExamTime::getTime() const {
