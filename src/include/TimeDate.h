@@ -4,16 +4,14 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include <algorithm>
 
 class Date {
 protected:
 	int year, month, day;
-private:
-	static std::vector<std::string> monthName;
 public:
-	Date();
-	Date(int _year, int _month, int _day);
+	Date(int _year = 1300, int _month = 1, int _day = 1);
 	void setDate(int _year, int _month, int _day);
 	std::string getDate(int mode) const;
 	int getYear() const;
@@ -25,6 +23,8 @@ public:
 	bool operator!=(const Date&) const;
 	bool operator>=(const Date&) const;
 	bool operator<=(const Date&) const;
+private:
+	static std::vector<std::string> monthName;
 };
 
 class Time {
@@ -78,22 +78,25 @@ public:
 	Time getStart() const;
 	Time getFinish() const;
 	bool haveOverlapWith(const TimePeriod&) const;
+	bool operator==(const TimePeriod&) const;
 };
 
 class CourseTime {
 protected:
-	std::vector<char> wday;
-	TimePeriod time;
-private:
-	static std::vector<std::string> weekdayName;
+	std::multimap<char, TimePeriod> times;
 public:
 	CourseTime();
-	CourseTime(const std::vector<char>& _wday, const TimePeriod& _time);
-	void setDay(const std::vector<char>& _wday);
-	std::vector<char> getDay() const;
-	void setTime(const TimePeriod& _time);
-	TimePeriod getTime() const;
+	CourseTime(const std::multimap<char, TimePeriod>& _times);
+	CourseTime(const std::set<char>& days, const Time& start, const Time& finish);
+	void setTimes(const std::multimap<char, TimePeriod>& _times);
+	std::multimap<char, TimePeriod> getTimes() const;
+	void addTime(char day, const TimePeriod& time);
+	void addTime(char day, const Time& start, const Time& finish);
+	void removeTime(char day, const TimePeriod& time);
+	void removeDay(char day);
 	bool haveOverlapWith(const CourseTime&) const;
+private:
+	static std::vector<std::string> weekdayName;
 };
 
 class ExamTime {
@@ -103,9 +106,11 @@ protected:
 public:
 	ExamTime();
 	ExamTime(const Date& _date, const TimePeriod& _time);
+	ExamTime(const Date& _date, const Time& _start, const Time& _finish);
 	void setDate(const Date& _date);
 	Date getDate() const;
 	void setTime(const TimePeriod& _time);
+	void setTime(const Time& _start, const Time& _finish);
 	TimePeriod getTime() const;
 	bool haveOverlapWith(const ExamTime&) const;
 };
