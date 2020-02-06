@@ -619,8 +619,7 @@ std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_
 			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course.first)));
 		}
 
-		if (course.first->getEnrolledNumber() >= course.first->getCapacity() &&
-			(course.second == ENROLL || (course.second == NOCHNG && prestatus == MyCourse::enrolled))) {
+		if (course.first->getEnrolledNumber() >= course.first->getCapacity() && course.second == ENROLL) {
 			if (FullCapacity::haveExceptionWithStatus(exceptions, course.first, 2) == false) {
 				errors.push_back(std::unique_ptr<EnrollmentError>(new FullCapacity(course.first)));
 			}
@@ -705,15 +704,7 @@ std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term
 				c.first->removeStudent(this);
 				if (prestatus == MyCourse::enrolled) {
 					c.first->addEnrolledNumber(-1);
-					// go and enroll the first student waiting
-					for (const auto& stu : c.first->getCourseStudents()) {
-						if (stu->terms.at(term_no).getCourseProperties(c.first).getStatus() == MyCourse::waiting) {
-							stu->terms[term_no].setStatusofCourse(c.first, MyCourse::enrolled);
-							c.first->addEnrolledNumber();
-							c.first->addWaitingNumber(-1);
-							break;
-						}
-					}
+					c.first->enrollFirstStudentWaiting();
 				}
 				else if (prestatus == MyCourse::waiting) {
 					c.first->addWaitingNumber(-1);
