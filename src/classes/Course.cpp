@@ -89,7 +89,10 @@ void Course::addPrerequisite(Course* course) {
 }
 
 void Course::removePrerequisite(Course* course) {
-	prerequisites.erase(std::find(prerequisites.begin(), prerequisites.end(), course));
+	std::vector<Course*>::iterator position = std::find(prerequisites.begin(), prerequisites.end(), course);
+	if (position != prerequisites.end()) {
+		prerequisites.erase(position);
+	}
 }
 
 void Course::setCorequisites(const std::vector<Course*>& _corequisites) {
@@ -113,7 +116,10 @@ void Course::addCorequisite(Course* course) {
 }
 
 void Course::removeCorequisite(Course* course) {
-	corequisites.erase(std::find(corequisites.begin(), corequisites.end(), course));
+	std::vector<Course*>::iterator position = std::find(corequisites.begin(), corequisites.end(), course);
+	if (position != corequisites.end()) {
+		corequisites.erase(position);
+	}
 }
 
 bool Course::haveSameID(Course* course) const {
@@ -184,7 +190,10 @@ void Presented_Course::addStudent(Student* student) {
 }
 
 void Presented_Course::removeStudent(Student* student) {
-	course_students.erase(std::find(course_students.begin(), course_students.end(), student));
+	std::vector<Student*>::iterator position = std::find(course_students.begin(), course_students.end(), student);
+	if (position != course_students.end()) {
+		course_students.erase(position);
+	}
 }
 
 int Presented_Course::getNumberofStudents() const {
