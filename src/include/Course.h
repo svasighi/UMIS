@@ -94,6 +94,9 @@ public:
 	void setWaitingNumber(int _waiting_number);
 	void addWaitingNumber(int = 1);
 	int getWaitingNumber() const;
+	void enrollFirstStudentWaiting(int = 1);
+	void removeLastStudentEnrolled(int = 1);
+	void removeAllWaitingStudents();
 	void setCourseTime(const CourseTime& _course_time);
 	CourseTime getCourseTime() const;
 	void setCourseLocation(std::string _course_location);
