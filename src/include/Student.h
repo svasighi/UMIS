@@ -11,6 +11,7 @@
 #include "TimeDate.h"
 #include "EnrollmentError.h"
 
+#define NOCHNG 0
 #define ENROLL 1
 #define WAIT   2
 #define REMOVE 3
@@ -44,14 +45,13 @@ public:
 	std::string getObjectionReplyText() const;
 	// course status:
 	static constexpr char unknown = 0;
-	static constexpr char preliminary = 1; // added in preliminary enrollment
-	static constexpr char enrolled = 2;
-	static constexpr char waiting = 3;
-	static constexpr char notconfirmed = 4; // score inserted but not confirmed
-	static constexpr char confirmed = 5; // score confirmed by professor
-	static constexpr char passed = 6;
-	static constexpr char refused = 7;
-	static constexpr char emergency_drop = 8;
+	static constexpr char enrolled = 1;
+	static constexpr char waiting = 2;
+	static constexpr char notconfirmed = 3; // score inserted but not confirmed
+	static constexpr char confirmed = 4; // score confirmed by professor
+	static constexpr char passed = 5;
+	static constexpr char refused = 6;
+	static constexpr char emergency_drop = 7;
 };
 
 class MyTerm {
@@ -70,14 +70,12 @@ public:
 	char getStatus() const;
 	void setEnrollmentBeginTime(Time _enrollment_begin_time);
 	Time getEnrollmentBeginTime() const;
-	// new
 	void setExceptions(std::map<EnrollmentError*, char> _exceptions);
 	std::map<EnrollmentError*, char> getExceptions() const;
 	void addException(EnrollmentError* exception);
 	void removeException(EnrollmentError* exception);
 	void setExceptionStatus(EnrollmentError* exception, char _status);
 	char getExceptionStatus(EnrollmentError* exception) const;
-	//
 	void setPreliminaryCourses(const std::vector<Course*>& _preliminary_courses);
 	std::vector<Course*> getPreliminaryCourses() const;
 	void addPreliminaryCourse(Course* course);
@@ -90,7 +88,7 @@ public:
 	int numberofCredits() const;
 	int numberofCreditsWithStatus(char _status) const;
 	// course functions:
-	void addCourse(Presented_Course* course, char _status = -1);
+	void addCourse(Presented_Course* course, char _status = MyCourse::unknown);
 	void removeCourse(Presented_Course* course);
 	bool haveCourse(Course* course) const;
 	bool haveCourseWithStatus(Course* course, char _status) const;
@@ -144,27 +142,25 @@ public:
 	bool haveCourseWithStatus(Course* course, char _status) const;
 	bool haveCourseWithStatus(short department_id, short group_id, short course_id, char _status) const;
 	// 1 for enroll , 2 for wait, 3 for remove
-	std::vector<std::unique_ptr<EnrollmentError>> checkEnrollment(int term_no, const std::map<Presented_Course*, char>& enroll_courses);  // Enrollment
-	std::vector<std::unique_ptr<EnrollmentError>> commitEnrollment(int term_no, const std::map<Presented_Course*, char>& enroll_courses); // Enrollment
-	std::vector<std::unique_ptr<EnrollmentError>> checkPreliminaryEnrollment(int term_no, const std::vector<Course*>& preliminary_courses);
-	std::vector<std::unique_ptr<EnrollmentError>> commitPreliminaryEnrollment(int term_no, const std::vector<Course*>& preliminary_courses);
+	std::vector<std::unique_ptr<EnrollmentError>> checkEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses);  // Enrollment
+	std::vector<std::unique_ptr<EnrollmentError>> commitEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses); // Enrollment
+	std::vector<std::unique_ptr<EnrollmentError>> checkPreliminaryEnrollment(int term_no, const std::map<Course*, bool>& preliminary_courses);
+	std::vector<std::unique_ptr<EnrollmentError>> commitPreliminaryEnrollment(int term_no, const std::map<Course*, bool>& preliminary_courses);
 	int computeTuition(int term_no);
 	// term functions:
 	void addTerm(MyTerm term);
 	void addTerm(int term_no, char _status = MyTerm::created);
 	MyTerm getTerm(int term_no) const;
-	void setTermStatus(int term_no, char _status); // form confirm preliminary enrollment
+	void setTermStatus(int term_no, char _status); // for confirm preliminary enrollment
 	char getTermStatus(int term_no) const;
 	void setTermEnrollmentBeginTime(int term_no, Time enrollment_begin_time);
-	// new
 	void addException(int term_no, EnrollmentError* exception);
 	void removeException(int term_no, EnrollmentError* exception);
 	void setExceptionStatus(int term_no, EnrollmentError* exception, char _status);
-	//
 	std::map<Presented_Course*, MyCourse> getTermCourses(int term_no) const;
 	std::vector<Presented_Course*> getTermCoursesWithoutResult(int term_no) const; // for reports no 78(Week Schedule) and 428(Exams Schedule)
 	// course functions:
-	void addCourse(Presented_Course* course, char _status = -1);
+	void addCourse(Presented_Course* course, char _status = MyCourse::unknown);
 	void removeCourse(Presented_Course* course);
 	void setCourseProperties(Presented_Course* course, const MyCourse& properties);
 	MyCourse getCourseProperties(Presented_Course* course) const;
