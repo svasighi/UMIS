@@ -105,7 +105,9 @@ void MyTerm::addException(EnrollmentError* exception) {
 }
 
 void MyTerm::removeException(EnrollmentError* exception) {
-	exceptions.erase(exception);
+	if (exceptions.count(exception)) {
+		exceptions.erase(exception);
+	}
 }
 
 void MyTerm::setExceptionStatus(EnrollmentError* exception, char _status) {
@@ -140,7 +142,10 @@ void MyTerm::addPreliminaryCourse(Course* course) {
 
 void MyTerm::removePreliminaryCourse(Course* course) {
 	if (this->status == MyTerm::created) {
-		preliminary_courses.erase(std::find(preliminary_courses.begin(), preliminary_courses.end(), course));
+		std::vector<Course*>::iterator position = std::find(preliminary_courses.begin(), preliminary_courses.end(), course);
+		if (position != preliminary_courses.end()) {
+			preliminary_courses.erase(position);
+		}
 	}
 }
 
@@ -199,7 +204,9 @@ void MyTerm::addCourse(Presented_Course* course, char _status) {
 }
 
 void MyTerm::removeCourse(Presented_Course* course) {
-	courses.erase(course);
+	if (courses.count(course)) {
+		courses.erase(course);
+	}
 }
 
 bool MyTerm::haveCourse(Course* course) const {
@@ -391,130 +398,6 @@ bool Student::haveCourseWithStatus(short department_id, short group_id, short co
 	return false;
 }
 
-std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_no, const std::map<Presented_Course*, char>& enroll_courses)
-{
-	std::vector<std::unique_ptr<EnrollmentError>> errors;
-	std::map<EnrollmentError*, char> exceptions = terms[term_no].getExceptions();
-	std::map<Presented_Course*, char> courses;
-	std::vector<Course*> keys;
-	for (const auto& c : enroll_courses) {
-		if (c.second == ENROLL || c.second == WAIT) {
-			courses.insert(std::make_pair(c.first, c.second));
-			keys.push_back(c.first);
-		}
-	}
-	for (const auto& course : courses)
-	{
-		if (this->haveCourseWithStatus(course.first, MyCourse::passed)) {
-			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course.first)));
-		}
-
-		if (course.first->getEnrolledNumber() >= course.first->getCapacity() && course.second == ENROLL) {
-			if (FullCapacity::haveExceptionWithStatus(exceptions, course.first, 2) == false) {
-				errors.push_back(std::unique_ptr<EnrollmentError>(new FullCapacity(course.first)));
-			}
-		}
-
-		for (const auto& preR : course.first->getPrerequisites()) {
-			if (this->haveCourseWithStatus(preR, MyCourse::passed) == false) {
-				if (NotPassedPrerequisite::haveExceptionWithStatus(exceptions, course.first, preR, 2) == false) {
-					errors.push_back(std::unique_ptr<EnrollmentError>(new NotPassedPrerequisite(course.first, preR)));
-				}
-			}
-		}
-
-		for (const auto& coR : course.first->getCorequisites()) {
-			if (coR->searchSameIDin(keys) == false && this->haveCourseWithStatus(coR, MyCourse::passed) == false) {
-				if (NotTakenCorequisite::haveExceptionWithStatus(exceptions, course.first, coR, 2) == false) {
-					errors.push_back(std::unique_ptr<EnrollmentError>(new NotTakenCorequisite(course.first, coR)));
-				}
-			}
-		}
-
-		for (const auto& c : courses) {
-			if (c != course) {
-				if (c.first->haveSameID(course.first)) {
-					errors.push_back(std::unique_ptr<EnrollmentError>(new TakenSameCourse(course.first, c.first)));
-				}
-
-				if (c.first->getCourseTime().haveOverlapWith(course.first->getCourseTime())) {
-					if (CourseTimeOverlap::haveExceptionWithStatus(exceptions, course.first, c.first, 2) == false) {
-						errors.push_back(std::unique_ptr<EnrollmentError>(new CourseTimeOverlap(course.first, c.first)));
-					}
-				}
-
-				if (c.first->getFinalExamTime().haveOverlapWith(course.first->getFinalExamTime())) {
-					if (ExamTimeOverlap::haveExceptionWithStatus(exceptions, course.first, c.first, 2) == false) {
-						errors.push_back(std::unique_ptr<EnrollmentError>(new ExamTimeOverlap(course.first, c.first)));
-					}
-				}
-			}
-		}
-	}
-	return errors;
-}
-
-std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term_no, const std::map<Presented_Course*, char>& enroll_courses) {
-	std::vector<std::unique_ptr<EnrollmentError>> temp = checkEnrollment(term_no, enroll_courses);
-	if (terms.count(term_no) == 0) {
-		this->addTerm(term_no, MyTerm::enrollment_in_action);
-	}
-	// (terms.at(term_no).getStatus() == MyTerm::enrollment_in_action);
-	if (temp.empty()) {
-		for (const auto& c : enroll_courses) {
-			if (c.second == ENROLL){
-				terms[term_no].addCourse(c.first, MyCourse::enrolled);
-				c.first->addStudent(this);
-				c.first->addEnrolledNumber();
-			}
-			else if (c.second == WAIT) {
-				if (c.first->getEnrolledNumber() < c.first->getCapacity()) {
-					terms[term_no].addCourse(c.first, MyCourse::enrolled);
-					c.first->addStudent(this);
-					c.first->addEnrolledNumber();
-				}
-				else {
-					terms[term_no].addCourse(c.first, MyCourse::waiting);
-					c.first->addStudent(this);
-					c.first->addWaitingNumber();
-				}
-			}
-			else if (c.second == REMOVE) {
-				terms[term_no].removeCourse(c.first);
-				c.first->removeStudent(this);
-				if (this->terms.at(term_no).getCourseProperties(c.first).getStatus() == MyCourse::enrolled) {
-					c.first->addEnrolledNumber(-1);
-				}
-				else if (this->terms.at(term_no).getCourseProperties(c.first).getStatus() == MyCourse::waiting) {
-					c.first->addWaitingNumber(-1);
-				}
-			}
-		}
-	}
-	return temp;
-}
-
-std::vector<std::unique_ptr<EnrollmentError>> Student::checkPreliminaryEnrollment(int term_no, const std::vector<Course*>& preliminary_courses) {
-	std::vector<std::unique_ptr<EnrollmentError>> errors;
-	for (const auto& course : preliminary_courses) {
-		if (this->haveCourseWithStatus(course, MyCourse::passed)) {
-			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course)));
-		}
-	}
-	return errors;
-}
-
-std::vector<std::unique_ptr<EnrollmentError>> Student::commitPreliminaryEnrollment(int term_no, const std::vector<Course*>& preliminary_courses) {
-	std::vector<std::unique_ptr<EnrollmentError>> temp = checkPreliminaryEnrollment(term_no, preliminary_courses);
-	if (terms.count(term_no) == 0) {
-		this->addTerm(term_no, MyTerm::created);
-	}
-	if (temp.empty() && terms.at(term_no).getStatus() == MyTerm::created) {
-		terms[term_no].setPreliminaryCourses(preliminary_courses);
-	}
-	return temp;
-}
-
 void Student::addTerm(MyTerm term) {
 	terms[term.getno()] = term;
 }
@@ -691,4 +574,186 @@ int Student::computeTuition(int term_no) {
 	if (type == Student::day)
 		return 0;
 	return terms[term_no].numberofCredits();// * credit_fee[type] + const_tuition;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses)
+{
+	std::vector<std::unique_ptr<EnrollmentError>> errors;
+	std::map<Presented_Course*, char> courses;
+	std::vector<Course*> keys;
+	std::map<EnrollmentError*, char> exceptions;
+	for (const auto& c : _courses) {
+		char prestatus;
+		if (terms.count(term_no) == 0) {
+			prestatus = -1;
+		}
+		else if (this->terms.at(term_no).getCourses().count(c.first) == 0) {
+			prestatus = -1;
+		}
+		else {
+			prestatus = this->terms.at(term_no).getCourseProperties(c.first).getStatus();
+		}
+		if (c.second == ENROLL || c.second == WAIT || (c.second == NOCHNG && (prestatus == MyCourse::enrolled || prestatus == MyCourse::waiting))) {
+			courses.insert(std::make_pair(c.first, c.second));
+			keys.push_back(c.first);
+		}
+	}
+	if (terms.count(term_no)) {
+		exceptions = terms[term_no].getExceptions();
+	}
+
+	for (const auto& course : courses)
+	{
+		char prestatus;
+		if (terms.count(term_no) == 0) {
+			prestatus = -1;
+		}
+		else if (this->terms.at(term_no).getCourses().count(course.first) == 0) {
+			prestatus = -1;
+		}
+		else {
+			prestatus = this->terms.at(term_no).getCourseProperties(course.first).getStatus();
+		}
+
+		if (this->haveCourseWithStatus(course.first, MyCourse::passed)) {
+			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course.first)));
+		}
+
+		if (course.first->getEnrolledNumber() >= course.first->getCapacity() &&
+			(course.second == ENROLL || (course.second == NOCHNG && prestatus == MyCourse::enrolled))) {
+			if (FullCapacity::haveExceptionWithStatus(exceptions, course.first, 2) == false) {
+				errors.push_back(std::unique_ptr<EnrollmentError>(new FullCapacity(course.first)));
+			}
+		}
+
+		for (const auto& preR : course.first->getPrerequisites()) {
+			if (this->haveCourseWithStatus(preR, MyCourse::passed) == false) {
+				if (NotPassedPrerequisite::haveExceptionWithStatus(exceptions, course.first, preR, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new NotPassedPrerequisite(course.first, preR)));
+				}
+			}
+		}
+
+		for (const auto& coR : course.first->getCorequisites()) {
+			if (coR->searchSameIDin(keys) == false && this->haveCourseWithStatus(coR, MyCourse::passed) == false) {
+				if (NotTakenCorequisite::haveExceptionWithStatus(exceptions, course.first, coR, 2) == false) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new NotTakenCorequisite(course.first, coR)));
+				}
+			}
+		}
+
+		for (const auto& c : courses) {
+			if (c != course) {
+				if (c.first->haveSameID(course.first)) {
+					errors.push_back(std::unique_ptr<EnrollmentError>(new TakenSameCourse(course.first, c.first)));
+				}
+
+				if (c.first->getCourseTime().haveOverlapWith(course.first->getCourseTime())) {
+					if (CourseTimeOverlap::haveExceptionWithStatus(exceptions, course.first, c.first, 2) == false) {
+						errors.push_back(std::unique_ptr<EnrollmentError>(new CourseTimeOverlap(course.first, c.first)));
+					}
+				}
+
+				if (c.first->getFinalExamTime().haveOverlapWith(course.first->getFinalExamTime())) {
+					if (ExamTimeOverlap::haveExceptionWithStatus(exceptions, course.first, c.first, 2) == false) {
+						errors.push_back(std::unique_ptr<EnrollmentError>(new ExamTimeOverlap(course.first, c.first)));
+					}
+				}
+			}
+		}
+	}
+	return errors;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses) {
+	std::vector<std::unique_ptr<EnrollmentError>> temp = checkEnrollment(term_no, _courses);
+	if (terms.count(term_no) == 0) {
+		this->addTerm(term_no, MyTerm::enrollment_in_action);
+	}
+	// (terms.at(term_no).getStatus() == MyTerm::enrollment_in_action);
+	if (temp.empty()) {
+		for (const auto& c : _courses) {
+			char prestatus;
+			if (this->terms.at(term_no).getCourses().count(c.first) == 0) {
+				prestatus = -1;
+			}
+			else {
+				prestatus = this->terms.at(term_no).getCourseProperties(c.first).getStatus();
+			}
+			if (c.second == ENROLL || (c.second == WAIT && c.first->getEnrolledNumber() < c.first->getCapacity()))
+			{
+				if (prestatus == -1) {
+					terms[term_no].addCourse(c.first, MyCourse::enrolled);
+					c.first->addStudent(this);
+					c.first->addEnrolledNumber();
+				}
+				else if (prestatus == MyCourse::waiting) {
+					terms[term_no].setStatusofCourse(c.first, MyCourse::enrolled);
+					c.first->addEnrolledNumber();
+					c.first->addWaitingNumber(-1);
+				}
+			}
+			else if (c.second == WAIT) {
+				if (prestatus == -1) {
+					terms[term_no].addCourse(c.first, MyCourse::waiting);
+					c.first->addStudent(this);
+					c.first->addWaitingNumber();
+				}
+			}
+			else if (c.second == REMOVE) {
+				terms[term_no].removeCourse(c.first);
+				c.first->removeStudent(this);
+				if (prestatus == MyCourse::enrolled) {
+					c.first->addEnrolledNumber(-1);
+					// go and enroll the first student waiting
+					for (const auto& stu : c.first->getCourseStudents()) {
+						if (stu->terms.at(term_no).getCourseProperties(c.first).getStatus() == MyCourse::waiting) {
+							stu->terms[term_no].setStatusofCourse(c.first, MyCourse::enrolled);
+							c.first->addEnrolledNumber();
+							c.first->addWaitingNumber(-1);
+							break;
+						}
+					}
+				}
+				else if (prestatus == MyCourse::waiting) {
+					c.first->addWaitingNumber(-1);
+				}
+			}
+		}
+	}
+	return temp;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::checkPreliminaryEnrollment(int term_no, const std::map<Course*, bool>& preliminary_courses) {
+	std::vector<std::unique_ptr<EnrollmentError>> errors;
+	std::map<Course*, bool> courses;
+	for (const auto& c : preliminary_courses) {
+		if (c.second == true) {
+			courses.insert(std::make_pair(c.first, c.second));
+		}
+	}
+	for (const auto& course : courses) {
+		if (this->haveCourseWithStatus(course.first, MyCourse::passed)) {
+			errors.push_back(std::unique_ptr<EnrollmentError>(new PassedBefore(course.first)));
+		}
+	}
+	return errors;
+}
+
+std::vector<std::unique_ptr<EnrollmentError>> Student::commitPreliminaryEnrollment(int term_no, const std::map<Course*, bool>& preliminary_courses) {
+	std::vector<std::unique_ptr<EnrollmentError>> temp = checkPreliminaryEnrollment(term_no, preliminary_courses);
+	if (terms.count(term_no) == 0) {
+		this->addTerm(term_no, MyTerm::created);
+	}
+	if (temp.empty() && terms.at(term_no).getStatus() == MyTerm::created) {
+		for (const auto& c : preliminary_courses) {
+			if (c.second == true) { // add
+				terms[term_no].addPreliminaryCourse(c.first);
+			}
+			else if (c.second == false) { // remove
+				terms[term_no].removePreliminaryCourse(c.first);
+			}
+		}
+	}
+	return temp;
 }
