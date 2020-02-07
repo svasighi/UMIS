@@ -8,33 +8,31 @@
 #include "Course.h"
 #include "Student.h"
 #include "AcademicAffairs.h"
-#include "BinaryFile.h"
 #include <algorithm>
+#include <memory>
 
 // .............................PROFESSOR......................................
-class Professor : virtual public User {
+class Professor : public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
-	Professor() {}
-	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
-		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
-	void setCourses(std::vector<Presented_Course*>);
-	std::vector<Presented_Course*> getCourses(void) const;
-	void addCourse(Presented_Course*);
-	void removeCourse(Presented_Course*);
-	void replyToObjecton(Student*, Presented_Course*, std::string);
-	std::string viewObjectonReply(Student*, Presented_Course*) const;
-	static std::map<int,Professor*> readAllProfessors(void);
-	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
+    Professor():User (){}
+   Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+             :User(_username, _password, _firstname, _lastname, _departmentcode){}
+    void setCourses(std::vector<Presented_Course*>);
+    std::vector<Presented_Course*> getCourses(void) const;
+    void addCourse(Presented_Course*);
+    void removeCourse(Presented_Course*) ;
+    void replyToObjecton(Student*, Presented_Course*, std::string);
+    std::string viewObjectonReply(Student*, Presented_Course*) const;
+	//virtual void changePassword(std::string current_pass, std::string new_pass) = 0; //forward definition
 };
-
 // .............................AdjunctProfessor......................................
-class AdjunctProfessor : public Professor {
+class AdjunctProfessor : public Professor { 
 public:
-	AdjunctProfessor() {}
-	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode)
-		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
+    AdjunctProfessor(){}
+    AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+        :Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
 };
 
 // .............................Faculty......................................
@@ -45,9 +43,9 @@ protected:
 	std::vector<Student*> supervised_students;
 public:
 	Faculty() {} //default constructor
-	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, int _degree)
-		: degree(_degree), User(_username, _password, _firstname, _lastname, _departmentcode) {}
-	void setDegree(int _degree);
+    Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+        :Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+    void setDegree(int _degree);
 	int getDegree(void) const;
 	void setAsSupervisor(void);
 	bool getisSupervisor (void) const;
@@ -56,6 +54,7 @@ public:
 	void addSupervisedStudents(Student*);
 	void removeSupervisedStudents(Student*);
 	void applyEnrollment(Student*);
+
 };
 
 // .............................GroupManager......................................
@@ -63,28 +62,31 @@ class GroupManager : public Faculty {
 	//PreEnrollment_Stats
 	std::map<int,Presented_Course*> group_courses;
 public:
-	GroupManager() {}
+	GroupManager(){}
 	std::map<int,Presented_Course*> getGroupCourses();
 	void setGroupCourses(std::map<int,Presented_Course*>);
-	void createGroupCourse(int ,std::string ,int ,int ,int ,int, Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);
-	void deleteGroupCourse(Presented_Course*);
-	void updateGroupCourse(Presented_Course*);
-
+	void createGroupCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);//asasasa
+	void deleteGroupCourse(Presented_Course*);//asasasa
+	void updateGroupCourse(Presented_Course*);//asasasa
+	void createGroupPresentedCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);//asasasa
+	void deleteGroupPresentedCourse(Presented_Course*);//asasasa
+	void updateGroupPresentedCourse(Presented_Course*);//asasasa
 };
 
 // .............................DepartmentAcademicAssistant......................................
-class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
+class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
 
 public:
-	DepartmentAcademicAssistant() {}
+    DepartmentAcademicAssistant(){}
 };
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
- 	std::map<int,Professor*> professors;
+    std::map<int,Professor*> professors;
 public:
-	DepartmentHead(Faculty*);
-	int calculateProfessorAssessmentSum(Professor*) const;
+    DepartmentHead(){}
+    DepartmentHead(Faculty*);
+    int calculateProfessorAssessmentSum(Professor*) const;
 	std::map<int,Professor*> getDepartmentProfessors(void) const;
 	void setDepartmentProfessors(std::map<int,Professor*>);
 	std::map<Presented_Course*, std::vector<char>> ProfessorAssessment(Professor*) const;
@@ -99,13 +101,13 @@ public:
 	void readAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;
 };
-
 // .............................DepartmentAcademicAffairsStaff......................................
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 protected:
 	std::vector<Course*> courses;
 	std::vector<Presented_Course*> presented_courses;
 public:
+    DepartmentAcademicAffairsStaff(){}
 	//active or diactive time conflict
 	//activate prequisit or co requisit
 	void setCourses(std::vector<Course*>);
@@ -113,5 +115,6 @@ public:
 	void setPresentedCourses(std::vector<Presented_Course*>);
 	std::vector<Presented_Course*> getPresentedCourses(void) const;
 };
+
 
 #endif // PROFESSOR_H
