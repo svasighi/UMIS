@@ -24,7 +24,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    StudentWindow wstudent;
-    ProfessorWindow wprofessor;
+    StudentWindow *wstudent;
+    ProfessorWindow *wprofessor;
 };
 #endif // MAINWINDOW_H
