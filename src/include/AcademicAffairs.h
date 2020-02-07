@@ -9,7 +9,7 @@
 
 class Faculty;
 
-class AcademicAffairsStaff :  public User {
+class AcademicAffairsStaff : public User {
 protected:
 	std::string career;
 	std::map<int, Student*> students;
@@ -21,10 +21,9 @@ public:
 };
 
 class TopAcademicAffairsStaff : public AcademicAffairsStaff {
-	
+
 public:
 	void changeDepartmentHead(Faculty*);
-	void readAllStudents(void);
 };
 
 #endif // ACADEMIC_H
