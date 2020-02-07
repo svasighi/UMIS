@@ -18,7 +18,7 @@ protected:
 public:
 	Professor() {}
 	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, short _groupcode = 0)
-		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
+		: User(_username, _password, _firstname, _lastname, _departmentcode, _groupcode) {}
 	void setCourses(const std::vector<PresentedCourse*>&);
 	std::vector<PresentedCourse*> getCourses(void) const;
 	void addCourse(PresentedCourse*);
