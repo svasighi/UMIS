@@ -1,13 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "professors/professorwindow.h"
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,13 +22,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PB_Signin_clicked()
 {
-    connect(&wprofessor, &ProfessorWindow::want2close, this, &MainWindow::show);
-    wprofessor.setGeometry(this->geometry());
+    wprofessor = new ProfessorWindow();
+    wprofessor->setGeometry(this->geometry());
     if (this->isMaximized())
     {
         wprofessor.showMaximized();
     }
-    wprofessor.show();
+    wprofessor->show();
     this->hide();
 }
 
@@ -38,6 +36,7 @@ void MainWindow::on_PB_Exit_clicked()
 {
     QApplication::quit();
 }
+
 void MainWindow::DatabaseConnect()
 {
     const QString DRIVER("QSQLITE");
@@ -54,6 +53,7 @@ void MainWindow::DatabaseConnect()
     else
         qWarning() << "MainWindow::DatabaseConnect - ERROR: no driver " << DRIVER << " available";
 }
+
 void MainWindow::DatabaseInit()
 {
     QSqlQuery query("CREATE TABLE users (id INTEGER PRIMARY KEY, username INTEGER, passwrod TEXT, firstname TEXT, lastname TEXT, degree TEXT, departmentcode INTEGER,  groupcode INTEGER, is_supervisor INTEGER,type TEXT,)");
@@ -62,6 +62,7 @@ void MainWindow::DatabaseInit()
         qWarning() << "MainWindow::DatabaseInit - ERROR: " << query.lastError().text();
 
 }
+
 void MainWindow::DatabasePopulate()
 {
     QSqlQuery query;
