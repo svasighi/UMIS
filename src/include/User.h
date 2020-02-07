@@ -13,7 +13,7 @@ protected:
 	short groupcode;
 public:
 	User();
-	User(int _username, std::string _password, std::string _firstname = "", std::string _lastname = "", short _departmentcode = 0);
+	User(int _username, std::string _password, std::string _firstname = "", std::string _lastname = "", short _departmentcode = 0, short _groupcode = 0);
 	void setUserName(int _username);
 	int getUserName(void) const;
 	void setPassword(std::string _password);
@@ -27,7 +27,7 @@ public:
 	void setGroupCode(short _groupcode);
 	short getGroupCode(void) const;
 	bool checkPassword(std::string _password) const;
-	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
+	virtual void changePassword(std::string current_pass, std::string new_pass) = 0;
 };
 
 #endif // USER_H
