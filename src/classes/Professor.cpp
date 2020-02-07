@@ -1,6 +1,6 @@
 #include "../include/Professor.h"
 
-void Professor::setCourses(std::vector<PresentedCourse*> _courses) {
+void Professor::setCourses(const std::vector<PresentedCourse*>& _courses) {
 	courses = _courses;
 }
 
@@ -9,7 +9,9 @@ std::vector<PresentedCourse*> Professor::getCourses(void) const {
 }
 
 void Professor::addCourse(PresentedCourse* course) {
-	courses.push_back(course);
+	if (std::find(courses.begin(), courses.end(), course) == courses.end()) {
+		courses.push_back(course);
+	}
 }
 
 void Professor::removeCourse(PresentedCourse* course) {
@@ -26,6 +28,9 @@ std::string Professor::viewObjectonReply(Student* _student, PresentedCourse* _co
 	return _student->getObjectionReplyTextofCourse(_course);
 }
 
+
+
+
 void Faculty::setDegree(int _degree) {
 	degree = _degree;
 }
@@ -34,15 +39,15 @@ int Faculty::getDegree(void) const {
 	return degree;
 }
 
-void Faculty::setAsSupervisor(void) {
-	this->is_supervisor = true;
+void Faculty::setAsSupervisor(bool _is_supervisor) {
+	is_supervisor = _is_supervisor;
 }
 
 bool Faculty::getisSupervisor(void) const {
 	return is_supervisor;
 }
 
-void Faculty::setSupervisedStudents(std::vector<Student*> _supervised_students) {
+void Faculty::setSupervisedStudents(const std::vector<Student*>& _supervised_students) {
 	supervised_students = _supervised_students;
 }
 
@@ -50,11 +55,13 @@ std::vector<Student*> Faculty::getSupervisedStudents(void) const {
 	return supervised_students;
 }
 
-void Faculty::addSupervisedStudents(Student* _supervised_student) {
-	supervised_students.push_back(_supervised_student);
+void Faculty::addSupervisedStudent(Student* student) {
+	if (std::find(supervised_students.begin(), supervised_students.end(), student) == supervised_students.end()) {
+		supervised_students.push_back(student);
+	}
 }
 
-void Faculty::removeSupervisedStudents(Student* student) {
+void Faculty::removeSupervisedStudent(Student* student) {
 	std::vector<Student*>::iterator position = std::find(supervised_students.begin(), supervised_students.end(), student);
 	if (position != supervised_students.end()) {
 		supervised_students.erase(position);
@@ -63,13 +70,14 @@ void Faculty::removeSupervisedStudents(Student* student) {
 
 void Faculty::applyEnrollment(Student* _student) {} //forward definition
 
-
 std::map<int, PresentedCourse*> GroupManager::getGroupCourses() {
 	return group_courses;
 }
+
 void GroupManager::setGroupCourses(std::map<int, PresentedCourse*> _group_courses) {
 	group_courses = _group_courses;
 }
+
 void GroupManager::createGroupCourse(int _course_id, std::string _name, int _credit, int _type, int _term_no, int _group_no, Professor* _course_professor, int _capacity, std::vector<Course*> prerequisites, std::vector<Course*> corequisites) {
 
 	Course* temp_course = nullptr;
@@ -95,7 +103,7 @@ void GroupManager::createGroupCourse(int _course_id, std::string _name, int _cre
 	}
 }
 void GroupManager::deleteGroupCourse(PresentedCourse* _course) {
-	std::map<int, Course*> allcourses;////////////////////////////// = Course::readAllCourses();
+	//std::map<int, Course*> allcourses;////////////////////////////// = Course::readAllCourses();
 	//BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
 	//binary_file.DeleteRecord(*_course);
 	if (group_courses.count(_course->getCourseID())) {
@@ -108,11 +116,10 @@ void GroupManager::updateGroupCourse(PresentedCourse* _course) {
 	if (group_courses.count(_course->getCourseID())) {
 		group_courses.erase(_course->getCourseID());
 	}
-	group_courses.insert(std::make_pair(std::stoi(std::to_string(_course->getDepartmentCode()) + std::to_string(_course->getGroupCode()) + std::to_string(_course->getCourseCode())), _course));
+	group_courses.insert(std::make_pair(_course->getCourseID(), _course));
 }
 
-DepartmentHead::DepartmentHead(Faculty* _faculty)
-{
+DepartmentHead::DepartmentHead(Faculty* _faculty) {
 	username = _faculty->getUserName();
 	firstname = _faculty->getFirstName();
 	lastname = _faculty->getLastName();
@@ -168,22 +175,24 @@ std::map<PresentedCourse*, std::vector<char>> DepartmentHead::ProfessorAssessmen
 	}
 	return assessments;
 }
+
+void DepartmentHead::addFaculty(int _username, std::string _password, std::string _firstname, std::string _lastname) {
+	Professor* faculty = new Faculty(_username, _password, _firstname, _lastname, this->departmentcode);
+	//BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
+	//binary_file.AddRecord(*professor);
+	professors.insert(std::make_pair(faculty->getUserName(), faculty));
+}
+
 void DepartmentHead::addAdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname) {
 	std::unique_ptr<AdjunctProfessor> adjunct_professor(new AdjunctProfessor(_username, _password, _firstname, _lastname, this->departmentcode));
-
+	// professors.insert(std::make_pair(adjunct_professor->getUserName(), adjunct_professor));
 }
 void DepartmentHead::addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string) {}
 
 void DepartmentHead::changeToFacutly(Professor*) {}
 void DepartmentHead::changeToGroupManager(Faculty*) {}
 
-void DepartmentHead::addProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname) {
 
-	//Professor* professor = new Professor(_username, _password, _firstname, _lastname, this->departmentcode);
-	//BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
-	//binary_file.AddRecord(*professor);
-	//professors.insert(std::make_pair(professor->getUserName(), professor));
-}
 
 void DepartmentHead::deleteProfessor(Professor* _professor) {
 	//	BinaryFile<Professor> binary_file((char*) "../storage/Professors.dat");
@@ -225,20 +234,4 @@ void DepartmentHead::calcSalary(int* _degree_base_pay, int _max_assesment_additi
 		//	salaries.AddRecord(std::to_string(it->second->getUserName()) + std::to_string(salary));
 	}
 
-}
-
-void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
-	courses = _courses;
-}
-
-std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses(void) const {
-	return courses;
-}
-
-void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<PresentedCourse*> _PresentedCourses) {
-	PresentedCourses = _PresentedCourses;
-}
-
-std::vector<PresentedCourse*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
-	return PresentedCourses;
 }
