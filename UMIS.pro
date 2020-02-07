@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,7 +27,7 @@ SOURCES += \
     students/weekscheduleform.cpp \
     professors/professorwindow.cpp \
     professors/professorpresentedcoursesform.cpp \
-    professors/professorslistform.cpp 
+    professors/professorslistform.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -40,7 +40,7 @@ HEADERS += \
     students/weekscheduleform.h \
     professors/professorpresentedcoursesform.h \
     professors/professorslistform.h \
-    professors/professorwindow.h 
+    professors/professorwindow.h
     
 FORMS += \
     mainwindow.ui \

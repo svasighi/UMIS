@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "students/studentwindow.h"
+#include "professors/professorwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +23,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    StudentWindow *wstudent;
+    StudentWindow wstudent;
+    ProfessorWindow wprofessor;
+    void DatabaseConnect();
+    void DatabaseInit();
+    void DatabasePopulate();
 };
 #endif // MAINWINDOW_H
