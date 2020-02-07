@@ -24,6 +24,24 @@ class TopAcademicAffairsStaff : public AcademicAffairsStaff {
 
 public:
 	void changeDepartmentHead(Faculty*);
+	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
+};
+
+// .............................DepartmentAcademicAffairsStaff......................................
+class DepartmentAcademicAffairsStaff : virtual public AcademicAffairsStaff {
+protected:
+	std::vector<Course*> courses;
+	std::vector<PresentedCourse*> PresentedCourses;
+public:
+	DepartmentAcademicAffairsStaff() {}
+
+	//active or diactive time conflict
+	//activate prequisit or co requisit
+	void setCourses(std::vector<Course*>);
+	std::vector<Course*> getCourses(void) const;
+	void setPresentedCourses(std::vector<PresentedCourse*>);
+	std::vector<PresentedCourse*> getPresentedCourses(void) const;
+	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
 };
 
 #endif // ACADEMIC_H
