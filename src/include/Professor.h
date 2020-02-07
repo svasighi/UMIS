@@ -4,35 +4,38 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
+#include <memory>
 #include "User.h"
 #include "Course.h"
 #include "Student.h"
 #include "AcademicAffairs.h"
-#include <algorithm>
-#include <memory>
+
+class DepartmentAcademicAffairsStaff;
 
 // .............................PROFESSOR......................................
 class Professor : public User {
 protected:
-	std::vector<Presented_Course*> courses; //list of presented courses
+	std::vector<PresentedCourse*> courses; //list of presented courses
 public:
-    Professor():User (){}
-   Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-             :User(_username, _password, _firstname, _lastname, _departmentcode){}
-    void setCourses(std::vector<Presented_Course*>);
-    std::vector<Presented_Course*> getCourses(void) const;
-    void addCourse(Presented_Course*);
-    void removeCourse(Presented_Course*) ;
-    void replyToObjecton(Student*, Presented_Course*, std::string);
-    std::string viewObjectonReply(Student*, Presented_Course*) const;
-	//virtual void changePassword(std::string current_pass, std::string new_pass) = 0; //forward definition
+	Professor() :User() {}
+	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+		:User(_username, _password, _firstname, _lastname, _departmentcode) {}
+	void setCourses(std::vector<PresentedCourse*>);
+	std::vector<PresentedCourse*> getCourses(void) const;
+	void addCourse(PresentedCourse*);
+	void removeCourse(PresentedCourse*);
+	void replyToObjecton(Student*, PresentedCourse*, std::string);
+	std::string viewObjectonReply(Student*, PresentedCourse*) const;
+	virtual void changePassword(std::string current_pass, std::string new_pass) = 0; //forward definition
 };
 // .............................AdjunctProfessor......................................
-class AdjunctProfessor : public Professor { 
+class AdjunctProfessor : public Professor {
 public:
-    AdjunctProfessor(){}
-    AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-        :Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+	AdjunctProfessor() {}
+	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+		: Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+	void changePassword(std::string current_pass, std::string new_pass){} //forward definition
 };
 
 // .............................Faculty......................................
@@ -43,78 +46,78 @@ protected:
 	std::vector<Student*> supervised_students;
 public:
 	Faculty() {} //default constructor
-    Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-        :Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
-    void setDegree(int _degree);
+	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
+		:Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+	void setDegree(int _degree);
 	int getDegree(void) const;
 	void setAsSupervisor(void);
-	bool getisSupervisor (void) const;
+	bool getisSupervisor(void) const;
 	void setSupervisedStudents(std::vector<Student*>);
 	std::vector<Student*> getSupervisedStudents(void) const;
 	void addSupervisedStudents(Student*);
 	void removeSupervisedStudents(Student*);
 	void applyEnrollment(Student*);
-
+	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
 };
 
 // .............................GroupManager......................................
 class GroupManager : public Faculty {
 	//PreEnrollment_Stats
-	std::map<int,Presented_Course*> group_courses;
+	std::map<int, PresentedCourse*> group_courses;
 public:
-	GroupManager(){}
-	std::map<int,Presented_Course*> getGroupCourses();
-	void setGroupCourses(std::map<int,Presented_Course*>);
-	void createGroupCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);//asasasa
-	void deleteGroupCourse(Presented_Course*);//asasasa
-	void updateGroupCourse(Presented_Course*);//asasasa
-	void createGroupPresentedCourse(int ,std::string ,int ,int ,int ,Professor* ,int ,std::vector<Course*> ,std::vector<Course*>);//asasasa
-	void deleteGroupPresentedCourse(Presented_Course*);//asasasa
-	void updateGroupPresentedCourse(Presented_Course*);//asasasa
+	GroupManager() {}
+	std::map<int, PresentedCourse*> getGroupCourses();
+	void setGroupCourses(std::map<int, PresentedCourse*>);
+	void createGroupCourse(int, std::string, int, int, int, int, Professor*, int, std::vector<Course*>, std::vector<Course*>);//asasasa
+	void deleteGroupCourse(PresentedCourse*);//asasasa
+	void updateGroupCourse(PresentedCourse*);//asasasa
+	void createGroupPresentedCourse(int, std::string, int, int, int, Professor*, int, std::vector<Course*>, std::vector<Course*>);//asasasa
+	void deleteGroupPresentedCourse(PresentedCourse*);//asasasa
+	void updateGroupPresentedCourse(PresentedCourse*);//asasasa
 };
 
 // .............................DepartmentAcademicAssistant......................................
 class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
 
 public:
-    DepartmentAcademicAssistant(){}
+	DepartmentAcademicAssistant() {}
 };
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
-    std::map<int,Professor*> professors;
+	std::map<int, Professor*> professors;
 public:
-    DepartmentHead(){}
-    DepartmentHead(Faculty*);
-    int calculateProfessorAssessmentSum(Professor*) const;
-	std::map<int,Professor*> getDepartmentProfessors(void) const;
-	void setDepartmentProfessors(std::map<int,Professor*>);
-	std::map<Presented_Course*, std::vector<char>> ProfessorAssessment(Professor*) const;
+	DepartmentHead() {}
+	DepartmentHead(Faculty*);
+	int calculateProfessorAssessmentSum(Professor*) const;
+	std::map<int, Professor*> getDepartmentProfessors(void) const;
+	void setDepartmentProfessors(std::map<int, Professor*>);
+	std::map<PresentedCourse*, std::vector<char>> ProfessorAssessment(Professor*) const;
 	void addProfessor(int, std::string, std::string, std::string);
 	void addAdjunctProfessor(int, std::string, std::string, std::string); //sadasdasdasd
 	void addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string);
-	
+
 	void changeToFacutly(Professor*); //sadasdasdasd
 	void changeToGroupManager(Faculty*); //sadasdasdasd
-	
+
 	void deleteProfessor(Professor*);
 	void readAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;
 };
+
 // .............................DepartmentAcademicAffairsStaff......................................
 class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
 protected:
 	std::vector<Course*> courses;
-	std::vector<Presented_Course*> presented_courses;
+	std::vector<PresentedCourse*> PresentedCourses;
 public:
-    DepartmentAcademicAffairsStaff(){}
+	DepartmentAcademicAffairsStaff() {}
 	//active or diactive time conflict
 	//activate prequisit or co requisit
 	void setCourses(std::vector<Course*>);
 	std::vector<Course*> getCourses(void) const;
-	void setPresentedCourses(std::vector<Presented_Course*>);
-	std::vector<Presented_Course*> getPresentedCourses(void) const;
+	void setPresentedCourses(std::vector<PresentedCourse*>);
+	std::vector<PresentedCourse*> getPresentedCourses(void) const;
 };
-
 
 #endif // PROFESSOR_H
