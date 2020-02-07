@@ -3,45 +3,33 @@
 #include "../include/Student.h"
 
 Course::Course()
-	: department_id(0), group_id(0), course_id(0), credit(0), type(-1) {}
+	: departmentcode(0), groupcode(0), coursecode(0), credit(0), type(-1) {}
 
-Course::Course(short _department_id, short _group_id, short _course_id, char _credit, std::string _name, char _type)
-	: department_id(_department_id), group_id(_group_id), course_id(_course_id), credit(_credit), name(_name), type(-1) {}
+Course::Course(short _departmentcode, short _groupcode, short _coursecode, char _credit, std::string _name, char _type)
+	: departmentcode(_departmentcode), groupcode(_groupcode), coursecode(_coursecode), credit(_credit), name(_name), type(-1) {}
 
-std::map<int, Course*> Course::readAllCourses(void) {
-	std::map<int, Course*> TempCourses;
-
-	BinaryFile<Course> binary_file((char*) "../storage/Courses.dat");
-	std::vector<Course*> courses = binary_file.FetchAllRecords();
-
-	for (int i = 0; i < courses.size(); i++) {
-		TempCourses.insert(std::make_pair(courses[i]->getCompleteID(), courses[i]));
-	}
-	return TempCourses;
+void Course::setDepartmentCode(short _departmentcode) {
+	departmentcode = _departmentcode;
 }
 
-void Course::setDepartment_id(short _department_id) {
-	department_id = _department_id;
+short Course::getDepartmentCode() const {
+	return departmentcode;
 }
 
-short Course::getDepartment_id() const {
-	return department_id;
+void Course::setGroupCode(short _groupcode) {
+	groupcode = _groupcode;
 }
 
-void Course::setGroup_id(short _group_id) {
-	group_id = _group_id;
+short Course::getGroupCode() const {
+	return groupcode;
 }
 
-short Course::getGroup_id() const {
-	return group_id;
+void Course::setCourseCode(short _coursecode) {
+	coursecode = _coursecode;
 }
 
-void Course::setCourse_id(short _course_id) {
-	course_id = _course_id;
-}
-
-short Course::getCourse_id() const {
-	return course_id;
+short Course::getCourseCode() const {
+	return coursecode;
 }
 
 void Course::setCredit(char _credit) {
@@ -79,7 +67,7 @@ std::vector<Course*> Course::getPrerequisites() const {
 void Course::addPrerequisite(Course* course) {
 	if (course == this)
 		return;
-	if (course->department_id == this->department_id && course->group_id == this->group_id && course->course_id == this->course_id)
+	if (course->departmentcode == this->departmentcode && course->groupcode == this->groupcode && course->coursecode == this->coursecode)
 		return;
 	if (std::find(prerequisites.begin(), prerequisites.end(), course) != prerequisites.end())
 		return;
@@ -106,7 +94,7 @@ std::vector<Course*> Course::getCorequisites() const {
 void Course::addCorequisite(Course* course) {
 	if (course == this)
 		return;
-	if (course->department_id == this->department_id && course->group_id == this->group_id && course->course_id == this->course_id)
+	if (course->departmentcode == this->departmentcode && course->groupcode == this->groupcode && course->coursecode == this->coursecode)
 		return;
 	if (std::find(prerequisites.begin(), prerequisites.end(), course) != prerequisites.end())
 		return;
@@ -123,7 +111,7 @@ void Course::removeCorequisite(Course* course) {
 }
 
 bool Course::haveSameID(Course* course) const {
-	if (this->course_id == course->course_id && this->group_id == course->group_id && this->department_id == course->department_id) {
+	if (this->coursecode == course->coursecode && this->groupcode == course->groupcode && this->departmentcode == course->departmentcode) {
 		return true;
 	}
 	return false;
@@ -138,70 +126,70 @@ bool Course::searchSameIDin(const std::vector<Course*>& v) const {
 	return false;
 }
 
-int Course::getCompleteID() const {
-	return std::stoi(std::to_string(department_id) + std::to_string(group_id) + std::to_string(course_id));
+int Course::getCourseID() const {
+	return std::stoi(std::to_string(departmentcode) + std::to_string(groupcode) + std::to_string(coursecode));
 }
 
 
 
 
-Presented_Course::Presented_Course()
+PresentedCourse::PresentedCourse()
 	: term_no(0), group_no(0), course_professor(nullptr), capacity(0), enrolled_number(0), waiting_number(0) {}
 
-Presented_Course::Presented_Course(Course* course, int _term_no, char _group_no, Professor* _course_professor, int _capacity)
+PresentedCourse::PresentedCourse(Course* course, int _term_no, char _group_no, Professor* _course_professor, int _capacity)
 	: term_no(_term_no), group_no(_group_no), course_professor(_course_professor), capacity(_capacity), enrolled_number(0), waiting_number(0), Course(*course) {}
 
-void Presented_Course::setTerm_no(int _term_no) {
+void PresentedCourse::setTerm_no(int _term_no) {
 	term_no = _term_no;
 }
 
-int Presented_Course::getTerm_no() const {
+int PresentedCourse::getTerm_no() const {
 	return term_no;
 }
 
-void Presented_Course::setGroup_no(char _group_no) {
+void PresentedCourse::setGroup_no(char _group_no) {
 	group_no = _group_no;
 }
 
-char Presented_Course::getGroup_no() const {
+char PresentedCourse::getGroup_no() const {
 	return group_no;
 }
 
-void Presented_Course::setCourseProfessor(Professor* _course_professor) {
+void PresentedCourse::setCourseProfessor(Professor* _course_professor) {
 	course_professor = _course_professor;
 }
 
-Professor* Presented_Course::getCourseProfessor() const {
+Professor* PresentedCourse::getCourseProfessor() const {
 	return course_professor;
 }
 
-void Presented_Course::setCourseStudents(const std::vector<Student*>& _course_students) {
+void PresentedCourse::setCourseStudents(const std::vector<Student*>& _course_students) {
 	course_students = _course_students;
 }
 
-std::vector<Student*> Presented_Course::getCourseStudents() const {
+std::vector<Student*> PresentedCourse::getCourseStudents() const {
 	return course_students;
 }
 
-void Presented_Course::addStudent(Student* student) {
+void PresentedCourse::addStudent(Student* student) {
 	if (std::find(course_students.begin(), course_students.end(), student) == course_students.end()) {
 		course_students.push_back(student);
 	}
 }
 
-void Presented_Course::removeStudent(Student* student) {
+void PresentedCourse::removeStudent(Student* student) {
 	std::vector<Student*>::iterator position = std::find(course_students.begin(), course_students.end(), student);
 	if (position != course_students.end()) {
 		course_students.erase(position);
 	}
 }
 
-int Presented_Course::getNumberofStudents() const {
+int PresentedCourse::getNumberofStudents() const {
 	return course_students.size();
 }
 
-int Presented_Course::getNumberofStudentsWithCourseStatus(char _status) const {
-	Presented_Course* course = const_cast<Presented_Course*>(this);
+int PresentedCourse::getNumberofStudentsWithCourseStatus(char _status) const {
+	PresentedCourse* course = const_cast<PresentedCourse*>(this);
 	int n = 0;
 	for (const auto& student : course_students) {
 		if (student->getStatusofCourse(course) == _status) {
@@ -211,7 +199,7 @@ int Presented_Course::getNumberofStudentsWithCourseStatus(char _status) const {
 	return n;
 }
 
-void Presented_Course::setCapacity(int _capacity) {
+void PresentedCourse::setCapacity(int _capacity) {
 	if (_capacity < 0)
 		throw std::invalid_argument("capacity can't be negative");
 	if (_capacity > capacity) {
@@ -223,11 +211,11 @@ void Presented_Course::setCapacity(int _capacity) {
 	capacity = _capacity;
 }
 
-int Presented_Course::getCapacity() const {
+int PresentedCourse::getCapacity() const {
 	return capacity;
 }
 
-void Presented_Course::updateEnrolledAndWaitingNumbers() {
+void PresentedCourse::updateEnrolledAndWaitingNumbers() {
 	int _enrolled_number = 0, _waiting_number = 0;
 	for (const auto& student : course_students) {
 		if (student->getStatusofCourse(this) == MyCourse::enrolled) {
@@ -246,7 +234,7 @@ void Presented_Course::updateEnrolledAndWaitingNumbers() {
 	}
 }
 
-void Presented_Course::setEnrolledNumber(int _enrolled_number) {
+void PresentedCourse::setEnrolledNumber(int _enrolled_number) {
 	if (_enrolled_number < 0)
 		throw std::invalid_argument("enrolled_number can't be negative");
 	enrolled_number = _enrolled_number;
@@ -255,29 +243,29 @@ void Presented_Course::setEnrolledNumber(int _enrolled_number) {
 	}
 }
 
-void Presented_Course::addEnrolledNumber(int x) {
+void PresentedCourse::addEnrolledNumber(int x) {
 	setEnrolledNumber(enrolled_number + x);
 }
 
-int Presented_Course::getEnrolledNumber() const {
+int PresentedCourse::getEnrolledNumber() const {
 	return enrolled_number;
 }
 
-void Presented_Course::setWaitingNumber(int _waiting_number) {
+void PresentedCourse::setWaitingNumber(int _waiting_number) {
 	if (_waiting_number < 0)
 		throw std::invalid_argument("waiting_number can't be negative");
 	waiting_number = _waiting_number;
 }
 
-void Presented_Course::addWaitingNumber(int x) {
+void PresentedCourse::addWaitingNumber(int x) {
 	setWaitingNumber(waiting_number + x);
 }
 
-int Presented_Course::getWaitingNumber() const {
+int PresentedCourse::getWaitingNumber() const {
 	return waiting_number;
 }
 
-void Presented_Course::enrollFirstStudentWaiting(int n) {
+void PresentedCourse::enrollFirstStudentWaiting(int n) {
 	int i = 0;
 	for (auto stu = course_students.begin(); stu != course_students.end() && i < n && waiting_number > 0; stu++) {
 		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::waiting) {
@@ -289,7 +277,7 @@ void Presented_Course::enrollFirstStudentWaiting(int n) {
 	}
 }
 
-void Presented_Course::removeLastStudentEnrolled(int n) {
+void PresentedCourse::removeLastStudentEnrolled(int n) {
 	int i = 0;
 	for (auto stu = course_students.end() - 1; stu >= course_students.begin() && i < n && enrolled_number > 0; stu--) {
 		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::enrolled) {
@@ -301,7 +289,7 @@ void Presented_Course::removeLastStudentEnrolled(int n) {
 	}
 }
 
-void Presented_Course::removeAllWaitingStudents() {
+void PresentedCourse::removeAllWaitingStudents() {
 	for (auto stu = course_students.begin(); stu != course_students.end(); stu++) {
 		if ((*stu)->getTerm(term_no).getCourseProperties(this).getStatus() == MyCourse::waiting) {
 			course_students.erase(stu);
@@ -310,42 +298,46 @@ void Presented_Course::removeAllWaitingStudents() {
 	waiting_number = 0;
 }
 
-void Presented_Course::setCourseTime(const CourseTime& _course_time) {
+void PresentedCourse::setCourseTime(const CourseTime& _course_time) {
 	course_time = _course_time;
 }
 
-CourseTime Presented_Course::getCourseTime() const {
+CourseTime PresentedCourse::getCourseTime() const {
 	return course_time;
 }
 
-void Presented_Course::setCourseLocation(std::string _course_location) {
+void PresentedCourse::setCourseLocation(std::string _course_location) {
 	course_location = _course_location;
 }
 
-std::string Presented_Course::getCourseLocation() const {
+std::string PresentedCourse::getCourseLocation() const {
 	return course_location;
 }
 
-void Presented_Course::setFinalExamTime(const ExamTime& _finalexam_time) {
+void PresentedCourse::setFinalExamTime(const ExamTime& _finalexam_time) {
 	finalexam_time = _finalexam_time;
 }
 
-ExamTime Presented_Course::getFinalExamTime() const {
+ExamTime PresentedCourse::getFinalExamTime() const {
 	return finalexam_time;
 }
 
-void Presented_Course::setFinalExamLocation(std::string _finalexam_location) {
+void PresentedCourse::setFinalExamLocation(std::string _finalexam_location) {
 	finalexam_location = _finalexam_location;
 }
 
-std::string Presented_Course::getFinalExamLocation() const {
+std::string PresentedCourse::getFinalExamLocation() const {
 	return finalexam_location;
 }
 
-bool Presented_Course::isSameWith(Presented_Course* course) const {
-	if (this->course_id == course->course_id && this->group_id == course->group_id && this->department_id == course->department_id
+bool PresentedCourse::isSameWith(PresentedCourse* course) const {
+	if (this->coursecode == course->coursecode && this->groupcode == course->groupcode && this->departmentcode == course->departmentcode
 		&& this->term_no == course->term_no && this->group_no == course->group_no) {
 		return true;
 	}
 	return false;
+}
+
+int PresentedCourse::getPresentedCourseID() const {
+	return std::stoi(std::to_string(term_no) + std::to_string(getCourseID()) + std::to_string(group_no));
 }
