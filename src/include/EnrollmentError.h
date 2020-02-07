@@ -31,81 +31,81 @@ public:
 };
 
 class TakenSameCourse : public EnrollmentError {
-	Presented_Course* source;
-	Presented_Course* destination;
+	PresentedCourse* source;
+	PresentedCourse* destination;
 public:
-	TakenSameCourse(Presented_Course* _source = nullptr, Presented_Course* _destination = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
-	void setDestination(Presented_Course* _destination);
-	Presented_Course* getDestination() const;
+	TakenSameCourse(PresentedCourse* _source = nullptr, PresentedCourse* _destination = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
+	void setDestination(PresentedCourse* _destination);
+	PresentedCourse* getDestination() const;
 	std::string what() const;
 };
 
 class NotPassedPrerequisite : public EnrollmentError {
 protected:
-	Presented_Course* source;
+	PresentedCourse* source;
 	Course* destination;
 public:
-	NotPassedPrerequisite(Presented_Course* _source = nullptr, Course* _destination = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
+	NotPassedPrerequisite(PresentedCourse* _source = nullptr, Course* _destination = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
 	void setDestination(Course* _destination);
 	Course* getDestination() const;
 	std::string what() const;
-	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, Presented_Course* _source, Course* _destination, char status);
+	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, PresentedCourse* _source, Course* _destination, char status);
 };
 
 class NotTakenCorequisite : public EnrollmentError {
 protected:
-	Presented_Course* source;
+	PresentedCourse* source;
 	Course* destination;
 public:
-	NotTakenCorequisite(Presented_Course* _source = nullptr, Course* _destination = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
+	NotTakenCorequisite(PresentedCourse* _source = nullptr, Course* _destination = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
 	void setDestination(Course* _destination);
 	Course* getDestination() const;
 	std::string what() const;
-	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, Presented_Course* _source, Course* _destination, char status);
+	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, PresentedCourse* _source, Course* _destination, char status);
 };
 
 class CourseTimeOverlap : public EnrollmentError {
 protected:
-	Presented_Course* source;
-	Presented_Course* destination;
+	PresentedCourse* source;
+	PresentedCourse* destination;
 public:
-	CourseTimeOverlap(Presented_Course* _source = nullptr, Presented_Course* _destination = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
-	void setDestination(Presented_Course* _destination);
-	Presented_Course* getDestination() const;
+	CourseTimeOverlap(PresentedCourse* _source = nullptr, PresentedCourse* _destination = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
+	void setDestination(PresentedCourse* _destination);
+	PresentedCourse* getDestination() const;
 	std::string what() const;
-	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, Presented_Course* _source, Presented_Course* _destination, char status);
+	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, PresentedCourse* _source, PresentedCourse* _destination, char status);
 };
 
 class ExamTimeOverlap : public EnrollmentError {
 protected:
-	Presented_Course* source;
-	Presented_Course* destination;
+	PresentedCourse* source;
+	PresentedCourse* destination;
 public:
-	ExamTimeOverlap(Presented_Course* _source = nullptr, Presented_Course* _destination = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
-	void setDestination(Presented_Course* _destination);
-	Presented_Course* getDestination() const;
+	ExamTimeOverlap(PresentedCourse* _source = nullptr, PresentedCourse* _destination = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
+	void setDestination(PresentedCourse* _destination);
+	PresentedCourse* getDestination() const;
 	std::string what() const;
-	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, Presented_Course* _source, Presented_Course* _destination, char status);
+	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, PresentedCourse* _source, PresentedCourse* _destination, char status);
 };
 
 class FullCapacity : public EnrollmentError {
-	Presented_Course* source;
+	PresentedCourse* source;
 public:
-	FullCapacity(Presented_Course* _source = nullptr);
-	void setSource(Presented_Course* _source);
-	Presented_Course* getSource() const;
+	FullCapacity(PresentedCourse* _source = nullptr);
+	void setSource(PresentedCourse* _source);
+	PresentedCourse* getSource() const;
 	std::string what() const;
-	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, Presented_Course* _source, char status);
+	static bool haveExceptionWithStatus(const std::map<EnrollmentError*, char>& exceptions, PresentedCourse* _source, char status);
 };
 
 #endif // ENROLLMENTERROR_H
