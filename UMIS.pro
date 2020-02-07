@@ -24,7 +24,10 @@ SOURCES += \
     students/presentedcoursesform.cpp \
     students/studentwindow.cpp \
     students/tuitionform.cpp \
-    students/weekscheduleform.cpp
+    students/weekscheduleform.cpp \
+    professors/professorwindow.cpp \
+    professors/professorpresentedcoursesform.cpp \
+    professors/professorslistform.cpp 
 
 HEADERS += \
     mainwindow.h \
@@ -34,8 +37,11 @@ HEADERS += \
     students/presentedcoursesform.h \
     students/studentwindow.h \
     students/tuitionform.h \
-    students/weekscheduleform.h
-
+    students/weekscheduleform.h \
+    professors/professorpresentedcoursesform.h \
+    professors/professorslistform.h \
+    professors/professorwindow.h 
+    
 FORMS += \
     mainwindow.ui \
     students/assessmentform.ui \
@@ -44,8 +50,11 @@ FORMS += \
     students/presentedcoursesform.ui \
     students/studentwindow.ui \
     students/tuitionform.ui \
-    students/weekscheduleform.ui
-
+    students/weekscheduleform.ui \
+    professors/professorpresentedcoursesform.ui \
+    professors/professorslistform.ui \
+    professors/professorwindow.ui
+    
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
