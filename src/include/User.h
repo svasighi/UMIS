@@ -17,6 +17,8 @@ public:
 	void setUserName(int _username);
 	int getUserName(void) const;
 	void setPassword(std::string _password);
+	bool checkPassword(std::string _password) const;
+	virtual void changePassword(std::string current_pass, std::string new_pass) = 0;
 	std::string getPassword(void) const;
 	void setFirstName(std::string _firstname);
 	std::string getFirstName(void) const;
@@ -26,8 +28,6 @@ public:
 	short getDepartmentCode(void) const;
 	void setGroupCode(short _groupcode);
 	short getGroupCode(void) const;
-	bool checkPassword(std::string _password) const;
-	virtual void changePassword(std::string current_pass, std::string new_pass) = 0;
 };
 
 #endif // USER_H
