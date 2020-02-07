@@ -26,7 +26,5 @@ private:
     Ui::MainWindow *ui;
     StudentWindow wstudent;
     ProfessorWindow wprofessor;
-    void DatabaseInit();
-    void DatabasePopulate();
 };
 #endif // MAINWINDOW_H

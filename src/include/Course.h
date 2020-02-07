@@ -6,16 +6,15 @@
 #include <map>
 #include <algorithm>
 #include "TimeDate.h"
-#include "BinaryFile.h"
 
 class Professor;
 class Student;
 
 class Course {
 protected:
-	short department_id;
-	short group_id;
-	short course_id;
+	short departmentcode;
+	short groupcode;
+	short coursecode;
 	char credit;
 	std::string name;
 	char type;
@@ -30,14 +29,13 @@ protected:
 	std::vector<Course*> corequisites;
 public:
 	Course();
-	Course(short _department_id, short _group_id, short _course_id, char _credit = 0, std::string _name = "", char _type = -1);
-	static std::map<int, Course*> readAllCourses(void);
-	void setDepartment_id(short _department_id);
-	short getDepartment_id() const;
-	void setGroup_id(short _group_id);
-	short getGroup_id() const;
-	void setCourse_id(short _course_id);
-	short getCourse_id() const;
+	Course(short _departmentcode, short _groupcode, short _coursecode, char _credit = 0, std::string _name = "", char _type = -1);
+	void setDepartmentCode(short _departmentcode);
+	short getDepartmentCode() const;
+	void setGroupCode(short _groupcode);
+	short getGroupCode() const;
+	void setCourseCode(short _coursecode);
+	short getCourseCode() const;
 	void setCredit(char _credit);
 	char getCredit() const;
 	void setName(std::string _name);
@@ -54,10 +52,10 @@ public:
 	void removeCorequisite(Course* course);
 	bool haveSameID(Course* course) const;
 	bool searchSameIDin(const std::vector<Course*>&) const;
-	int getCompleteID() const;
+	int getCourseID() const;
 };
 
-class Presented_Course : public Course {
+class PresentedCourse : public Course {
 protected:
 	int term_no;
 	char group_no;
@@ -71,8 +69,8 @@ protected:
 	ExamTime finalexam_time;
 	std::string finalexam_location;
 public:
-	Presented_Course();
-	Presented_Course(Course* course, int _term_no = 0, char _group_no = 0, Professor* _course_professor = nullptr, int _capacity = 0);
+	PresentedCourse();
+	PresentedCourse(Course* course, int _term_no = 0, char _group_no = 0, Professor* _course_professor = nullptr, int _capacity = 0);
 	void setTerm_no(int _term_no);
 	int getTerm_no() const;
 	void setGroup_no(char _group_no);
@@ -105,7 +103,8 @@ public:
 	ExamTime getFinalExamTime() const;
 	void setFinalExamLocation(std::string _finalexam_location);
 	std::string getFinalExamLocation() const;
-	bool isSameWith(Presented_Course* course) const;
+	bool isSameWith(PresentedCourse* course) const;
+	int getPresentedCourseID() const;
 };
 
 #endif // COURSE_H

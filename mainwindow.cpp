@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "professors/professorwindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,13 +17,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PB_Signin_clicked()
 {
-    connect(&wprofessor, &ProfessorWindow::want2close, this, &MainWindow::show);
-    wprofessor.setGeometry(this->geometry());
+    wprofessor = new ProfessorWindow();
+    wprofessor->setGeometry(this->geometry());
     if (this->isMaximized())
     {
         wprofessor.showMaximized();
     }
-    wprofessor.show();
+    wprofessor->show();
     this->hide();
 }
 

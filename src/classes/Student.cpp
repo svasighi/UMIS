@@ -149,21 +149,20 @@ void MyTerm::removePreliminaryCourse(Course* course) {
 	}
 }
 
-void MyTerm::setCourses(const std::map<Presented_Course*, MyCourse>& _courses) {
+void MyTerm::setCourses(const std::map<PresentedCourse*, MyCourse>& _courses) {
 	courses = _courses;
 }
 
-std::map<Presented_Course*, MyCourse> MyTerm::getCourses() const {
+std::map<PresentedCourse*, MyCourse> MyTerm::getCourses() const {
 	return courses;
 }
 
-std::vector<Presented_Course*> MyTerm::getCoursesWithoutResult() const {
-	std::vector<Presented_Course*> keys;
+std::vector<PresentedCourse*> MyTerm::getCoursesWithoutResult() const {
+	std::vector<PresentedCourse*> keys;
 	keys.reserve(courses.size());
-	std::transform(courses.begin(), courses.end(), std::back_inserter(keys),
-		[](const auto& pair) {
-			return pair.first;
-		});
+	for (const auto& c : courses) {
+		keys.push_back(c.first);
+	}
 	return keys;
 }
 
@@ -199,11 +198,11 @@ int MyTerm::numberofCreditsWithStatus(char _status) const {
 	return n;
 }
 
-void MyTerm::addCourse(Presented_Course* course, char _status) {
+void MyTerm::addCourse(PresentedCourse* course, char _status) {
 	courses[course] = MyCourse(_status);
 }
 
-void MyTerm::removeCourse(Presented_Course* course) {
+void MyTerm::removeCourse(PresentedCourse* course) {
 	if (courses.count(course)) {
 		courses.erase(course);
 	}
@@ -227,55 +226,55 @@ bool MyTerm::haveCourseWithStatus(Course* course, char _status) const {
 	return false;
 }
 
-void MyTerm::setCourseProperties(Presented_Course* course, const MyCourse& properties) {
+void MyTerm::setCourseProperties(PresentedCourse* course, const MyCourse& properties) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course] = properties;
 }
 
-MyCourse MyTerm::getCourseProperties(Presented_Course* course) const {
+MyCourse MyTerm::getCourseProperties(PresentedCourse* course) const {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	return courses.at(course);
 }
 
-void MyTerm::setScoreofCourse(Presented_Course* course, float _score) {
+void MyTerm::setScoreofCourse(PresentedCourse* course, float _score) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setScore(_score);
 }
 
-void MyTerm::setStatusofCourse(Presented_Course* course, char _status) {
+void MyTerm::setStatusofCourse(PresentedCourse* course, char _status) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setStatus(_status);
 }
 
-void MyTerm::setAssessmentAnswersofCourse(Presented_Course* course, const std::vector<char>& answers) {
+void MyTerm::setAssessmentAnswersofCourse(PresentedCourse* course, const std::vector<char>& answers) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setAssessmentAnswers(answers);
 }
 
-void MyTerm::setReviewofCourse(Presented_Course* course, std::string review) {
+void MyTerm::setReviewofCourse(PresentedCourse* course, std::string review) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setReview(review);
 }
 
-void MyTerm::setIsObjectorofCourse(Presented_Course* course, bool is_objector) {
+void MyTerm::setIsObjectorofCourse(PresentedCourse* course, bool is_objector) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setIsObjector(is_objector);
 }
 
-void MyTerm::setObjectionTextofCourse(Presented_Course* course, std::string objection_text) {
+void MyTerm::setObjectionTextofCourse(PresentedCourse* course, std::string objection_text) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setObjectionText(objection_text);
 }
 
-void MyTerm::setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text) {
+void MyTerm::setObjectionReplyTextofCourse(PresentedCourse* course, std::string objection_reply_text) {
 	if (courses.count(course) == 0)
 		throw std::invalid_argument("course not found");
 	courses[course].setObjectionReplyText(objection_reply_text);
@@ -287,8 +286,8 @@ void MyTerm::setObjectionReplyTextofCourse(Presented_Course* course, std::string
 Student::Student()
 	: type(Student::day), grade(-1.0F), supervisor(nullptr) {}
 
-Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, char _type, std::string _field)
-	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
+Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, char _type, std::string _field, short _groupcode)
+	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode, _groupcode) {}
 
 void Student::setType(char _type) {
 	type = _type;
@@ -386,11 +385,10 @@ bool Student::haveCourseWithStatus(Course* course, char _status) const {
 	return false;
 }
 
-bool Student::haveCourseWithStatus(short department_id, short group_id, short course_id, char _status) const {
+bool Student::haveCourseWithStatus(int course_id, char _status) const {
 	for (const auto& t : terms) {
 		for (const auto& c : t.second.getCourses()) {
-			if (c.first->getCourse_id() == department_id && c.first->getGroup_id() == group_id
-				&& c.first->getDepartment_id() == course_id && c.second.getStatus() == _status) {
+			if (c.first->getCourseID() == course_id && c.second.getStatus() == _status) {
 				return true;
 			}
 		}
@@ -448,121 +446,121 @@ void Student::setExceptionStatus(int term_no, EnrollmentError* exception, char _
 	terms[term_no].setExceptionStatus(exception, _status);
 }
 
-std::map<Presented_Course*, MyCourse> Student::getTermCourses(int term_no) const {
+std::map<PresentedCourse*, MyCourse> Student::getTermCourses(int term_no) const {
 	if (terms.count(term_no) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(term_no).getCourses();
 }
 
-std::vector<Presented_Course*> Student::getTermCoursesWithoutResult(int term_no) const {
+std::vector<PresentedCourse*> Student::getTermCoursesWithoutResult(int term_no) const {
 	if (terms.count(term_no) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(term_no).getCoursesWithoutResult();
 }
 
-void Student::addCourse(Presented_Course* course, char _status) {
+void Student::addCourse(PresentedCourse* course, char _status) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].addCourse(course, _status);
 }
 
-void Student::removeCourse(Presented_Course* course) {
+void Student::removeCourse(PresentedCourse* course) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].removeCourse(course);
 }
 
-void Student::setCourseProperties(Presented_Course* course, const MyCourse& properties) {
+void Student::setCourseProperties(PresentedCourse* course, const MyCourse& properties) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setCourseProperties(course, properties);
 }
 
-MyCourse Student::getCourseProperties(Presented_Course* course) const {
+MyCourse Student::getCourseProperties(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course);
 }
 
-void Student::setScoreofCourse(Presented_Course* course, float _score) {
+void Student::setScoreofCourse(PresentedCourse* course, float _score) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setScoreofCourse(course, _score);
 }
 
-float Student::getScoreofCourse(Presented_Course* course) const {
+float Student::getScoreofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getScore();
 }
 
-void Student::setStatusofCourse(Presented_Course* course, char _status) {
+void Student::setStatusofCourse(PresentedCourse* course, char _status) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setStatusofCourse(course, _status);
 }
 
-char Student::getStatusofCourse(Presented_Course* course) const {
+char Student::getStatusofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getStatus();
 }
 
-void Student::setAssessmentAnswersofCourse(Presented_Course* course, std::vector<char> answers) {
+void Student::setAssessmentAnswersofCourse(PresentedCourse* course, std::vector<char> answers) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setAssessmentAnswersofCourse(course, answers);
 }
 
-std::vector<char> Student::getAssessmentAnswersofCourse(Presented_Course* course) const {
+std::vector<char> Student::getAssessmentAnswersofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getAssessmentAnswers();
 }
 
-void Student::setReviewofCourse(Presented_Course* course, std::string review) {
+void Student::setReviewofCourse(PresentedCourse* course, std::string review) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setReviewofCourse(course, review);
 }
 
-std::string Student::getReviewofCourse(Presented_Course* course) const {
+std::string Student::getReviewofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getReview();
 }
 
-void Student::setIsObjectorofCourse(Presented_Course* course, bool is_objector) {
+void Student::setIsObjectorofCourse(PresentedCourse* course, bool is_objector) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setIsObjectorofCourse(course, is_objector);
 }
 
-bool Student::getIsObjectorofCourse(Presented_Course* course) const {
+bool Student::getIsObjectorofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getIsObjector();
 }
 
-void Student::setObjectionTextofCourse(Presented_Course* course, std::string objection_text) {
+void Student::setObjectionTextofCourse(PresentedCourse* course, std::string objection_text) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setObjectionTextofCourse(course, objection_text);
 }
 
-std::string Student::getObjectionTextofCourse(Presented_Course* course) const {
+std::string Student::getObjectionTextofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectionText();
 }
 
-void Student::setObjectionReplyTextofCourse(Presented_Course* course, std::string objection_reply_text) {
+void Student::setObjectionReplyTextofCourse(PresentedCourse* course, std::string objection_reply_text) {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	terms[course->getTerm_no()].setObjectionReplyTextofCourse(course, objection_reply_text);
 }
 
-std::string Student::getObjectionReplyTextofCourse(Presented_Course* course) const {
+std::string Student::getObjectionReplyTextofCourse(PresentedCourse* course) const {
 	if (terms.count(course->getTerm_no()) == 0)
 		throw std::invalid_argument("term not found");
 	return terms.at(course->getTerm_no()).getCourseProperties(course).getObjectionReplyText();
@@ -576,10 +574,10 @@ int Student::computeTuition(int term_no) {
 	return terms[term_no].numberofCredits();// * credit_fee[type] + const_tuition;
 }
 
-std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses)
+std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_no, const std::map<PresentedCourse*, char>& _courses)
 {
 	std::vector<std::unique_ptr<EnrollmentError>> errors;
-	std::map<Presented_Course*, char> courses;
+	std::map<PresentedCourse*, char> courses;
 	std::vector<Course*> keys;
 	std::map<EnrollmentError*, char> exceptions;
 	for (const auto& c : _courses) {
@@ -664,7 +662,7 @@ std::vector<std::unique_ptr<EnrollmentError>> Student::checkEnrollment(int term_
 	return errors;
 }
 
-std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term_no, const std::map<Presented_Course*, char>& _courses) {
+std::vector<std::unique_ptr<EnrollmentError>> Student::commitEnrollment(int term_no, const std::map<PresentedCourse*, char>& _courses) {
 	std::vector<std::unique_ptr<EnrollmentError>> temp = checkEnrollment(term_no, _courses);
 	if (terms.count(term_no) == 0) {
 		this->addTerm(term_no, MyTerm::enrollment_in_action);
