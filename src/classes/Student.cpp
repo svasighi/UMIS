@@ -160,10 +160,9 @@ std::map<PresentedCourse*, MyCourse> MyTerm::getCourses() const {
 std::vector<PresentedCourse*> MyTerm::getCoursesWithoutResult() const {
 	std::vector<PresentedCourse*> keys;
 	keys.reserve(courses.size());
-	std::transform(courses.begin(), courses.end(), std::back_inserter(keys),
-		[](const auto& pair) {
-			return pair.first;
-		});
+	for (const auto& c : courses) {
+		keys.push_back(c.first);
+	}
 	return keys;
 }
 
