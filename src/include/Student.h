@@ -124,7 +124,7 @@ protected:
 	std::map<int, MyTerm> terms;
 public:
 	Student();
-	Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, char _type = Student::day, std::string _field = "");
+	Student(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, char _type = Student::day, std::string _field = "", short _groupcode = 0);
 	void setType(char _type);
 	char getType() const;
 	void setField(std::string _field);
