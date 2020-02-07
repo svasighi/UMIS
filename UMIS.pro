@@ -2,7 +2,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -16,41 +16,43 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dbmanager.cpp \
     main.cpp \
     mainwindow.cpp \
-    students/assessmentform.cpp \
-    students/examscheduleform.cpp \
-    students/fullinformationform.cpp \
+#    students/assessmentform.cpp \
+#    students/examscheduleform.cpp \
+#    students/fullinformationform.cpp \
     students/presentedcoursesform.cpp \
     students/studentwindow.cpp \
-    students/tuitionform.cpp \
-    students/weekscheduleform.cpp \
+#    students/tuitionform.cpp \
+#    students/weekscheduleform.cpp \
     professors/professorwindow.cpp \
     professors/professorpresentedcoursesform.cpp \
     professors/professorslistform.cpp
 
 HEADERS += \
+    dbmanager.h \
     mainwindow.h \
-    students/assessmentform.h \
-    students/examscheduleform.h \
-    students/fullinformationform.h \
+#    students/assessmentform.h \
+#    students/examscheduleform.h \
+#    students/fullinformationform.h \
     students/presentedcoursesform.h \
     students/studentwindow.h \
-    students/tuitionform.h \
-    students/weekscheduleform.h \
+#    students/tuitionform.h \
+#    students/weekscheduleform.h \
     professors/professorpresentedcoursesform.h \
     professors/professorslistform.h \
     professors/professorwindow.h
     
 FORMS += \
     mainwindow.ui \
-    students/assessmentform.ui \
-    students/examscheduleform.ui \
-    students/fullinformationform.ui \
+#    students/assessmentform.ui \
+#    students/examscheduleform.ui \
+#    students/fullinformationform.ui \
     students/presentedcoursesform.ui \
     students/studentwindow.ui \
-    students/tuitionform.ui \
-    students/weekscheduleform.ui \
+#    students/tuitionform.ui \
+#    students/weekscheduleform.ui \
     professors/professorpresentedcoursesform.ui \
     professors/professorslistform.ui \
     professors/professorwindow.ui

@@ -2,11 +2,11 @@
 #include "studentwindow.h"
 #include "ui_studentwindow.h"
 #include "presentedcoursesform.h"
-#include "weekscheduleform.h"
-#include "examscheduleform.h"
-#include "tuitionform.h"
-#include "assessmentform.h"
-#include "fullinformationform.h"
+//#include "weekscheduleform.h"
+//#include "examscheduleform.h"
+//#include "tuitionform.h"
+//#include "assessmentform.h"
+//#include "fullinformationform.h"
 
 
 StudentWindow::StudentWindow(QWidget *parent) :
@@ -47,12 +47,13 @@ void StudentWindow::on_TW_Program_tabCloseRequested(int index)
     }
 }
 
+
 void StudentWindow::on_PB_PresentedCourses_clicked()
 {
     ui->TW_Program->addTab(new PresentedCoursesForm(), QString("دروس ارائه شده در ترم"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
-
+/*
 void StudentWindow::on_PB_WeekSchedule_clicked()
 {
     ui->TW_Program->addTab(new WeekScheduleForm(), QString("برنامه هفتگی دانشجو"));
@@ -82,3 +83,5 @@ void StudentWindow::on_PB_FullInformatin_clicked()
     ui->TW_Program->addTab(new FullInformationForm(), QString("اطلاعات جامع دانشجو"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
+
+*/

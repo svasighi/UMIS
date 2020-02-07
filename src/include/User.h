@@ -2,6 +2,8 @@
 #define USER_H
 
 #include <string>
+#include <memory>
+#include "md5.h"
 
 class User {
 protected:
@@ -29,5 +31,4 @@ public:
 	bool checkPassword(std::string _password) const;
 	virtual void changePassword(std::string current_pass, std::string new_pass); //forward definition
 };
-
 #endif // USER_H

@@ -100,7 +100,7 @@
          <item row="0" column="0">
           <widget class="QTabWidget" name="TW_ProfMenu">
            <property name="currentIndex">
-            <number>1</number>
+            <number>4</number>
            </property>
            <widget class="QWidget" name="tab_Menu_Courses">
             <attribute name="title">

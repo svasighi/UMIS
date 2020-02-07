@@ -1,5 +1,5 @@
 #include "professorwindow.h"
-#include "ui_professorview.h"
+#include "ui_professorwindow.h"
 #include "professorpresentedcoursesform.h"
 #include "professorslistform.h"
 
@@ -34,34 +34,34 @@ void ProfessorWindow::on_PB_PresentedCourses_clicked()
 {
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("دروس ارائه شده در ترم"));
 }
-void ProfessorWindow::on_PB_EnterScores(){
+void ProfessorWindow::on_PB_EnterScores_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("ثیت نمرات"));
 }
-void ProfessorWindow::on_PB_StudentsObjections(){
+void ProfessorWindow::on_PB_StudentsObjections_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("اعتراضات دانشجویان"));
 }
-void ProfessorWindow::on_PB_SrudentsList(){
+void ProfessorWindow::on_PB_SrudentsList_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("مشاهده لیست دانشجویان"));
 }
-void ProfessorWindow::on_PB_Exceptions(){
+void ProfessorWindow::on_PB_Exceptions_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("فرم های استثنا"));
 }
-void ProfessorWindow::on_PB_PreEnrollmentStats(){
+void ProfessorWindow::on_PB_PreEnrollmentStats_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("وضعیت ثبت نام مقدماتی"));
 }
-void ProfessorWindow::on_PB_AddCourse(){
+void ProfessorWindow::on_PB_AddCourse_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("افزودن درس"));
 }
-void ProfessorWindow::on_PB_AddPresentedCourse(){
+void ProfessorWindow::on_PB_AddPresentedCourse_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("افزودن درس ارائه شده"));
 }
-void ProfessorWindow::on_PB_ProfessorsAssesment(){
+void ProfessorWindow::on_PB_ProfessorsAssesment_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("آمار ارزشیابی اساتید"));
 }
-void ProfessorWindow::on_PB_CalculateSalary(){
+void ProfessorWindow::on_PB_CalculateSalary_clicked(){
     ui->TW_Program->addTab(new ProfessorPresentedCoursesForm(), QString("محاسبه حقوق"));
 }
-void ProfessorWindow::on_PB_ProfessorsList(){
+void ProfessorWindow::on_PB_ProfessorsList_clicked(){
     ui->TW_Program->addTab(new ProfessorsListForm(), QString("لیست اساتید"));
 
 }

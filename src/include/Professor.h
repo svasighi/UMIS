@@ -12,11 +12,11 @@
 #include <memory>
 
 // .............................PROFESSOR......................................
-class Professor : public User {
+class Professor : virtual public User {
 protected:
 	std::vector<Presented_Course*> courses; //list of presented courses
 public:
-    Professor():User (){}
+   Professor():User (){}
    Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
              :User(_username, _password, _firstname, _lastname, _departmentcode){}
     void setCourses(std::vector<Presented_Course*>);
@@ -28,7 +28,7 @@ public:
 	//virtual void changePassword(std::string current_pass, std::string new_pass) = 0; //forward definition
 };
 // .............................AdjunctProfessor......................................
-class AdjunctProfessor : public Professor { 
+class AdjunctProfessor : public Professor {
 public:
     AdjunctProfessor(){}
     AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
@@ -36,7 +36,7 @@ public:
 };
 
 // .............................Faculty......................................
-class Faculty : public Professor {
+class Faculty :public Professor {
 protected:
 	int degree;
 	bool is_supervisor;
@@ -74,8 +74,8 @@ public:
 };
 
 // .............................DepartmentAcademicAssistant......................................
-class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
 
+class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
 public:
     DepartmentAcademicAssistant(){}
 };

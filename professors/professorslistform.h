@@ -19,6 +19,8 @@ private slots:
     void on_readData_clicked();
 
 private:
+
+private:
     Ui::ProfessorsListForm *ui;
 };
 

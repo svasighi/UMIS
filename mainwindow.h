@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    static void DatabaseConnect();
 
 private slots:
     void on_PB_Signin_clicked();
@@ -25,7 +26,6 @@ private:
     Ui::MainWindow *ui;
     StudentWindow wstudent;
     ProfessorWindow wprofessor;
-    void DatabaseConnect();
     void DatabaseInit();
     void DatabasePopulate();
 };

@@ -1,5 +1,6 @@
 #include "../include/User.h"
-#include "../include/md5.h"
+#include "../include/AcademicAffairs.h"
+#include "../include/Professor.h"
 
 User::User()
 	: username(0), departmentcode(0), groupcode(0) {}
