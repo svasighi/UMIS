@@ -136,6 +136,7 @@ public:
 	Faculty* getSupervisor() const;
 	void setTerms(const std::map<int, MyTerm>& _terms);
 	std::map<int, MyTerm> getTerms() const;
+	void changePassword(std::string current_pass, std::string new_pass) {} // forward definition
 	int numberofTermsonProbation() const;
 	int numberofAllCreditsWithStatus(char _status) const;
 	bool haveCourse(Course* course) const;
