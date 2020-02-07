@@ -1,4 +1,4 @@
-#include "Professor.h"
+#include "../inlcude/Professor.h"
 
 void Professor::setCourses(std::vector<Presented_Course*> _courses) {
 	courses = _courses;
