@@ -286,8 +286,8 @@ void MyTerm::setObjectionReplyTextofCourse(PresentedCourse* course, std::string 
 Student::Student()
 	: type(Student::day), grade(-1.0F), supervisor(nullptr) {}
 
-Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, int _departmentcode, char _type, std::string _field)
-	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode) {}
+Student::Student(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, char _type, std::string _field, short _groupcode)
+	: type(_type), field(_field), grade(-1.0F), supervisor(nullptr), User(_username, _password,_firstname, _lastname, _departmentcode, _groupcode) {}
 
 void Student::setType(char _type) {
 	type = _type;
