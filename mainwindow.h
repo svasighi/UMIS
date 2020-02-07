@@ -23,8 +23,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    StudentWindow wstudent;
-    ProfessorWindow wprofessor;
+    StudentWindow *wstudent;
+    ProfessorWindow *wprofessor;
     void DatabaseConnect();
     void DatabaseInit();
     void DatabasePopulate();
