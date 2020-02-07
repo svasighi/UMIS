@@ -9,7 +9,7 @@
 
 class Faculty;
 
-class AcademicAffairsStaff : virtual public User {
+class AcademicAffairsStaff :  public User {
 protected:
 	std::string career;
 	std::map<int, Student*> students;
