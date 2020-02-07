@@ -75,10 +75,6 @@ public:
 };
 
 // .............................DepartmentAcademicAssistant......................................
-<<<<<<< HEAD
-=======
-class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
->>>>>>> fc4f65108d018a0163c52a3ed27b07900b098501
 
 class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
 public:
