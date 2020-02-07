@@ -16,6 +16,10 @@ void AcademicAffairsStaff::setStudents(std::map<int, Student*> _students) {
 std::map<int, Student*> AcademicAffairsStaff::getStudents() const {
 	return students;
 }
+
+
+
+
 void TopAcademicAffairsStaff::changeDepartmentHead(Faculty* _faculty) {
 	bool done = false;
 	std::map<int, Professor* > _professors; ////////////////////////////////////////// = Professor::readAllProfessors();
@@ -42,3 +46,21 @@ void TopAcademicAffairsStaff::changeDepartmentHead(Faculty* _faculty) {
 	}
 }
 
+
+
+
+void DepartmentAcademicAffairsStaff::setCourses(std::vector<Course*> _courses) {
+	courses = _courses;
+}
+
+std::vector<Course*> DepartmentAcademicAffairsStaff::getCourses(void) const {
+	return courses;
+}
+
+void DepartmentAcademicAffairsStaff::setPresentedCourses(std::vector<PresentedCourse*> _PresentedCourses) {
+	PresentedCourses = _PresentedCourses;
+}
+
+std::vector<PresentedCourse*> DepartmentAcademicAffairsStaff::getPresentedCourses(void) const {
+	return PresentedCourses;
+}
