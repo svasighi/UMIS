@@ -11,23 +11,20 @@
 #include "Student.h"
 #include "AcademicAffairs.h"
 
-class DepartmentAcademicAffairsStaff;
-
 // .............................PROFESSOR......................................
-class Professor : public User {
+class Professor : virtual public User {
 protected:
 	std::vector<PresentedCourse*> courses; //list of presented courses
 public:
-	Professor() :User() {}
-	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-		:User(_username, _password, _firstname, _lastname, _departmentcode) {}
-	void setCourses(std::vector<PresentedCourse*>);
+	Professor() {}
+	Professor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, short _groupcode = 0)
+		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
+	void setCourses(const std::vector<PresentedCourse*>&);
 	std::vector<PresentedCourse*> getCourses(void) const;
 	void addCourse(PresentedCourse*);
 	void removeCourse(PresentedCourse*);
 	void replyToObjecton(Student*, PresentedCourse*, std::string);
 	std::string viewObjectonReply(Student*, PresentedCourse*) const;
-	virtual void changePassword(std::string current_pass, std::string new_pass) = 0; //forward definition
 };
 // .............................AdjunctProfessor......................................
 class AdjunctProfessor : public Professor {
@@ -35,7 +32,7 @@ public:
 	AdjunctProfessor() {}
 	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
 		: Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
-	void changePassword(std::string current_pass, std::string new_pass){} //forward definition
+	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
 };
 
 // .............................Faculty......................................
@@ -45,17 +42,18 @@ protected:
 	bool is_supervisor;
 	std::vector<Student*> supervised_students;
 public:
-	Faculty() {} //default constructor
-	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-		:Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+	Faculty()
+		: degree(0), is_supervisor(false) {} //default constructor
+	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, int _degree = 0, bool _is_supervisor = false)
+		: degree(_degree), is_supervisor(_is_supervisor), Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
 	void setDegree(int _degree);
 	int getDegree(void) const;
-	void setAsSupervisor(void);
+	void setAsSupervisor(bool = true);
 	bool getisSupervisor(void) const;
-	void setSupervisedStudents(std::vector<Student*>);
+	void setSupervisedStudents(const std::vector<Student*>&);
 	std::vector<Student*> getSupervisedStudents(void) const;
-	void addSupervisedStudents(Student*);
-	void removeSupervisedStudents(Student*);
+	void addSupervisedStudent(Student*);
+	void removeSupervisedStudent(Student*);
 	void applyEnrollment(Student*);
 	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
 };
@@ -66,8 +64,8 @@ class GroupManager : public Faculty {
 	std::map<int, PresentedCourse*> group_courses;
 public:
 	GroupManager() {}
-	std::map<int, PresentedCourse*> getGroupCourses();
 	void setGroupCourses(std::map<int, PresentedCourse*>);
+	std::map<int, PresentedCourse*> getGroupCourses();
 	void createGroupCourse(int, std::string, int, int, int, int, Professor*, int, std::vector<Course*>, std::vector<Course*>);//asasasa
 	void deleteGroupCourse(PresentedCourse*);//asasasa
 	void updateGroupCourse(PresentedCourse*);//asasasa
@@ -77,7 +75,7 @@ public:
 };
 
 // .............................DepartmentAcademicAssistant......................................
-class DepartmentAcademicAssistant : public Faculty, public AcademicAffairsStaff {
+class DepartmentAcademicAssistant : public Faculty, public DepartmentAcademicAffairsStaff {
 
 public:
 	DepartmentAcademicAssistant() {}
@@ -93,7 +91,7 @@ public:
 	std::map<int, Professor*> getDepartmentProfessors(void) const;
 	void setDepartmentProfessors(std::map<int, Professor*>);
 	std::map<PresentedCourse*, std::vector<char>> ProfessorAssessment(Professor*) const;
-	void addProfessor(int, std::string, std::string, std::string);
+	void addFaculty(int, std::string, std::string, std::string);
 	void addAdjunctProfessor(int, std::string, std::string, std::string); //sadasdasdasd
 	void addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string);
 
@@ -103,21 +101,6 @@ public:
 	void deleteProfessor(Professor*);
 	void readAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;
-};
-
-// .............................DepartmentAcademicAffairsStaff......................................
-class DepartmentAcademicAffairsStaff : public AcademicAffairsStaff {
-protected:
-	std::vector<Course*> courses;
-	std::vector<PresentedCourse*> PresentedCourses;
-public:
-	DepartmentAcademicAffairsStaff() {}
-	//active or diactive time conflict
-	//activate prequisit or co requisit
-	void setCourses(std::vector<Course*>);
-	std::vector<Course*> getCourses(void) const;
-	void setPresentedCourses(std::vector<PresentedCourse*>);
-	std::vector<PresentedCourse*> getPresentedCourses(void) const;
 };
 
 #endif // PROFESSOR_H
