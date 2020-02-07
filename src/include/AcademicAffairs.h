@@ -14,6 +14,9 @@ protected:
 	std::string career;
 	std::map<int, Student*> students;
 public:
+	AcademicAffairsStaff() {}
+	AcademicAffairsStaff(int _username, std::string _password, std::string _firstname, std::string _lastname, std::string _career = "", short _departmentcode = 0)
+		: career(_career), User(_username, _password, _firstname, _lastname, _departmentcode, 0) {}
 	void setCareer(std::string);
 	std::string getCareer(void) const;
 	void setStudents(std::map<int, Student*>);
@@ -23,6 +26,9 @@ public:
 class TopAcademicAffairsStaff : public AcademicAffairsStaff {
 
 public:
+	TopAcademicAffairsStaff() {}
+	TopAcademicAffairsStaff(int _username, std::string _password, std::string _firstname, std::string _lastname, std::string _career = "")
+		: AcademicAffairsStaff(_username, _password, _firstname, _lastname, _career, 0) {}
 	void changeDepartmentHead(Faculty*);
 	void changePassword(std::string current_pass, std::string new_pass) {} //forward definition
 };
@@ -34,7 +40,8 @@ protected:
 	std::vector<PresentedCourse*> PresentedCourses;
 public:
 	DepartmentAcademicAffairsStaff() {}
-
+	DepartmentAcademicAffairsStaff(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, std::string _career = "")
+		: AcademicAffairsStaff(_username, _password, _firstname, _lastname, _career, _departmentcode) {}
 	//active or diactive time conflict
 	//activate prequisit or co requisit
 	void setCourses(std::vector<Course*>);
