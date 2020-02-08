@@ -5,6 +5,7 @@
 #include "professorpresentedcoursesform.h"
 #include "professorslistform.h"
 
+extern int choice;
 extern Professor* Extprofessor ;
 
 ProfessorWindow::ProfessorWindow(QWidget *parent) :
@@ -12,7 +13,7 @@ ProfessorWindow::ProfessorWindow(QWidget *parent) :
     ui(new Ui::ProfessorWindow)
 {
     ui->setupUi(this);
-    ui->L_User->setText( QString(Extprofessor->getUserName()));
+    ui->L_User->setText( QString(Extprofessor->getUserName()) );
     if(typeid (Extprofessor) != typeid(DepartmentHead))
         ui->TW_ProfMenu->setTabEnabled(4,false);
     if(typeid (Extprofessor) != typeid(GroupManager))
@@ -29,7 +30,6 @@ ProfessorWindow::~ProfessorWindow()
 }
 void ProfessorWindow::on_TB_Signout_clicked()
 {
-    choice = 0;
     MainWindow *wmain = new MainWindow();
     wmain->setGeometry(this->geometry());
     if (this->isMaximized())

@@ -9,7 +9,6 @@
 #include "assessmentform.h"
 #include "fullinformationform.h"
 
-extern int choice;
 extern Student* Extstudent ;
 
 StudentWindow::StudentWindow(QWidget *parent) :
@@ -29,7 +28,7 @@ StudentWindow::~StudentWindow()
 
 void StudentWindow::on_TB_Signout_clicked()
 {
-    choice = 0;
+
     MainWindow *wmain = new MainWindow();
     wmain->setGeometry(this->geometry());
     if (this->isMaximized())

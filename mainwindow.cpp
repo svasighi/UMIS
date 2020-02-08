@@ -20,22 +20,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PB_Signin_clicked()
 {
-    bool haserror = false;
+    bool passhaserror = false;
+    bool userhaserror = false;
 
     if(ui->LE_Password->text().length() < 6){
-        haserror = true;
+        passhaserror = true;
         ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
     }else{
         ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,255,255); selection-background-color: rgb(233, 99, 0); }");;
+        passhaserror = false;
     }
     if (ui->LE_Username->text().length() == 0) {
-        haserror = true;
+        userhaserror  = true;
         ui->LE_Username->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
     }else{
-        ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,255,255); selection-background-color: rgb(233, 99, 0); }");;
+        userhaserror  = false;
+        ui->LE_Username->setStyleSheet("QLineEdit { background: rgb(255,255,255); selection-background-color: rgb(233, 99, 0); }");;
     }
 
-    if(!haserror){
+    if(!passhaserror && !userhaserror){
         QString password = QString(QCryptographicHash::hash((ui->LE_Password->text().toUtf8()) , QCryptographicHash::Md5).toHex());
         int username = ui->LE_Username->text().toInt();
         if(ui->RB_Student->isChecked()){
@@ -51,6 +54,8 @@ void MainWindow::on_PB_Signin_clicked()
                 }
                 wstudent->show();
                 this->hide();
+            }else {
+                ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
             }
         }
         else if (ui->RB_Professor->isChecked()) {
@@ -65,16 +70,14 @@ void MainWindow::on_PB_Signin_clicked()
             }
             wprofessor->show();
             this->hide();
+        }else {
+            ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
         }
+       }
+        else if (ui->RB_Staff->isChecked())
+        {
 
-    }
-    else if (ui->RB_Staff->isChecked())
-    {
-
-    }
-    else
-    {
-        QMessageBox::warning(this, "خطا", "یکی از گزینه ها را انتخاب کنید");
+        }
     }
 
 }
@@ -83,3 +86,5 @@ void MainWindow::on_PB_Exit_clicked()
 {
     QApplication::quit();
 }
+
+
