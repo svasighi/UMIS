@@ -4,7 +4,6 @@
 #include <QCryptographicHash>
 
 DbManager db = DbManager();
-extern int isChecked;
 extern Professor* Extprofessor = nullptr;
 extern Student* Extstudent = nullptr;
 MainWindow::MainWindow(QWidget *parent)
@@ -39,7 +38,7 @@ void MainWindow::on_PB_Signin_clicked()
     if(!haserror){
         QString password = QString(QCryptographicHash::hash((ui->LE_Password->text().toUtf8()) , QCryptographicHash::Md5).toHex());
         int username = ui->LE_Username->text().toInt();
-        if(choice == 0){
+        if(ui->RB_Student->isChecked()){
             Student* student =  db.getStudent(username);
             if(student->checkPassword(password.toStdString()))
             {
@@ -54,7 +53,7 @@ void MainWindow::on_PB_Signin_clicked()
                 this->hide();
             }
         }
-        else if (choice == 1) {
+        else if (ui->RB_Professor->isChecked()) {
         Professor* professor =  db.getProfessor(username);
         if(professor->checkPassword(password.toStdString())){
             Extprofessor = professor;
