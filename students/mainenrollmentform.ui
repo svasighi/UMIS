@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AssessmentForm</class>
- <widget class="QWidget" name="AssessmentForm">
+ <class>MainEnrollmentForm</class>
+ <widget class="QWidget" name="MainEnrollmentForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ارزشیابی</string>
+   <string>Form</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>

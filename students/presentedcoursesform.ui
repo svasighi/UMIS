@@ -11,107 +11,193 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>دروس ارائه شده در ترم</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>
   </property>
-  <widget class="QPushButton" name="PB_Show">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>250</y>
-     <width>93</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>مشاهده گزارش</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="TBW_1">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>100</y>
-     <width>421</width>
-     <height>291</height>
-    </rect>
-   </property>
-   <property name="rowCount">
-    <number>2</number>
-   </property>
-   <property name="columnCount">
-    <number>2</number>
-   </property>
-   <row/>
-   <row/>
-   <column/>
-   <column/>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>100</y>
-     <width>249</width>
-     <height>136</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="L_TermNo">
-      <property name="text">
-       <string>ترم ارائه درس</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="LE_TermNo"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="L_DepartmentCode">
-      <property name="text">
-       <string>شماره دانشکده</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="LE_DepartmentCode"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="L_GroupCode">
-      <property name="text">
-       <string>گروه آموزشی درس</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="LE_GroupCode"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="L_CourseCode">
-      <property name="text">
-       <string>شماره درس</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="LE_CourseCode"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="L_GroupNo">
-      <property name="text">
-       <string>گروه درس</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="LE_GroupNo"/>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="VL_Form">
+     <item>
+      <layout class="QHBoxLayout" name="HL_Top">
+       <item>
+        <widget class="QLabel" name="L_TermNo">
+         <property name="text">
+          <string>ترم :</string>
+         </property>
+         <property name="buddy">
+          <cstring>LE_TermNo</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="LE_TermNo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="L_DepartmentCode">
+         <property name="text">
+          <string>دانشکده :</string>
+         </property>
+         <property name="buddy">
+          <cstring>LE_DepartmentCode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="LE_DepartmentCode">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="L_GroupCode">
+         <property name="text">
+          <string>گروه آموزشی :</string>
+         </property>
+         <property name="buddy">
+          <cstring>LE_GroupCode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="LE_GroupCode">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="L_CourseCode">
+         <property name="text">
+          <string>شماره درس :</string>
+         </property>
+         <property name="buddy">
+          <cstring>LE_CourseCode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="LE_CourseCode">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PB_ShowResult">
+         <property name="text">
+          <string>مشاهده</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="TBW_Courses">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::NoSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <column>
+        <property name="text">
+         <string>شماره درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>نام درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>واحد</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ظرفیت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ثبت نام شده</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تعداد لیست انتظار</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>نام استاد</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>زمان ارائه درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>مکان ارائه درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>امتحان</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
+ <tabstops>
+  <tabstop>LE_TermNo</tabstop>
+  <tabstop>LE_DepartmentCode</tabstop>
+  <tabstop>LE_GroupCode</tabstop>
+  <tabstop>LE_CourseCode</tabstop>
+  <tabstop>PB_ShowResult</tabstop>
+  <tabstop>TBW_Courses</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

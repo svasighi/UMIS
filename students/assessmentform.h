@@ -2,6 +2,7 @@
 #define ASSESSMENTFORM_H
 
 #include <QWidget>
+#include "../variables.h"
 
 namespace Ui {
 class AssessmentForm;

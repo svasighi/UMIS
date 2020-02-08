@@ -2,6 +2,7 @@
 #define STUDENTWINDOW_H
 
 #include <QWidget>
+#include "../variables.h"
 
 namespace Ui {
 class StudentWindow;
@@ -24,10 +25,12 @@ private slots:
     void on_PB_PresentedCourses_clicked();
     void on_PB_WeekSchedule_clicked();
     void on_PB_ExamSchedule_clicked();
-    /*void on_PB_Tuition_clicked();*/
+    void on_PB_Tuition_clicked();
     void on_PB_Assessment_clicked();
     void on_PB_FullInformatin_clicked();
-
+    void on_PB_EnrollTime_clicked();
+    void on_PB_PrepEnroll_clicked();
+    void on_PB_MainEnroll_clicked();
 };
 
 #endif // STUDENTWINDOW_H
