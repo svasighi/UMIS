@@ -22,10 +22,12 @@ SOURCES += \
     students/assessmentform.cpp \
     students/examscheduleform.cpp \
     students/fullinformationform.cpp \
+    students/mainenrollmentform.cpp \
+    students/prepenrollmentform.cpp \
     students/presentedcoursesform.cpp \
     students/studentwindow.cpp \
-#    students/tuitionform.cpp \
-    students/weekscheduleform.cpp \
+    students/tuitionform.cpp \
+    students/weekscheduleform.cpp
     professors/professorwindow.cpp \
     professors/professorpresentedcoursesform.cpp \
     professors/professorslistform.cpp\
@@ -43,9 +45,11 @@ HEADERS += \
     students/assessmentform.h \
     students/examscheduleform.h \
     students/fullinformationform.h \
+    students/mainenrollmentform.h \
+    students/prepenrollmentform.h \
     students/presentedcoursesform.h \
     students/studentwindow.h \
- #  students/tuitionform.h \
+    students/tuitionform.h \
     students/weekscheduleform.h \
     professors/professorpresentedcoursesform.h \
     professors/professorslistform.h \
@@ -56,17 +60,20 @@ HEADERS += \
     src/EnrollmentError.h \
     src/AcademicAffairs.h \
     src/course.h \
-    src/professor.h
+    src/professor.h \
+    variables.h
 
 FORMS += \
     mainwindow.ui \
     students/assessmentform.ui \
     students/examscheduleform.ui \
     students/fullinformationform.ui \
+    students/mainenrollmentform.ui \
+    students/prepenrollmentform.ui \
     students/presentedcoursesform.ui \
     students/studentwindow.ui \
-    #students/tuitionform.ui \
-    students/weekscheduleform.ui \
+    students/tuitionform.ui \
+    students/weekscheduleform.ui
     professors/professorpresentedcoursesform.ui \
     professors/professorslistform.ui \
     professors/professorwindow.ui
