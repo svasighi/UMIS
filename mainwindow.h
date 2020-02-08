@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "dbmanager.h"
+#include "variables.h"
 #include "students/studentwindow.h"
 #include "professors/professorwindow.h"
 
@@ -16,21 +18,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    static void DatabaseConnect();
 
 private slots:
     void on_PB_Signin_clicked();
     void on_PB_Exit_clicked();
 
-    void on_radioButton_3_clicked();
-
-    void on_radioButton_2_clicked();
-
-    void on_radioButton_clicked();
-
 private:
     Ui::MainWindow *ui;
     StudentWindow *wstudent;
     ProfessorWindow *wprofessor;
+    static void DatabaseConnect();
 };
 #endif // MAINWINDOW_H

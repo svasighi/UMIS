@@ -94,7 +94,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="HS_Buttons">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -155,12 +155,12 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QHBoxLayout" name="HL_Type">
           <property name="sizeConstraint">
            <enum>QLayout::SetMaximumSize</enum>
           </property>
           <item>
-           <widget class="QRadioButton" name="radioButton_3">
+           <widget class="QRadioButton" name="RB_Student">
             <property name="text">
              <string>دانشجو</string>
             </property>
@@ -170,14 +170,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioButton_2">
+           <widget class="QRadioButton" name="RB_Professor">
             <property name="text">
              <string>استاد</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QRadioButton" name="RB_Staff">
             <property name="text">
              <string>کارمند</string>
             </property>
@@ -195,6 +195,9 @@
  <tabstops>
   <tabstop>LE_Username</tabstop>
   <tabstop>LE_Password</tabstop>
+  <tabstop>RB_Student</tabstop>
+  <tabstop>RB_Professor</tabstop>
+  <tabstop>RB_Staff</tabstop>
   <tabstop>PB_Signin</tabstop>
   <tabstop>PB_Exit</tabstop>
  </tabstops>
