@@ -30,7 +30,7 @@ class AdjunctProfessor : public Professor {
 public:
 	AdjunctProfessor() {}
 	AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode)
-		: Professor(_username, _password, _firstname, _lastname, _departmentcode) {}
+		: User(_username, _password, _firstname, _lastname, _departmentcode) {}
 	bool changePassword(std::string current_pass, std::string new_pass);
 };
 
@@ -43,7 +43,7 @@ public:
 	Faculty()
 		: degree(0), is_supervisor(false) {}
 	Faculty(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode, short _groupcode = 0, int _degree = 0, bool _is_supervisor = false)
-		: degree(_degree), is_supervisor(_is_supervisor), Professor(_username, _password, _firstname, _lastname, _departmentcode, _groupcode) {}
+		: degree(_degree), is_supervisor(_is_supervisor), User(_username, _password, _firstname, _lastname, _departmentcode, _groupcode) {}
 	void setDegree(int);
 	int getDegree(void) const;
 	void setAsSupervisor(bool = true);
