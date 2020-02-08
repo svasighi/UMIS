@@ -2,7 +2,6 @@
 #define USER_H
 
 #include <string>
-#include "md5.h"
 
 class User {
 protected:

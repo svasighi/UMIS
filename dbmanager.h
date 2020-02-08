@@ -8,25 +8,18 @@
 #include <QDebug>
 #include <vector>
 
-#include <src/include/User.h>
-#include <src/classes/User.cpp>
-#include <src/include/Professor.h>
-#include <memory>
+#include <src/Professor.h>
 
 class DbManager
 {
 public:
-    DbManager(const QString& path);
-    bool addUser(const QString& name);
-    bool UserExist(int);
-    bool deleteUser(const int);
-    std::pair<QString, std::unique_ptr<User>> getUser(int username);
-    // professor
-    bool addProfessor(const QString& name);
+    DbManager();
+    ~DbManager();
+    bool addProfessor(int username ,const QString& password ,const QString& firstname ,const QString& lastname ,const int& departmentcode ,const int& groupcode ,const QString& object_type ,const int& is_supervisor ,const int& degree);
     bool ProfessorExist(int);
     bool deleteProfessor(const int);
-    std::pair<QString, std::unique_ptr<User>> getProfessor(int);
-    std::vector<std::unique_ptr<Professor>> allProfessors(void);
+    Professor* getProfessor(int);
+    std::vector<Professor*> allProfessors(void);
 
 private:
     QSqlDatabase m_db;

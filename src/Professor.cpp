@@ -41,9 +41,6 @@ bool AdjunctProfessor::changePassword(std::string current_pass, std::string new_
 	}
 }
 
-
-
-
 void Faculty::setDegree(int _degree) {
 	degree = _degree;
 }
@@ -223,8 +220,8 @@ void DepartmentHead::addFaculty(int _username, std::string _password, std::strin
 	professors.insert(std::make_pair(faculty->getUserName(), faculty));
 }
 
-void DepartmentHead::addAdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname) {
-	Professor* adjunct_professor(new AdjunctProfessor(_username, _password, _firstname, _lastname, this->departmentcode));
+void DepartmentHead::addAdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname ,int groupcode) {
+    Professor* adjunct_professor(new AdjunctProfessor(_username, _password, _firstname, _lastname, this->departmentcode, groupcode));
 	professors.insert(std::make_pair(adjunct_professor->getUserName(), adjunct_professor));
 }
 

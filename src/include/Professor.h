@@ -83,7 +83,6 @@ public:
 
 // .............................DepartmentHead......................................
 class DepartmentHead : public Faculty {
-	std::map<int, Professor*> professors;
 public:
 	DepartmentHead() {}
 	DepartmentHead(Faculty*);
@@ -92,12 +91,6 @@ public:
 	void setDepartmentProfessors(std::map<int, Professor*>);
 	std::map<PresentedCourse*, std::vector<char>> ProfessorAssessment(Professor*) const;
 	void addFaculty(int, std::string, std::string, std::string);
-	void addAdjunctProfessor(int, std::string, std::string, std::string); //sadasdasdasd
-	void addDepartmentAcademicAffairsStaff(int, std::string, std::string, std::string);
-
-	void changeToFacutly(Professor*); //sadasdasdasd
-	void changeToGroupManager(Faculty*); //sadasdasdasd
-
 	void deleteProfessor(Professor*);
 	void readAllDepartmentProfessors(void);
 	void calcSalary(int*, int) const;

@@ -19,40 +19,54 @@ SOURCES += \
     dbmanager.cpp \
     main.cpp \
     mainwindow.cpp \
-#    students/assessmentform.cpp \
-#    students/examscheduleform.cpp \
-#    students/fullinformationform.cpp \
+    students/assessmentform.cpp \
+    students/examscheduleform.cpp \
+    students/fullinformationform.cpp \
     students/presentedcoursesform.cpp \
     students/studentwindow.cpp \
 #    students/tuitionform.cpp \
-#    students/weekscheduleform.cpp \
+    students/weekscheduleform.cpp \
     professors/professorwindow.cpp \
     professors/professorpresentedcoursesform.cpp \
-    professors/professorslistform.cpp
+    professors/professorslistform.cpp\
+    src/user.cpp \
+    src/student.cpp \
+    src/TimeDate.cpp \
+    src/EnrollmentError.cpp \
+    src/AcademicAffairs.cpp \
+    src/course.cpp \
+    src/professor.cpp
 
 HEADERS += \
     dbmanager.h \
     mainwindow.h \
-#    students/assessmentform.h \
-#    students/examscheduleform.h \
-#    students/fullinformationform.h \
+    students/assessmentform.h \
+    students/examscheduleform.h \
+    students/fullinformationform.h \
     students/presentedcoursesform.h \
     students/studentwindow.h \
-#    students/tuitionform.h \
-#    students/weekscheduleform.h \
+ #  students/tuitionform.h \
+    students/weekscheduleform.h \
     professors/professorpresentedcoursesform.h \
     professors/professorslistform.h \
-    professors/professorwindow.h
-    
+    professors/professorwindow.h \
+    src/student.h \
+    src/user.h \
+    src/TimeDate.h \
+    src/EnrollmentError.h \
+    src/AcademicAffairs.h \
+    src/course.h \
+    src/professor.h
+
 FORMS += \
     mainwindow.ui \
-#    students/assessmentform.ui \
-#    students/examscheduleform.ui \
-#    students/fullinformationform.ui \
+    students/assessmentform.ui \
+    students/examscheduleform.ui \
+    students/fullinformationform.ui \
     students/presentedcoursesform.ui \
     students/studentwindow.ui \
-#    students/tuitionform.ui \
-#    students/weekscheduleform.ui \
+    #students/tuitionform.ui \
+    students/weekscheduleform.ui \
     professors/professorpresentedcoursesform.ui \
     professors/professorslistform.ui \
     professors/professorwindow.ui

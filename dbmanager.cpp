@@ -1,123 +1,120 @@
 #include "dbmanager.h"
+#include <QMessageBox>
+#include <QDir>
+#include <QFile>
+#include <qcryptographichash>
+#include <QMessageBox>
 
-DbManager::DbManager(const QString& path)
+DbManager::DbManager()
 {
-   m_db = QSqlDatabase::addDatabase("QSQLITE");
-   m_db.setDatabaseName(path);
-
-   if (!m_db.open())
-   {
-      qDebug() << "Error: connection with database fail";
-   }
-   else
-   {
-      qDebug() << "Database: connection ok";
-   }
-}
-
-bool DbManager::addUser(const QString& name)
-{
-   bool success = false;
-   QSqlQuery query;
-   query.prepare("INSERT INTO people (name) VALUES (:name)");
-   query.bindValue(":name", name);
-   if(query.exec())
-   {
-       success = true;
-   }
-   else
-   {
-        qDebug() << "addPerson error:  "
-                 << query.lastError();
-   }
-
-   return success;
-}
-bool DbManager::UserExist(int username){
-    QSqlQuery query;
-    query.prepare("SELECT id FROM users WHERE username = (:username)");
-    query.bindValue(":username", username);
-
-    if (query.exec())
-    {
-       if (query.next())
+    m_db = QSqlDatabase::addDatabase("QSQLITE", "Connection");
+    QString db_path = QDir::currentPath();
+       db_path =  db_path + QString("/university.db");
+        m_db.setDatabaseName(db_path);
+    if (m_db.isOpen())
        {
-        return true;
+           QMessageBox msgBox;
+            qDebug() << "opened";
+
        }
+   else{
+        if(!m_db.open())
+          qDebug() << m_db.lastError();
     }
-    return false;
 }
-bool DbManager::deleteUser(int username){
-    if (UserExist(username))
+DbManager::~DbManager()
+{
+    if (m_db.isOpen())
+    {
+        m_db.close();
+    }
+}
+bool DbManager::deleteProfessor(int username){
+    if (ProfessorExist(username))
     {
        QSqlQuery query;
-       query.prepare("DELETE FROM users WHERE username = (:username)");
+       query.prepare("DELETE FROM professors WHERE username = (:username)");
        query.bindValue(":username", username);
        bool success = query.exec();
 
        if(!success)
        {
-           qDebug() << "removePerson error: "
+           qDebug() << "removeProf error: "
                     << query.lastError();
            return false;
        }
        return true;
     }
 }
-/*
-std::pair<QString, std::unique_ptr<User>> DbManager::getUser(int username){
-    UserFactory uf;
 
-    QSqlQuery query;
-    query.prepare("SELECT username , password, firstname, lastname, departmentcode, groupcode , type FROM users WHERE username = (:username)");
-    query.bindValue(":username", username);
+Professor* DbManager::getProfessor(int username){
 
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM professors WHERE username = :username ");
+    query.bindValue(":username",username);
+    if(!query.exec()) {
+        qWarning() << __FUNCTION__ <<":"<<__LINE__<<"Failed to fetch professors";
+        qWarning() << __FUNCTION__ <<":"<<__LINE__<<m_db.databaseName();
+    }
     if (query.next()) {
-        int username = query.value(0).toInt();
-        QString password = query.value(1).toString();
-        QString firstname = query.value(2).toString();
-        QString lastname = query.value(3).toString();
-        int departmentcode = query.value(4).toInt();
-        int groupcode = query.value(5).toInt();
-        QString type = query.value(6).toString();
+        int username = username;
+        QString password = query.value(2).toString();
+        QString firstname = query.value(3).toString();
+        QString lastname = query.value(4).toString();
+        int departmentcode = query.value(5).toInt();
+        int groupcode = query.value(6).toInt();
+        QString object_type = query.value(7).toString();
+        int is_supervisor = query.value(8).toInt();
+        int degree = query.value(9).toInt();
+        qWarning() << firstname.toUtf8();
+        if(object_type == "faculty"){
+               Faculty * ProfessorTemp = new Faculty(username , password.toStdString() , firstname.toStdString(), lastname.toStdString() , departmentcode , groupcode ,is_supervisor , degree);
+               return dynamic_cast<Professor*> (ProfessorTemp);
+        }else if(object_type == "adjunctprofessor"){
+            AdjunctProfessor * ProfessorTemp = new AdjunctProfessor(username , password.toStdString() , firstname.toStdString(), lastname.toStdString() , departmentcode , groupcode);
 
-        std::unique_ptr<User> tempuser = uf.create(type.toLocal8Bit().constData());
+            return dynamic_cast<Professor*> (ProfessorTemp);
+        }else if(object_type == "groupmanager"){
+            GroupManager * ProfessorTemp = new GroupManager(username , password.toStdString() , firstname.toStdString(), lastname.toStdString() , departmentcode , groupcode ,is_supervisor , degree);
+            return dynamic_cast<Professor*> (ProfessorTemp);
+        }else if(object_type == "departmentacademicassistant"){
+           //
+        }else if(object_type == "departmenthead"){
+            DepartmentHead * ProfessorTemp = new DepartmentHead(username, lastname.toStdString() , password.toStdString() , lastname.toStdString() , departmentcode , groupcode ,is_supervisor , degree);
+            return dynamic_cast<Professor*> (ProfessorTemp);
+        }
 
-        tempuser->setUserName(username);
-        tempuser->setPassword(lastname.toLocal8Bit().constData());
-        tempuser->setFirstName(password.toLocal8Bit().constData());
-        tempuser->setLastName(lastname.toLocal8Bit().constData());
-        tempuser->setDepartmentCode(departmentcode);
-        tempuser->setGroupCode(groupcode);
-        std::pair<QString, std::unique_ptr<User>> spair;
-        spair = std::make_pair(type, tempuser);
-        return spair;
     }
 }
-*/
-// professor d0b63845e6aa07489a797146420b8b15
-
-bool DbManager::addProfessor(const QString& name){
+bool DbManager::addProfessor(int username ,const QString& password ,const QString& firstname ,const QString& lastname ,const int& departmentcode ,const int& groupcode ,const QString& object_type ,const int& is_supervisor ,const int& degree){
     bool success = false;
-    QSqlQuery query;
-    query.prepare("INSERT INTO people (name) VALUES (:name)");
-    query.bindValue(":name", name);
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO professors (username,password,firstname,lastname,departmentcode,groupcode,object_type,is_supervisor,degree) VALUES (:username,:password,:firstname,:lastname,:departmentcode,:groupcode,:object_type,:is_supervisor,:degree)");
+    query.bindValue(":username", username);
+    query.bindValue(":password", QString(QCryptographicHash::hash((password.toUtf8()) , QCryptographicHash::Md5).toHex()));
+    query.bindValue(":firstname", firstname);
+    query.bindValue(":lastname", lastname);
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+    query.bindValue(":object_type", object_type);
+    query.bindValue(":is_supervisor", is_supervisor);
+    query.bindValue(":degree", degree);
     if(query.exec())
     {
         success = true;
     }
     else
     {
-         qDebug() << "addPerson error:  "
+         qDebug() << "addProfessor error:  "
                   << query.lastError();
     }
 
     return success;
 }
-bool DbManager::ProfessorExist(int user_id){
+bool DbManager::ProfessorExist(int username){
     QSqlQuery query;
-    query.prepare("SELECT user_id FROM Faculties WHERE user_id = (:user_id)");
-    query.bindValue(":user_id", user_id);
+    query.prepare("SELECT username FROM professors WHERE username = (:username)");
+    query.bindValue(":username", username);
 
     if (query.exec())
     {
@@ -128,107 +125,62 @@ bool DbManager::ProfessorExist(int user_id){
     }
     return false;
 }
-/*
-bool DbManager::deleteProfessor(const int user_id){
-    if (UserExist(user_id))
-    {
-       QSqlQuery query;
-       query.prepare("DELETE FROM Faculties WHERE user_id = (:user_id)");
-       query.bindValue(":user_id", user_id);
-       bool success = query.exec();
-
-       if(!success)
-       {
-           qDebug() << "removePerson error: "
-                    << query.lastError();
-           return false;
-       }
-       return true;
-    }
-}
-
-std::vector<std::unique_ptr<Professor>> DbManager::allProfessors(void){
-    std::vector<std::unique_ptr<Professor>> professors;
+std::vector<Professor*> DbManager::allProfessors(void){
+    std::vector<Professor*> professors;
     QSqlQuery query;
-    query.prepare("SELECT is_supervisor , degree , user_id FROM Faculties");
+    query.prepare("SELECT username , password, firstname, lastname, departmentcode, groupcode , object_type , is_supervisor , degree FROM professors");
 
     while (query.next()) {
-        if(UserExist(query.value(2).toInt()))
-        {
-            std::pair<QString, std::unique_ptr<User>> temp_user = getUser(query.value(2).toInt());
-            if(temp_user.first == "adjunctprofessor")
-            {
-                std::unique_ptr<Professor> adjunct(new AdjunctProfessor(temp_user.second->getUserName() ,temp_user.second->getPassword() ,temp_user.second->getFirstName() ,temp_user.second->getLastName() , temp_user.second->getDepartmentCode() ));
-                professors.push_back(adjunct);
-
-            }
-            else if(temp_user.first == "faculty")
-            {
-                Faculty* faculty = new Faculty(temp_user.second->getUserName() ,temp_user.second->getPassword() ,temp_user.second->getFirstName() ,temp_user.second->getLastName() , temp_user.second->getDepartmentCode() );
-                faculty->setDegree(query.value(1).toInt());
-                if(query.value(0).toInt())
-                    faculty->setAsSupervisor();
-                std::unique_ptr<Professor> ft(faculty);
-                professors.push_back(ft);
-
-            }
-
-        }
-    }
-    query.prepare("SELECT is_supervisor , degree , user_id FROM AdjunctProfessors");
-    while (query.next()) {
-        if(UserExist(query.value(2).toInt()))
-        {
-            std::pair temp_user = getUser(query.value(2).toInt());
-            if(temp_user.first == "adjunctprofessor")
-            {
-                std::unique_ptr<Professor> adjunct(new AdjunctProfessor(temp_user.second->getUserName() ,temp_user.second->getPassword() ,temp_user.second->getFirstName() ,temp_user.second->getLastName() , temp_user.second->getDepartmentCode() ));
-                professors.push_back(adjunct);
-
-            }
-            else if(temp_user.first == "faculty")
-            {
-                Faculty* faculty = new Faculty(temp_user.second->getUserName() ,temp_user.second->getPassword() ,temp_user.second->getFirstName() ,temp_user.second->getLastName() , temp_user.second->getDepartmentCode() );
-                faculty->setDegree(query.value(1).toInt());
-                if(query.value(0).toInt())
-                    faculty->setAsSupervisor();
-                std::unique_ptr<Professor> ft(faculty);
-                professors.push_back(ft);
-
-            }
-
-        }
-    }
-    return professors;
-}
-
-std::pair<QString, std::unique_ptr<User>> DbManager::getProfessor(int user_id){
-    UserFactory uf;
-
-    QSqlQuery query;
-    query.prepare("SELECT is_supervisor , degree , user_id FROM faculties");
-    query.bindValue(":username", user_id);
-
-    if (query.next()) {
         int username = query.value(0).toInt();
         QString password = query.value(1).toString();
         QString firstname = query.value(2).toString();
         QString lastname = query.value(3).toString();
         int departmentcode = query.value(4).toInt();
         int groupcode = query.value(5).toInt();
-        QString type = query.value(6).toString();
+        QString object_type = query.value(6).toString();
+        int is_supervisor = query.value(7).toInt();
+        int degree = query.value(8).toInt();
 
-        std::unique_ptr<User> tempuser = uf.create(type.toLocal8Bit().constData());
+        if(object_type == "adjunctprofessor")
+        {
+            AdjunctProfessor* adjunct = new AdjunctProfessor(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() , departmentcode, groupcode);
+            professors.push_back(adjunct);
 
-        tempuser->setUserName(username);
-        tempuser->setPassword(lastname.toLocal8Bit().constData());
-        tempuser->setFirstName(password.toLocal8Bit().constData());
-        tempuser->setLastName(lastname.toLocal8Bit().constData());
-        tempuser->setDepartmentCode(departmentcode);
-        tempuser->setGroupCode(groupcode);
-        std::pair <QString,std::unique_ptr<User>> spair;
-        spair = std::make_pair( type.toLocal8Bit().constData(), tempuser);
-        return spair;
+        }
+        else if(object_type == "faculty")
+        {
+            Faculty* faculty = new Faculty(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() , departmentcode , groupcode,  is_supervisor, degree);
+            faculty->setDegree(query.value(1).toInt());
+            if(query.value(0).toInt())
+                faculty->setAsSupervisor(true);
+            professors.push_back(faculty);
+        }
+        else if(object_type == "groupmanager" )
+        {
+            GroupManager* groupmanager = new GroupManager(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() , departmentcode , groupcode,  is_supervisor, degree);
+            groupmanager->setDegree(query.value(1).toInt());
+            if(query.value(0).toInt())
+                groupmanager->setAsSupervisor();
+            professors.push_back(groupmanager);
+        }
+        else if(object_type == "departmentacademicassistant" )
+        {
+         /*
+            DepartmentAcademicAssistant* departmentacademicassistant = new DepartmentAcademicAssistant(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() , departmentcode , groupcode,  is_supervisor, degree);
+            departmentacademicassistant->setDegree(query.value(1).toInt());
+            if(query.value(0).toInt())
+                departmentacademicassistant->setAsSupervisor();
+            professors.push_back(departmentacademicassistant);
+        */
+        }
+        else if(object_type == "departmenthead" )
+        {
+            DepartmentHead* departmenthead = new DepartmentHead(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() , departmentcode , groupcode,  is_supervisor, degree);
+            departmenthead->setDegree(query.value(1).toInt());
+            if(query.value(0).toInt())
+                departmenthead->setAsSupervisor();
+            professors.push_back(departmenthead);
+        }
     }
+    return professors;
 }
-*/

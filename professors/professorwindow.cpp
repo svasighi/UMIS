@@ -4,6 +4,8 @@
 #include "professorpresentedcoursesform.h"
 #include "professorslistform.h"
 
+extern int choice;
+
 ProfessorWindow::ProfessorWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ProfessorWindow)
@@ -18,6 +20,7 @@ ProfessorWindow::~ProfessorWindow()
 }
 void ProfessorWindow::on_TB_Signout_clicked()
 {
+    choice = 0;
     MainWindow *wmain = new MainWindow();
     wmain->setGeometry(this->geometry());
     if (this->isMaximized())

@@ -22,6 +22,12 @@ private slots:
     void on_PB_Signin_clicked();
     void on_PB_Exit_clicked();
 
+    void on_radioButton_3_clicked();
+
+    void on_radioButton_2_clicked();
+
+    void on_radioButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     StudentWindow *wstudent;
