@@ -1,11 +1,9 @@
 #include "../mainwindow.h"
-#include "../src/Professor.h"
 #include "professorwindow.h"
 #include "ui_professorwindow.h"
 #include "professorpresentedcoursesform.h"
 #include "professorslistform.h"
 
-extern int choice;
 extern Professor* Extprofessor ;
 
 ProfessorWindow::ProfessorWindow(QWidget *parent) :
@@ -13,15 +11,14 @@ ProfessorWindow::ProfessorWindow(QWidget *parent) :
     ui(new Ui::ProfessorWindow)
 {
     ui->setupUi(this);
-    ui->L_User->setText( QString(Extprofessor->getUserName()) );
-    if(typeid (Extprofessor) != typeid(DepartmentHead))
-        ui->TW_ProfMenu->setTabEnabled(4,false);
-    if(typeid (Extprofessor) != typeid(GroupManager))
-    ui->TW_ProfMenu->setTabEnabled(3,false);
-    if(typeid (Extprofessor) != typeid(Faculty))
-    ui->TW_ProfMenu->setTabEnabled(2,false);
-
     ui->TW_ProfMenu->setCurrentIndex(0);
+    ui->L_User->setText(QString(Extprofessor->getUserName()));
+    if(typeid (Extprofessor) != typeid(DepartmentHead))
+        ui->TW_ProfMenu->setTabEnabled(4, false);
+    if(typeid (Extprofessor) != typeid(GroupManager))
+        ui->TW_ProfMenu->setTabEnabled(3, false);
+    if(typeid (Extprofessor) != typeid(Faculty))
+        ui->TW_ProfMenu->setTabEnabled(2, false);
 }
 
 ProfessorWindow::~ProfessorWindow()
@@ -42,7 +39,6 @@ void ProfessorWindow::on_TB_Signout_clicked()
     }
     wmain->show();
     this->close();
-    ui->TW_ProfMenu->setCurrentIndex(0);
 }
 
 void ProfessorWindow::on_TW_Program_tabCloseRequested(int index)
