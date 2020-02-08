@@ -7,9 +7,9 @@
 #include <qcryptographichash>
 #include <QMessageBox>
 
-extern int choice = 0;
 DbManager db = DbManager();
-
+extern Professor* Extprofessor = nullptr;
+extern Student* Extstudent = nullptr;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -25,26 +25,43 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PB_Signin_clicked()
 {
-    int username = ui->LE_Username->text().toInt();
-    QString password = QString(QCryptographicHash::hash((ui->LE_Password->text().toUtf8()) , QCryptographicHash::Md5).toHex());
-    if(choice == 0){
+    bool haserror = false;
 
-        if(//studet->checkPassword(password.toStdString()))
-                true)
-        {
-            wstudent = new StudentWindow();
-            wstudent->setGeometry(this->geometry());
-            if (this->isMaximized())
-            {
-                wstudent->showMaximized();
-            }
-            wstudent->show();
-            this->hide();
-        }
+    if(ui->LE_Password->text().length() < 6){
+        haserror = true;
+        ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
+    }else{
+        ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,255,255); selection-background-color: rgb(233, 99, 0); }");;
     }
-    else if (choice == 1) {
+    if (ui->LE_Username->text().length() == 0) {
+        haserror = true;
+        ui->LE_Username->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
+    }else{
+        ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,255,255); selection-background-color: rgb(233, 99, 0); }");;
+    }
+
+    if(!haserror){
+        QString password = QString(QCryptographicHash::hash((ui->LE_Password->text().toUtf8()) , QCryptographicHash::Md5).toHex());
+        int username = ui->LE_Username->text().toInt();
+        if(choice == 0){
+            Student* student =  db.getStudent(username);
+            if(student->checkPassword(password.toStdString()))
+            {
+                Extstudent = student;
+                wstudent = new StudentWindow();
+                wstudent->setGeometry(this->geometry());
+                if (this->isMaximized())
+                {
+                    wstudent->showMaximized();
+                }
+                wstudent->show();
+                this->hide();
+            }
+        }
+        else if (choice == 1) {
         Professor* professor =  db.getProfessor(username);
         if(professor->checkPassword(password.toStdString())){
+            Extprofessor = professor;
             wprofessor = new ProfessorWindow();
             wprofessor->setGeometry(this->geometry());
             if (this->isMaximized())
@@ -56,7 +73,7 @@ void MainWindow::on_PB_Signin_clicked()
         }
 
     }
-
+    }
 }
 
 void MainWindow::on_PB_Exit_clicked()

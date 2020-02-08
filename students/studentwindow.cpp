@@ -4,17 +4,21 @@
 #include "presentedcoursesform.h"
 #include "weekscheduleform.h"
 #include "examscheduleform.h"
+#include "../src/student.h"
 //#include "tuitionform.h"
 #include "assessmentform.h"
 #include "fullinformationform.h"
 
 extern int choice;
+extern Student* Extstudent ;
 
 StudentWindow::StudentWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StudentWindow)
 {
     ui->setupUi(this);
+    ui->L_User->setNum(Extstudent->getUserName());
+
     ui->TW_UserMenu->setCurrentIndex(0);
 }
 

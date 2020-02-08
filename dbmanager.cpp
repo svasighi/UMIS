@@ -66,7 +66,6 @@ Professor* DbManager::getProfessor(int username){
         QString object_type = query.value(7).toString();
         int is_supervisor = query.value(8).toInt();
         int degree = query.value(9).toInt();
-        qWarning() << firstname.toUtf8();
         if(object_type == "faculty"){
                Faculty * ProfessorTemp = new Faculty(username , password.toStdString() , firstname.toStdString(), lastname.toStdString() , departmentcode , groupcode ,is_supervisor , degree);
                return dynamic_cast<Professor*> (ProfessorTemp);
@@ -183,4 +182,85 @@ std::vector<Professor*> DbManager::allProfessors(void){
         }
     }
     return professors;
+}
+Student* DbManager::getStudent(int username){
+
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM students WHERE username = :username ");
+    query.bindValue(":username",username);
+    if(!query.exec()) {
+        qWarning() << __FUNCTION__ <<":"<<__LINE__<<"Failed to fetch students";
+        qWarning() << __FUNCTION__ <<":"<<__LINE__<<m_db.databaseName();
+    }
+    if (query.next()) {
+        int username = username;
+        QString password = query.value(2).toString();
+        QString firstname = query.value(3).toString();
+        QString lastname = query.value(4).toString();
+        int departmentcode = query.value(5).toInt();
+        int groupcode = query.value(6).toInt();
+        int type = query.value(7).toInt();
+        QString field = query.value(8).toString();
+        Student * StudentTemp = new Student(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() ,departmentcode,  type , field.toStdString(),groupcode);
+        return StudentTemp;
+
+    }
+}
+bool DbManager::addStudent(int username ,const QString& password ,const QString& firstname ,const QString& lastname ,const int& departmentcode ,const int& groupcode ,const int& type ,const QString& field ){
+    bool success = false;
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO students (username , password, firstname, lastname, departmentcode, groupcode , type , field) VALUES (:username,:password,:firstname,:lastname,:departmentcode,:groupcode,:type,:field)");
+    query.bindValue(":username", username);
+    query.bindValue(":password", QString(QCryptographicHash::hash((password.toUtf8()) , QCryptographicHash::Md5).toHex()));
+    query.bindValue(":firstname", firstname);
+    query.bindValue(":lastname", lastname);
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+    query.bindValue(":type", type);
+    query.bindValue(":field", field);
+    if(query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+         qDebug() << "addProfessor error:  "
+                  << query.lastError();
+    }
+
+    return success;
+}
+bool DbManager::StudentExist(int username){
+    QSqlQuery query;
+    query.prepare("SELECT username FROM students WHERE username = (:username)");
+    query.bindValue(":username", username);
+
+    if (query.exec())
+    {
+       if (query.next())
+       {
+        return true;
+       }
+    }
+    return false;
+}
+std::vector<Student*> DbManager::allStudents(void){
+    std::vector<Student*> students;
+    QSqlQuery query;
+    query.prepare("SELECT username , password, firstname, lastname, departmentcode, groupcode , type , field FROM students");
+
+    while (query.next()) {
+        int username = query.value(1).toInt();
+        QString password = query.value(2).toString();
+        QString firstname = query.value(3).toString();
+        QString lastname = query.value(4).toString();
+        int departmentcode = query.value(5).toInt();
+        int groupcode = query.value(6).toInt();
+        int type = query.value(7).toInt();
+        QString field = query.value(8).toString();
+
+        Student* stu = new Student(username ,password.toStdString() ,firstname.toStdString() ,lastname.toStdString() ,departmentcode,  type , field.toStdString(),groupcode);
+        students.push_back(stu);
+    }
+    return students;
 }

@@ -21,6 +21,12 @@ public:
     Professor* getProfessor(int);
     std::vector<Professor*> allProfessors(void);
 
+    bool addStudent(int username ,const QString& password ,const QString& firstname ,const QString& lastname ,const int& departmentcode ,const int& groupcode ,const int& type ,const QString& field );
+    bool StudentExist(int);
+    bool deleteStudent(const int);
+    Student* getStudent(int);
+    std::vector<Student*> allStudents(void);
+
 private:
     QSqlDatabase m_db;
 };

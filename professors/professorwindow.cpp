@@ -1,16 +1,25 @@
 #include "../mainwindow.h"
+#include "../src/Professor.h"
 #include "professorwindow.h"
 #include "ui_professorwindow.h"
 #include "professorpresentedcoursesform.h"
 #include "professorslistform.h"
 
-extern int choice;
+extern Professor* Extprofessor ;
 
 ProfessorWindow::ProfessorWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ProfessorWindow)
 {
     ui->setupUi(this);
+    ui->L_User->setText( QString(Extprofessor->getUserName()));
+    if(typeid (Extprofessor) != typeid(DepartmentHead))
+        ui->TW_ProfMenu->setTabEnabled(4,false);
+    if(typeid (Extprofessor) != typeid(GroupManager))
+    ui->TW_ProfMenu->setTabEnabled(3,false);
+    if(typeid (Extprofessor) != typeid(Faculty))
+    ui->TW_ProfMenu->setTabEnabled(2,false);
+
     ui->TW_ProfMenu->setCurrentIndex(0);
 }
 
