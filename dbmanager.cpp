@@ -2,7 +2,7 @@
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
-
+#include <math.h>
 DbManager::DbManager()
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE", "Connection");
@@ -292,4 +292,414 @@ std::vector<Student*> DbManager::allStudents(void)
         students.push_back(stu);
     }
     return students;
+}
+bool DbManager::addCourse(const int& departmentcode, const int& groupcode,const int& coursecode, const int& credit, const QString& name, const int& type)
+{
+    bool success = false;
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO courses (departmentcode, groupcode, coursecode, credit, name, type) VALUES (:departmentcode,:groupcode,:coursecode,:credit,:name,:type)");
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+    query.bindValue(":coursecode", coursecode);
+    query.bindValue(":credit", credit);
+    query.bindValue(":name", name);
+    query.bindValue(":type", type);
+    if (query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "addCourse error:  "
+            << query.lastError();
+    }
+
+    return success;
+}
+bool DbManager::courseExistByCode(int departmentcode,int groupcode ,int coursecode){
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM courses WHERE departmentcode = :departmentcode AND groupcode = :groupcode AND coursecode = :coursecode");
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+    query.bindValue(":coursecode", coursecode);
+
+    if (query.exec())
+    {
+        if (query.next())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+bool DbManager::deleteCourseByCode(int departmentcode,int groupcode ,int coursecode){
+    if (courseExistByCode(departmentcode ,groupcode ,coursecode))
+    {
+        QSqlQuery query(m_db);
+        query.prepare("DELETE FROM courses WHERE departmentcode = :departmentcode AND groupcode = :groupcode AND coursecode = :coursecode");
+        query.bindValue(":departmentcode", departmentcode);
+        query.bindValue(":groupcode", groupcode);
+        query.bindValue(":coursecode", coursecode);
+        bool success = query.exec();
+
+        if (!success)
+        {
+            qDebug() << "removeCourse error: "
+                << query.lastError();
+            return false;
+        }
+        return true;
+    }
+}
+Course* DbManager::getCourseByCode(int departmentcode,int groupcode ,int coursecode){
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM courses WHERE departmentcode = :departmentcode AND groupcode = :groupcode AND coursecode = :coursecode");
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+    query.bindValue(":coursecode", coursecode);
+
+    if (!query.exec())
+    {
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << "Failed to fetch course";
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << m_db.databaseName();
+    }
+    if (query.next())
+    {
+        int departmentcode = query.value(1).toInt();
+        int groupcode = query.value(2).toInt();
+        int coursecode = query.value(3).toInt();
+        int credit = query.value(4).toInt();
+        QString name = query.value(5).toString();
+        int type = query.value(6).toInt();
+
+        Course* CourseTemp = new Course(departmentcode, groupcode, coursecode, credit, name.toStdString(), type);
+        return CourseTemp;
+
+    }
+}
+std::vector<Course*> DbManager::allCourse(void){
+    std::vector<Course*> courses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM courses");
+
+    while (query.next())
+    {
+        int departmentcode = query.value(1).toInt();
+        int groupcode = query.value(2).toInt();
+        int coursecode = query.value(3).toInt();
+        int credit = query.value(4).toInt();
+        QString name = query.value(5).toString();
+        int type = query.value(6).toInt();
+
+        Course* CourseTemp = new Course(departmentcode, groupcode, coursecode, credit, name.toStdString(), type);
+        courses.push_back(CourseTemp);
+    }
+    return courses;
+}
+std::vector<Course*> DbManager::getCourseByDepartment(int departmentcode){
+    std::vector<Course*> courses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM courses WHERE departmentcode = :departmentcode");
+    query.bindValue(":departmentcode", departmentcode);
+    while (query.next())
+    {
+        int departmentcode = query.value(1).toInt();
+        int groupcode = query.value(2).toInt();
+        int coursecode = query.value(3).toInt();
+        int credit = query.value(4).toInt();
+        QString name = query.value(5).toString();
+        int type = query.value(6).toInt();
+
+        Course* CourseTemp = new Course(departmentcode, groupcode, coursecode, credit, name.toStdString(), type);
+        courses.push_back(CourseTemp);
+    }
+    return courses;
+}
+std::vector<Course*> DbManager::getCourseByGroup(int departmentcode , int groupcode){
+
+    std::vector<Course*> courses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM courses WHERE departmentcode = :departmentcode AND groupcode = :groupcode ");
+    query.bindValue(":departmentcode", departmentcode);
+    query.bindValue(":groupcode", groupcode);
+
+    while (query.next())
+    {
+        int departmentcode = query.value(1).toInt();
+        int groupcode = query.value(2).toInt();
+        int coursecode = query.value(3).toInt();
+        int credit = query.value(4).toInt();
+        QString name = query.value(5).toString();
+        int type = query.value(6).toInt();
+
+        Course* CourseTemp = new Course(departmentcode, groupcode, coursecode, credit, name.toStdString(), type);
+        courses.push_back(CourseTemp);
+    }
+    return courses;
+}
+
+bool DbManager::addPresentedCourse(const int& course_id, const int& course_professor_id,const int& capacity, const int& enrolled_number, const int& waiting_number, const int& group_number, const int& term_number, std::vector<Course*> corequisit, std::vector<Course*> prerequisit)
+{
+    QString prerequisit_string;
+    for(int i = 0 ; i < prerequisit.size() ; i++)
+    {
+        prerequisit_string += prerequisit[i]->getCourseID() + ";";
+    }
+    QString corequisit_string;
+    for(int i = 0 ; i < corequisit.size() ; i++)
+    {
+        corequisit_string += corequisit[i]->getCourseID() + ";";
+    }
+
+    bool success = false;
+    QSqlQuery query(m_db);
+    query.prepare("INSERT INTO presented_courses (course_id, course_professor_id, capacity, enrolled_number, waiting_number, group_number , term_number , corequisit , preriqisit) VALUES (:course_id,:course_professor_id,:capacity,:enrolled_number,:waiting_number,:group_number ,:term_number ,:corequisit ,:preriqisit)");
+    query.bindValue(":course_id", course_id);
+    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":capacity", capacity);
+    query.bindValue(":enrolled_number", enrolled_number);
+    query.bindValue(":waiting_number", group_number);
+    query.bindValue(":term_number", term_number);
+    query.bindValue(":corequisit", corequisit_string.toUtf8());
+    query.bindValue(":prerequisit", prerequisit_string.toUtf8());
+    if (query.exec())
+    {
+        success = true;
+    }
+    else
+    {
+        qDebug() << "addPresentedCourse error:  "
+            << query.lastError();
+    }
+
+    return success;
+}
+
+bool DbManager::deletePresentedCourseByCode(const int& course_id ,const int& course_professor_id,const int& term_number)
+{
+    if (presentedCourseExistbyCode(course_id ,course_professor_id ,term_number))
+    {
+        QSqlQuery query(m_db);
+        query.prepare("DELETE FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+        query.bindValue(":course_id", course_id);
+        query.bindValue(":course_professor_id", course_professor_id);
+        query.bindValue(":term_number", term_number);
+        bool success = query.exec();
+
+        if (!success)
+        {
+            qDebug() << "removePresentedCourse error: "
+                << query.lastError();
+            return false;
+        }
+        return true;
+    }
+}
+bool DbManager::presentedCourseExistbyCode(const int& course_id ,const int& course_professor_id,const int& term_number)
+{
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+    query.bindValue(":course_id", course_id);
+    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":term_number", term_number);
+
+    if (query.exec())
+    {
+        if (query.next())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+PresentedCourse* DbManager::getPresentedCourseByCode(const int& course_id ,const int& course_professor_id ,const int& term_number)
+{
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+    query.bindValue(":course_id", course_id);
+    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":term_number", term_number);
+
+    if (!query.exec())
+    {
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << "Failed to fetch course";
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << m_db.databaseName();
+    }
+    if (query.next())
+    {
+        int course_id = query.value(1).toInt();
+        int course_professor_id = query.value(2).toInt();
+        int capacity = query.value(3).toInt();
+        int enrolled_number = query.value(4).toInt();
+        int waiting_number = query.value(4).toInt();
+        int group_number = query.value(4).toInt();
+        int term_number = query.value(6).toInt();
+        int length = QString(course_id).length();
+        Course* corurse_temp = getCourseByCode( course_id / (int) pow(10 , length - 2) , course_id % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),course_id % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+        Professor* professor_temp = getProfessor(course_professor_id);
+        PresentedCourse* PresentedCourseTemp = new PresentedCourse(corurse_temp ,term_number ,group_number , professor_temp ,capacity);
+        PresentedCourseTemp->setEnrolledNumber(enrolled_number);
+        PresentedCourseTemp->setWaitingNumber(waiting_number);
+
+        QStringList corequisit_list = query.value(5).toString().split(';');
+        QStringList prerequisit_list = query.value(5).toString().split(';');
+        for(int i =0 ; i < corequisit_list.count();i++)
+        {
+           int length = corequisit_list.at(i).length();
+
+            Course* coCoursTemp = getCourseByCode( corequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addCorequisite(coCoursTemp);
+        }
+        for(int i =0 ; i < prerequisit_list.count();i++)
+        {
+           int length = prerequisit_list.at(i).length();
+
+            Course* preCoursTemp = getCourseByCode( prerequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addPrerequisite(preCoursTemp);
+        }
+        return PresentedCourseTemp;
+
+    }
+}
+std::vector<PresentedCourse*> DbManager::allPresentedCourse(void){
+
+    std::vector<PresentedCourse*> presentedcourses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM presented_courses");
+
+    if (!query.exec())
+    {
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << "Failed to fetch course";
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << m_db.databaseName();
+    }
+    if (query.next())
+    {
+        int course_id = query.value(1).toInt();
+        int course_professor_id = query.value(2).toInt();
+        int capacity = query.value(3).toInt();
+        int enrolled_number = query.value(4).toInt();
+        int waiting_number = query.value(4).toInt();
+        int group_number = query.value(4).toInt();
+        int term_number = query.value(6).toInt();
+        int length = QString(course_id).length();
+        Course* corurse_temp = getCourseByCode( course_id / (int) pow(10 , length - 2) , course_id % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),course_id % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+        Professor* professor_temp = getProfessor(course_professor_id);
+        PresentedCourse* PresentedCourseTemp = new PresentedCourse(corurse_temp ,term_number ,group_number , professor_temp ,capacity);
+        PresentedCourseTemp->setEnrolledNumber(enrolled_number);
+        PresentedCourseTemp->setWaitingNumber(waiting_number);
+        presentedcourses.push_back(PresentedCourseTemp);
+        QStringList corequisit_list = query.value(5).toString().split(';');
+        QStringList prerequisit_list = query.value(5).toString().split(';');
+        for(int i =0 ; i < corequisit_list.count();i++)
+        {
+           int length = corequisit_list.at(i).length();
+
+            Course* coCoursTemp = getCourseByCode( corequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addCorequisite(coCoursTemp);
+        }
+        for(int i =0 ; i < prerequisit_list.count();i++)
+        {
+           int length = prerequisit_list.at(i).length();
+
+            Course* preCoursTemp = getCourseByCode( prerequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addPrerequisite(preCoursTemp);
+        }
+
+    }
+    return presentedcourses;
+
+}
+std::vector<PresentedCourse*> DbManager::getPresentedCourseByCourseId(const int& _course_id ,const int& _term_number){
+    std::vector<PresentedCourse*> presentedcourses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND term_number = :term_number");
+    query.bindValue(":course_id", _course_id);
+    query.bindValue(":term_number", _term_number);
+    if (!query.exec())
+    {
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << "Failed to fetch course";
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << m_db.databaseName();
+    }
+    if (query.next())
+    {
+        int course_id = query.value(1).toInt();
+        int course_professor_id = query.value(2).toInt();
+        int capacity = query.value(3).toInt();
+        int enrolled_number = query.value(4).toInt();
+        int waiting_number = query.value(4).toInt();
+        int group_number = query.value(4).toInt();
+        int term_number = query.value(6).toInt();
+        int length = QString(course_id).length();
+        Course* corurse_temp = getCourseByCode( course_id / (int) pow(10 , length - 2) , course_id % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),course_id % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+        Professor* professor_temp = getProfessor(course_professor_id);
+        PresentedCourse* PresentedCourseTemp = new PresentedCourse(corurse_temp ,term_number ,group_number , professor_temp ,capacity);
+        PresentedCourseTemp->setEnrolledNumber(enrolled_number);
+        PresentedCourseTemp->setWaitingNumber(waiting_number);
+        presentedcourses.push_back(PresentedCourseTemp);
+        QStringList corequisit_list = query.value(5).toString().split(';');
+        QStringList prerequisit_list = query.value(5).toString().split(';');
+        for(int i =0 ; i < corequisit_list.count();i++)
+        {
+           int length = corequisit_list.at(i).length();
+
+            Course* coCoursTemp = getCourseByCode( corequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addCorequisite(coCoursTemp);
+        }
+        for(int i =0 ; i < prerequisit_list.count();i++)
+        {
+           int length = prerequisit_list.at(i).length();
+
+            Course* preCoursTemp = getCourseByCode( prerequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addPrerequisite(preCoursTemp);
+        }
+
+    }
+    return presentedcourses;
+}
+std::vector<PresentedCourse*> DbManager::getPresentedCourseByCourseProfessorId(const int& course_professor_id ,const int& term_number){
+    std::vector<PresentedCourse*> presentedcourses;
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM presented_courses WHERE course_professor_id = :course_professor_id AND term_number = :term_number");
+    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":term_number", term_number);
+    if (!query.exec())
+    {
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << "Failed to fetch course";
+        qWarning() << __FUNCTION__ << ":" << __LINE__ << m_db.databaseName();
+    }
+    if (query.next())
+    {
+        int course_id = query.value(1).toInt();
+        int course_professor_id = query.value(2).toInt();
+        int capacity = query.value(3).toInt();
+        int enrolled_number = query.value(4).toInt();
+        int waiting_number = query.value(4).toInt();
+        int group_number = query.value(4).toInt();
+        int term_number = query.value(6).toInt();
+        int length = QString(course_id).length();
+        Course* corurse_temp = getCourseByCode( course_id / (int) pow(10 , length - 2) , course_id % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),course_id % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+        Professor* professor_temp = getProfessor(course_professor_id);
+        PresentedCourse* PresentedCourseTemp = new PresentedCourse(corurse_temp ,term_number ,group_number , professor_temp ,capacity);
+        PresentedCourseTemp->setEnrolledNumber(enrolled_number);
+        PresentedCourseTemp->setWaitingNumber(waiting_number);
+        presentedcourses.push_back(PresentedCourseTemp);
+        QStringList corequisit_list = query.value(5).toString().split(';');
+        QStringList prerequisit_list = query.value(5).toString().split(';');
+        for(int i =0 ; i < corequisit_list.count();i++)
+        {
+           int length = corequisit_list.at(i).length();
+
+            Course* coCoursTemp = getCourseByCode( corequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),corequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addCorequisite(coCoursTemp);
+        }
+        for(int i =0 ; i < prerequisit_list.count();i++)
+        {
+           int length = prerequisit_list.at(i).length();
+
+            Course* preCoursTemp = getCourseByCode( prerequisit_list.at(i).toInt() / (int) pow(10 , length - 2) , prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) / (int) pow(10 , length - 2),prerequisit_list.at(i).toInt() % (int) pow(10 , length - 2) % (int) pow(10 , length - 2) );
+            PresentedCourseTemp->addPrerequisite(preCoursTemp);
+        }
+
+    }
+    return presentedcourses;
 }

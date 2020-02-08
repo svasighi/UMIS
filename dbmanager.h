@@ -27,6 +27,22 @@ public:
     Student* getStudent(int);
     std::vector<Student*> allStudents(void);
 
+    bool addCourse(const int& departmentcode, const int& groupcode,const int& coursecode, const int& credit, const QString& name, const int& type);
+    bool courseExistByCode(int ,int ,int);
+    bool deleteCourseByCode(int ,int ,int);
+    Course* getCourseByCode(int ,int ,int);
+    std::vector<Course*> allCourse(void);
+    std::vector<Course*> getCourseByDepartment(int department);
+    std::vector<Course*> getCourseByGroup(int departmentcode , int groupcode);
+
+    bool addPresentedCourse(const int& course_id, const int& course_professor_id,const int& capacity, const int& enrolled_number, const int& waiting_number, const int& group_number, const int& term_number, std::vector<Course*> corequisit, std::vector<Course*> preriqisit);
+    bool deletePresentedCourseByCode(const int& course_id ,const int& course_professor_id,const int& term_number);
+    bool presentedCourseExistbyCode(const int& course_id ,const int& course_professor_id,const int& term_number);
+    PresentedCourse* getPresentedCourseByCode(const int& course_id ,const int& course_professor_id ,const int& term_number);
+    std::vector<PresentedCourse*> allPresentedCourse(void);
+    std::vector<PresentedCourse*> getPresentedCourseByCourseId(const int& course_id ,const int& term_number);
+    std::vector<PresentedCourse*> getPresentedCourseByCourseProfessorId(const int& course_professor_id ,const int& term_number);
+
 private:
     QSqlDatabase m_db;
 };
