@@ -27,7 +27,7 @@ SOURCES += \
     students/presentedcoursesform.cpp \
     students/studentwindow.cpp \
     students/tuitionform.cpp \
-    students/weekscheduleform.cpp
+    students/weekscheduleform.cpp \
     professors/professorwindow.cpp \
     professors/professorpresentedcoursesform.cpp \
     professors/professorslistform.cpp\
@@ -73,7 +73,7 @@ FORMS += \
     students/presentedcoursesform.ui \
     students/studentwindow.ui \
     students/tuitionform.ui \
-    students/weekscheduleform.ui
+    students/weekscheduleform.ui \
     professors/professorpresentedcoursesform.ui \
     professors/professorslistform.ui \
     professors/professorwindow.ui
