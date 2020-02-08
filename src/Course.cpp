@@ -6,7 +6,7 @@ Course::Course()
 	: departmentcode(0), groupcode(0), coursecode(0), credit(0), type(-1) {}
 
 Course::Course(short _departmentcode, short _groupcode, short _coursecode, char _credit, std::string _name, char _type)
-	: departmentcode(_departmentcode), groupcode(_groupcode), coursecode(_coursecode), credit(_credit), name(_name), type(-1) {}
+	: departmentcode(_departmentcode), groupcode(_groupcode), coursecode(_coursecode), credit(_credit), name(_name), type(_type) {}
 
 void Course::setDepartmentCode(short _departmentcode) {
 	departmentcode = _departmentcode;
