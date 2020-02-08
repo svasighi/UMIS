@@ -23,8 +23,6 @@ private slots:
     void on_PB_Signin_clicked();
     void on_PB_Exit_clicked();
 
-    void on_RB_Student_clicked();
-
 private:
     Ui::MainWindow *ui;
     StudentWindow *wstudent;
