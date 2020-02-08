@@ -153,6 +153,9 @@ std::string Time::getTime(int mode) const {
 	else if (mode == 1 || mode == 12) {
 		temp = std::to_string(((hour == 0 || hour == 12) ? 12 : hour % 12)) + ":" + std::to_string(minute) + ":" + std::to_string(second) + " " + (hour < 12 ? "AM" : "PM");
 	}
+	else if (mode == 2) {
+		temp = std::to_string(hour) + (minute != 0 ? ":" + std::to_string(minute) : "");
+	}
 	return temp;
 }
 

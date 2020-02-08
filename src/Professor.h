@@ -31,10 +31,10 @@ public:
 class AdjunctProfessor : public Professor {
 public:
     AdjunctProfessor() {}
-        AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode , short _groupcode)
-                        :User(_username, _password, _firstname, _lastname, _departmentcode) {
-            groupcode = _groupcode;
-        }
+    AdjunctProfessor(int _username, std::string _password, std::string _firstname, std::string _lastname, short _departmentcode , short _groupcode)
+    :User(_username, _password, _firstname, _lastname, _departmentcode) {
+         groupcode = _groupcode;
+    }
     bool changePassword(std::string current_pass, std::string new_pass);
 };
 
