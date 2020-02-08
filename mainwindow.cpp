@@ -1,13 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "professors/professorwindow.h"
-#include "dbmanager.h"
-#include <string>
-#include <QString>
-#include <qcryptographichash>
 #include <QMessageBox>
+#include <QCryptographicHash>
 
 DbManager db = DbManager();
+extern int isChecked;
 extern Professor* Extprofessor = nullptr;
 extern Student* Extstudent = nullptr;
 MainWindow::MainWindow(QWidget *parent)
@@ -21,7 +18,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::on_PB_Signin_clicked()
 {
@@ -73,26 +69,18 @@ void MainWindow::on_PB_Signin_clicked()
         }
 
     }
+    else if (ui->RB_Staff->isChecked())
+    {
+
     }
+    else
+    {
+        QMessageBox::warning(this, "خطا", "یکی از گزینه ها را انتخاب کنید");
+    }
+
 }
 
 void MainWindow::on_PB_Exit_clicked()
 {
     QApplication::quit();
-}
-
-void MainWindow::on_radioButton_3_clicked()
-{
-    choice = 0;
-}
-
-void MainWindow::on_radioButton_2_clicked()
-{
-    choice = 1;
-
-}
-
-void MainWindow::on_radioButton_clicked()
-{
-    choice = 2;
 }
