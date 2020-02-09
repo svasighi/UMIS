@@ -1,7 +1,6 @@
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
-#include <QString>
 #include <string>
 #include <vector>
 #include <map>
@@ -14,5 +13,12 @@
 #include "src/Student.h"
 #include "src/Professor.h"
 #include "src/AcademicAffairs.h"
+#include <QString>
+#include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlDriver>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlRecord>
 
 #endif // VARIABLES_H
