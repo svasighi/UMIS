@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "variables.h"
 #include "dbmanager.h"
 #include "students/studentwindow.h"
 #include "professors/professorwindow.h"
