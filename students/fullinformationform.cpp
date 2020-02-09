@@ -14,7 +14,7 @@ FullInformationForm::FullInformationForm(QWidget *parent) :
 
 FullInformationForm::~FullInformationForm()
 {
-	deleteItems();
+    deleteItems();
     delete ui;
 }
 
@@ -128,7 +128,7 @@ void FullInformationForm::on_PB_Refresh_clicked()
         ui->TBW_Terms->setItem(r, 1, items.back());
         items.push_back(new QTableWidgetItem(QString::number(npassed)));
         ui->TBW_Terms->setItem(r, 2, items.back());
-        items.push_back(new QTableWidgetItem(QString::number(nall - npassed - nrefused - ndropped - nrefused)));
+        items.push_back(new QTableWidgetItem(QString::number(nall - npassed - ndropped - nrefused)));
         ui->TBW_Terms->setItem(r, 3, items.back());
         items.push_back(new QTableWidgetItem(QString::number(ndropped)));
         ui->TBW_Terms->setItem(r, 4, items.back());
