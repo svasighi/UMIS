@@ -146,17 +146,21 @@ void Time::setTime(int _hour, int _minute, int _second) {
 }
 
 std::string Time::getTime(int mode) const {
-	std::string temp;
+    std::stringstream temp;
 	if (mode == 0 || mode == 24) {
-		temp = std::to_string(hour) + ":" + std::to_string(minute) + ":" + std::to_string(second);
+        temp << std::setfill('0') << std::setw(2) << hour << ':' << std::setw(2) << minute << ':' << std::setw(2) << second;
 	}
 	else if (mode == 1 || mode == 12) {
-		temp = std::to_string(((hour == 0 || hour == 12) ? 12 : hour % 12)) + ":" + std::to_string(minute) + ":" + std::to_string(second) + " " + (hour < 12 ? "AM" : "PM");
+        temp << std::setfill('0') << std::setw(2) << ((hour == 0 || hour == 12) ? 12 : hour % 12) << ':' << std::setw(2)
+             << minute << ':' << std::setw(2) << second << " " << (hour < 12 ? "AM" : "PM");
 	}
-	else if (mode == 2) {
-		temp = std::to_string(hour) + (minute != 0 ? ":" + std::to_string(minute) : "");
-	}
-	return temp;
+    else if (mode == 2) {
+           temp << std::setfill('0') << std::setw(2) << hour << ':' << std::setw(2) << minute;
+           if (second != 0){
+               temp << ':' << std::setw(2) << second;
+           }
+    }
+    return temp.str();
 }
 
 void Time::setHour(int _hour) {
