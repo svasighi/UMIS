@@ -22,11 +22,21 @@ MainWindow::~MainWindow()
 void MainWindow::on_PB_Signin_clicked()
 {
     bool userhaserror = false;
+    bool ok;
+    int username = ui->LE_Username->text().toInt(&ok);
     if (ui->LE_Username->text().length() == 0)
     {
         userhaserror = true;
         ui->LE_Username->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");
         QMessageBox::critical(this, "خطا", "شناسه کاربری نمی تواند خالی باشد");
+        return;
+    }
+    else if (ok == false)
+    {
+        userhaserror = true;
+        ui->LE_Username->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");
+        QMessageBox::critical(this, "خطا", "شناسه کاربری باید عدد باشد");
+        return;
     }
     else
     {
@@ -37,7 +47,6 @@ void MainWindow::on_PB_Signin_clicked()
     if (!userhaserror)
     {
         QString password = QString(QCryptographicHash::hash((ui->LE_Password->text().toUtf8()), QCryptographicHash::Md5).toHex());
-        int username = ui->LE_Username->text().toInt();
         if(ui->RB_Student->isChecked())
         {
             if (db.StudentExist(username))
@@ -46,7 +55,7 @@ void MainWindow::on_PB_Signin_clicked()
                 if(student->checkPassword(password.toStdString()))
                 {
                     Extstudent = student;
-                    wstudent = new StudentWindow();
+                    wstudent = std::unique_ptr<StudentWindow>(new StudentWindow());
                     wstudent->setGeometry(this->geometry());
                     if (this->isMaximized())
                     {
@@ -58,7 +67,7 @@ void MainWindow::on_PB_Signin_clicked()
                 else
                 {
                     ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");
-                    QMessageBox::critical(this, "خطا", "پسورد غلط است");
+                    QMessageBox::critical(this, "خطا", "گذرواژه وارد شده غلط است");
                 }
             }
             else
@@ -75,7 +84,7 @@ void MainWindow::on_PB_Signin_clicked()
                 if(professor->checkPassword(password.toStdString()))
                 {
                     Extprofessor = professor;
-                    wprofessor = new ProfessorWindow();
+                    wprofessor = std::unique_ptr<ProfessorWindow>(new ProfessorWindow());
                     wprofessor->setGeometry(this->geometry());
                     if (this->isMaximized())
                     {
@@ -87,7 +96,7 @@ void MainWindow::on_PB_Signin_clicked()
                 else
                 {
                     ui->LE_Password->setStyleSheet("QLineEdit { background: rgb(255,103,125); selection-background-color: rgb(233, 99, 0); }");;
-                    QMessageBox::critical(this, "خطا", "پسورد غلط است");
+                    QMessageBox::critical(this, "خطا", "گذرواژه وارد شده غلط است");
                 }
             }
             else
