@@ -25,8 +25,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    StudentWindow *wstudent;
-    ProfessorWindow *wprofessor;
+    std::unique_ptr<StudentWindow> wstudent;
+    std::unique_ptr<ProfessorWindow> wprofessor;
     static void DatabaseConnect();
 };
 #endif // MAINWINDOW_H
