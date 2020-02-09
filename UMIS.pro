@@ -20,6 +20,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     students/assessmentform.cpp \
+    students/changepasswordform.cpp \
+    students/enrolltimeform.cpp \
     students/examscheduleform.cpp \
     students/fullinformationform.cpp \
     students/mainenrollmentform.cpp \
@@ -43,6 +45,8 @@ HEADERS += \
     dbmanager.h \
     mainwindow.h \
     students/assessmentform.h \
+    students/changepasswordform.h \
+    students/enrolltimeform.h \
     students/examscheduleform.h \
     students/fullinformationform.h \
     students/mainenrollmentform.h \
@@ -66,6 +70,8 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     students/assessmentform.ui \
+    students/changepasswordform.ui \
+    students/enrolltimeform.ui \
     students/examscheduleform.ui \
     students/fullinformationform.ui \
     students/mainenrollmentform.ui \
