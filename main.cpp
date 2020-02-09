@@ -3,6 +3,7 @@
 
 Professor* Extprofessor = nullptr;
 Student* Extstudent = nullptr;
+int curterm = 3982;
 
 int main(int argc, char *argv[])
 {
