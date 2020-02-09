@@ -18,12 +18,8 @@ public:
 
 private:
     Ui::ProfessorWindow *ui;
-	
-signals:
-    void want2close();
 
 private slots:
-
     void on_PB_PresentedCourses_clicked();
     void on_TB_Signout_clicked();
     void on_TW_Program_tabCloseRequested(int);

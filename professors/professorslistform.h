@@ -1,13 +1,14 @@
 #ifndef PROFESSORSLISTFORM_H
 #define PROFESSORSLISTFORM_H
 
-#include <QMainWindow>
+#include <QWidget>
+#include "../variables.h"
 
 namespace Ui {
 class ProfessorsListForm;
 }
 
-class ProfessorsListForm : public QMainWindow
+class ProfessorsListForm : public QWidget
 {
     Q_OBJECT
 
@@ -16,9 +17,9 @@ public:
     ~ProfessorsListForm();
 
 private slots:
-    void on_readData_clicked();
+    void on_PB_ReadData_clicked();
 
-private:
+    void on_PB_AddProfessor_clicked();
 
 private:
     Ui::ProfessorsListForm *ui;
