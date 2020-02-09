@@ -42,6 +42,7 @@ public:
     std::vector<PresentedCourse*> allPresentedCourse(void);
     std::vector<PresentedCourse*> getPresentedCourseByCourseId(const int& course_id ,const int& term_number);
     std::vector<PresentedCourse*> getPresentedCourseByCourseProfessorId(const int& course_professor_id ,const int& term_number);
+    std::vector<PresentedCourse*> getPresentedCourseByDepartment(const int& departmentcode ,const int& term_number);
 
 private:
     QSqlDatabase m_db;

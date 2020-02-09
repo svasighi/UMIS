@@ -475,14 +475,14 @@ bool DbManager::addPresentedCourse(const int& course_id, const int& course_profe
     return success;
 }
 
-bool DbManager::deletePresentedCourseByCode(const int& course_id ,const int& course_professor_id,const int& term_number)
+bool DbManager::deletePresentedCourseByCode(const int& course_id ,const int& group_number,const int& term_number)
 {
-    if (presentedCourseExistbyCode(course_id ,course_professor_id ,term_number))
+    if (presentedCourseExistbyCode(course_id ,group_number ,term_number))
     {
         QSqlQuery query(m_db);
-        query.prepare("DELETE FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+        query.prepare("DELETE FROM presented_courses WHERE course_id = :course_id AND group_number = :group_number AND term_number = :term_number");
         query.bindValue(":course_id", course_id);
-        query.bindValue(":course_professor_id", course_professor_id);
+        query.bindValue(":group_number", group_number);
         query.bindValue(":term_number", term_number);
         bool success = query.exec();
 
@@ -495,12 +495,12 @@ bool DbManager::deletePresentedCourseByCode(const int& course_id ,const int& cou
         return true;
     }
 }
-bool DbManager::presentedCourseExistbyCode(const int& course_id ,const int& course_professor_id,const int& term_number)
+bool DbManager::presentedCourseExistbyCode(const int& course_id ,const int& group_number,const int& term_number)
 {
     QSqlQuery query(m_db);
-    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND group_number = :group_number AND term_number = :term_number");
     query.bindValue(":course_id", course_id);
-    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":group_number", group_number);
     query.bindValue(":term_number", term_number);
 
     if (query.exec())
@@ -512,12 +512,12 @@ bool DbManager::presentedCourseExistbyCode(const int& course_id ,const int& cour
     }
     return false;
 }
-PresentedCourse* DbManager::getPresentedCourseByCode(const int& course_id ,const int& course_professor_id ,const int& term_number)
+PresentedCourse* DbManager::getPresentedCourseByCode(const int& course_id ,const int& group_number ,const int& term_number)
 {
     QSqlQuery query(m_db);
-    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND course_professor_id = :course_professor_id AND term_number = :term_number");
+    query.prepare("SELECT * FROM presented_courses WHERE course_id = :course_id AND group_number = :group_number AND term_number = :term_number");
     query.bindValue(":course_id", course_id);
-    query.bindValue(":course_professor_id", course_professor_id);
+    query.bindValue(":group_number", group_number);
     query.bindValue(":term_number", term_number);
 
     if (!query.exec())
@@ -702,4 +702,19 @@ std::vector<PresentedCourse*> DbManager::getPresentedCourseByCourseProfessorId(c
 
     }
     return presentedcourses;
+}
+std::vector<PresentedCourse*> DbManager::getPresentedCourseByDepartment(const int& departmentcode ,const int& term_number){
+
+    std::vector<Course*> departmentcourses = getCourseByDepartment(departmentcode);
+    std::vector<PresentedCourse*> result ;
+
+    for(int i = 0 ; i < departmentcourses.size(); i++ ){
+
+      int course_id =  departmentcourses[i]->getCourseID();
+      std::vector<PresentedCourse*> departmentPresentedCourse = getPresentedCourseByCourseId(course_id ,term_number);
+      for(int j = 0 ; j < departmentPresentedCourse.size(); j++ ){
+          result.push_back(departmentPresentedCourse[j]);
+       }
+    }
+    return result;
 }
