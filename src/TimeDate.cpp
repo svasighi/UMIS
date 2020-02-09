@@ -1,4 +1,6 @@
 #include <stdexcept>
+#include <iomanip>
+#include <sstream>
 #include "TimeDate.h"
 
 std::vector<std::string> Date::monthName = { "Farvardin","Ordibehesht","Khordad","Tir","Mordad","Shahrivar","Mehr","Aban","Azar","Dey","Bahman","Esfand" };
