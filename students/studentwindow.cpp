@@ -25,6 +25,7 @@ StudentWindow::StudentWindow(QWidget *parent) :
 
 StudentWindow::~StudentWindow()
 {
+    deleteTabs();
     delete ui;
 }
 
@@ -46,6 +47,17 @@ void StudentWindow::on_TB_Signout_clicked()
     this->close();
 }
 
+void StudentWindow::deleteTabs()
+{
+    for (int i = tabs.size() - 1; i >= 0; i--)
+    {
+        delete tabs[i];
+        tabs[i] = nullptr;
+    }
+    tabs.clear();
+    ui->TW_Program->clear();
+}
+
 void StudentWindow::on_TW_Program_tabCloseRequested(int index)
 {
     if (index)
@@ -56,60 +68,70 @@ void StudentWindow::on_TW_Program_tabCloseRequested(int index)
 
 void StudentWindow::on_PB_PresentedCourses_clicked()
 {
-    ui->TW_Program->addTab(new PresentedCoursesForm(), QString("دروس ارائه شده در ترم"));
+    tabs.push_back(new PresentedCoursesForm());
+    ui->TW_Program->addTab(tabs.back(), QString("دروس ارائه شده در ترم"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_WeekSchedule_clicked()
 {
-    ui->TW_Program->addTab(new WeekScheduleForm(), QString("برنامه هفتگی دانشجو"));
+    tabs.push_back(new WeekScheduleForm());
+    ui->TW_Program->addTab(tabs.back(), QString("برنامه هفتگی دانشجو"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_ExamSchedule_clicked()
 {
-    ui->TW_Program->addTab(new ExamScheduleForm(), QString("برنامه امتحان پایان ترم دانشجو"));
+    tabs.push_back(new ExamScheduleForm());
+    ui->TW_Program->addTab(tabs.back(), QString("برنامه امتحان پایان ترم دانشجو"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_Tuition_clicked()
 {
+    tabs.push_back(new TuitionForm());
     ui->TW_Program->addTab(new TuitionForm(), QString("مشاهده وضعیت شهریه"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_Assessment_clicked()
 {
-    ui->TW_Program->addTab(new AssessmentForm(), QString("ارزشیابی"));
+    tabs.push_back(new AssessmentForm());
+    ui->TW_Program->addTab(tabs.back(), QString("ارزشیابی"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_FullInformatin_clicked()
 {
-    ui->TW_Program->addTab(new FullInformationForm(), QString("اطلاعات جامع دانشجو"));
+    tabs.push_back(new FullInformationForm());
+    ui->TW_Program->addTab(tabs.back(), QString("اطلاعات جامع دانشجو"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_EnrollTime_clicked()
 {
-    ui->TW_Program->addTab(new EnrollTimeForm(), QString("مشاهده ساعت ثبت نام"));
+    tabs.push_back(new EnrollTimeForm());
+    ui->TW_Program->addTab(tabs.back(), QString("مشاهده ساعت ثبت نام"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_PrepEnroll_clicked()
 {
-    ui->TW_Program->addTab(new PrepEnrollmentForm(), QString("ثبت نام مقدماتی"));
+    tabs.push_back(new PrepEnrollmentForm());
+    ui->TW_Program->addTab(tabs.back(), QString("ثبت نام مقدماتی"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_MainEnroll_clicked()
 {
-    ui->TW_Program->addTab(new MainEnrollmentForm(), QString("ثبت نام اصلی"));
+    tabs.push_back(new MainEnrollmentForm());
+    ui->TW_Program->addTab(tabs.back(), QString("ثبت نام اصلی"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
 void StudentWindow::on_PB_ChangePassword_clicked()
 {
-    ui->TW_Program->addTab(new ChangePasswordForm(), QString("تغییر گذرواژه"));
+    tabs.push_back(new ChangePasswordForm());
+    ui->TW_Program->addTab(tabs.back(), QString("تغییر گذرواژه"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }

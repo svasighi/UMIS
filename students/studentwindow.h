@@ -15,9 +15,11 @@ class StudentWindow : public QWidget
 public:
     explicit StudentWindow(QWidget *parent = nullptr);
     ~StudentWindow();
+    void deleteTabs();
 
 private:
     Ui::StudentWindow *ui;
+    std::vector<QWidget*> tabs;
 
 private slots:
     void on_TB_Signout_clicked();
