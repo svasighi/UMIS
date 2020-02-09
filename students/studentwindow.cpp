@@ -7,10 +7,10 @@
 #include "tuitionform.h"
 #include "assessmentform.h"
 #include "fullinformationform.h"
-
+#include "enrolltimeform.h"
 #include "mainenrollmentform.h"
 #include "prepenrollmentform.h"
-
+#include "changepasswordform.h"
 
 extern Student* Extstudent;
 
@@ -30,6 +30,8 @@ StudentWindow::~StudentWindow()
 
 void StudentWindow::on_TB_Signout_clicked()
 {
+    delete Extstudent;
+    Extstudent = nullptr;
     MainWindow *wmain = new MainWindow();
     wmain->setGeometry(this->geometry());
     if (this->isMaximized())
@@ -90,7 +92,7 @@ void StudentWindow::on_PB_FullInformatin_clicked()
 
 void StudentWindow::on_PB_EnrollTime_clicked()
 {
-    ui->TW_Program->addTab(new FullInformationForm(), QString("اطلاعات جامع دانشجو"));
+    ui->TW_Program->addTab(new EnrollTimeForm(), QString("مشاهده ساعت ثبت نام"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }
 
@@ -103,5 +105,11 @@ void StudentWindow::on_PB_PrepEnroll_clicked()
 void StudentWindow::on_PB_MainEnroll_clicked()
 {
     ui->TW_Program->addTab(new MainEnrollmentForm(), QString("ثبت نام اصلی"));
+    ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
+}
+
+void StudentWindow::on_PB_ChangePassword_clicked()
+{
+    ui->TW_Program->addTab(new ChangePasswordForm(), QString("تغییر گذرواژه"));
     ui->TW_Program->setCurrentIndex(ui->TW_Program->count() - 1);
 }

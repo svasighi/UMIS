@@ -2,7 +2,7 @@
 #define ASSESSMENTFORM_H
 
 #include <QWidget>
-#include "../variables.h"
+#include "../dbmanager.h"
 
 namespace Ui {
 class AssessmentForm;

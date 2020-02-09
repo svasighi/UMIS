@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QTableWidgetItem>
-#include "../variables.h"
+#include "../dbmanager.h"
 
 namespace Ui {
 class WeekScheduleForm;

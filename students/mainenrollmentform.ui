@@ -11,11 +11,125 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>ثبت نام اصلی</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>
   </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="PB_AddNewRow">
+         <property name="text">
+          <string>سطر جدید</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="TBW_Courses">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::NoSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <column>
+        <property name="text">
+         <string>درخواست</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>وضع ثبت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>گروه</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>کد درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>گروه آموزشی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>دانشکده</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>نام درس</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>واحد</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="PB_Check">
+         <property name="text">
+          <string>بررسی تغییرات</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PB_Commit">
+         <property name="text">
+          <string>اعمال تغییرات</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

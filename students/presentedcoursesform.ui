@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>956</width>
     <height>600</height>
    </rect>
   </property>
@@ -53,46 +53,6 @@
        </item>
        <item>
         <widget class="QLineEdit" name="LE_DepartmentCode">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="L_GroupCode">
-         <property name="text">
-          <string>گروه آموزشی :</string>
-         </property>
-         <property name="buddy">
-          <cstring>LE_GroupCode</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="LE_GroupCode">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="L_CourseCode">
-         <property name="text">
-          <string>شماره درس :</string>
-         </property>
-         <property name="buddy">
-          <cstring>LE_CourseCode</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="LE_CourseCode">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -161,7 +121,7 @@
        </column>
        <column>
         <property name="text">
-         <string>تعداد لیست انتظار</string>
+         <string>لیست انتظار</string>
         </property>
        </column>
        <column>
@@ -171,12 +131,7 @@
        </column>
        <column>
         <property name="text">
-         <string>زمان ارائه درس</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>مکان ارائه درس</string>
+         <string>زمان و مکان ارائه درس</string>
         </property>
        </column>
        <column>
@@ -193,8 +148,6 @@
  <tabstops>
   <tabstop>LE_TermNo</tabstop>
   <tabstop>LE_DepartmentCode</tabstop>
-  <tabstop>LE_GroupCode</tabstop>
-  <tabstop>LE_CourseCode</tabstop>
   <tabstop>PB_ShowResult</tabstop>
   <tabstop>TBW_Courses</tabstop>
  </tabstops>

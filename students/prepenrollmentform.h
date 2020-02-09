@@ -2,7 +2,7 @@
 #define PREPENROLLMENTFORM_H
 
 #include <QWidget>
-#include "../variables.h"
+#include "../dbmanager.h"
 
 namespace Ui {
 class PrepEnrollmentForm;

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QTableWidgetItem>
-#include "../variables.h"
+#include "../dbmanager.h"
 
 namespace Ui {
 class FullInformationForm;
@@ -26,7 +26,7 @@ private:
     Ui::FullInformationForm *ui;
 	std::vector<QTableWidgetItem*> items;
     int mode;
-    int curtermno;
+    int seltermno;
 };
 
 #endif // FULLINFORMATIONFORM_H

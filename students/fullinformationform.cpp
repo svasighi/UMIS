@@ -23,6 +23,7 @@ void FullInformationForm::deleteItems()
     for (int i = items.size() - 1; i >= 0; i--)
     {
         delete items[i];
+        items[i] = nullptr;
     }
     items.clear();
     for (int i = ui->TBW_Terms->rowCount() - 1; i >= 0; i--)
@@ -43,34 +44,41 @@ void FullInformationForm::on_PB_Refresh_clicked()
     c0->addCorequisite(c1);
     c1->addCorequisite(c0);
 
-    Faculty* p0 = new Faculty(12398, "123", "Ali", "Rohan", 17, 34, 1, true);
-    Faculty* p1 = new Faculty(12345, "pass", "Reza", "Khandan", 17, 34, 1, true);
-    Faculty* p2 = new Faculty(12724, "iu", "Amir", "Kar", 17, 34, 1, true);
-    PresentedCourse* pc0 = new PresentedCourse(c0, 3941, 0, p1, 20);
-    PresentedCourse* pc1 = new PresentedCourse(c1, 3941, 0, p2, 10);
-    PresentedCourse* pc2 = new PresentedCourse(c4, 3941, 0, p0, 10);
-    PresentedCourse* pc3 = new PresentedCourse(c2, 3942, 0, p1, 20);
-    PresentedCourse* pc4 = new PresentedCourse(c3, 3951, 0, p0, 20);
+    Faculty* p0 = new Faculty(12398, "123", "علی", "مرتضوی", 17, 34, 1, true);
+    Faculty* p1 = new Faculty(12345, "pass", "رضا", "خندان", 17, 34, 1, true);
+    Faculty* p2 = new Faculty(12724, "iu", "امیر", "حقیقی", 17, 34, 1, true);
+    PresentedCourse* pc0 = new PresentedCourse(c0, 3972, 0, p1, 20);
+    PresentedCourse* pc1 = new PresentedCourse(c1, 3972, 0, p2, 10);
+    PresentedCourse* pc2 = new PresentedCourse(c4, 3981, 0, p0, 10);
+    PresentedCourse* pc3 = new PresentedCourse(c2, 3982, 0, p1, 20);
+    PresentedCourse* pc4 = new PresentedCourse(c3, 3981, 0, p0, 20);
     pc0->setCourseTime(CourseTime({ 1,2 }, Time(8), Time(9, 30)));
     pc1->setCourseTime(CourseTime({ 2,4 }, Time(9, 30), Time(11)));
     pc2->setCourseTime(CourseTime({ 3 }, Time(9, 30), Time(11)));
     pc3->setCourseTime(CourseTime({ 2,4 }, Time(9, 30), Time(11)));
     pc4->setCourseTime(CourseTime({ 2,4 }, Time(9, 30), Time(11)));
-    pc0->setFinalExamTime(ExamTime(Date(1394, 10, 1), Time(8), Time(11)));
-    pc1->setFinalExamTime(ExamTime(Date(1394, 10, 1), Time(11), Time(14)));
-    pc2->setFinalExamTime(ExamTime(Date(1394, 10, 2), Time(13,30), Time(16,30)));
-    pc3->setFinalExamTime(ExamTime(Date(1395, 4, 1), Time(8), Time(12)));
-    pc4->setFinalExamTime(ExamTime(Date(1395, 10, 1), Time(8), Time(12)));
-
-    Student* s0 = new Student(9430703,"1234","Saeed","Mohseni",17,Student::day,"electric",34);
+    pc0->setFinalExamTime(ExamTime(Date(1398, 4, 1), Time(8), Time(11)));
+    pc1->setFinalExamTime(ExamTime(Date(1398, 4, 1), Time(11), Time(14)));
+    pc2->setFinalExamTime(ExamTime(Date(1398, 10, 2), Time(13,30), Time(16,30)));
+    pc3->setFinalExamTime(ExamTime(Date(1399, 4, 2), Time(8), Time(12)));
+    pc4->setFinalExamTime(ExamTime(Date(1398, 10, 1), Time(8), Time(12)));
+    pc0->setCourseLocation("class 31");
+    pc1->setCourseLocation("class 35");
+    pc2->setCourseLocation("class 34");
+    pc3->setCourseLocation("class 33");
+    pc4->setCourseLocation("class 32");
+    pc0->setFinalExamLocation("class 1");
+    pc1->setFinalExamLocation("class 5");
+    pc2->setFinalExamLocation("class 4");
+    pc3->setFinalExamLocation("class 3");
+    pc4->setFinalExamLocation("class 2");
+    Student* s0;
+    s0 = Extstudent;
     s0->setSupervisor(p1);
-    s0->addTerm(3941);
-    auto e = s0->commitEnrollment(3941, { {pc0,ENROLL}, {pc1,ENROLL}, {pc2,ENROLL} });
-    s0->addTerm(3942);
-    auto e2 = s0->commitEnrollment(3942, { {pc3,ENROLL} });
-    s0->addTerm(3951);
-    auto e3 = s0->commitEnrollment(3951, { {pc4,ENROLL} });
-    s0->setGrade(17.5);
+    s0->addTerm(3972);
+    auto e = s0->commitEnrollment(3972, { {pc0,ENROLL}, {pc1,ENROLL} });
+    s0->addTerm(3981);
+    auto e3 = s0->commitEnrollment(3981, { {pc2,ENROLL}, {pc4,ENROLL} });
     Extstudent = s0;
     //........................................................................................................
     //........................................................................................................test
@@ -173,14 +181,14 @@ void FullInformationForm::on_TBW_Terms_cellClicked(int row, int column)
     if (mode == 0)
     {
         mode = 1;
-        curtermno = ui->TBW_Terms->item(row, 0)->text().toInt();
+        seltermno = ui->TBW_Terms->item(row, 0)->text().toInt();
         deleteItems();
         ui->TBW_Terms->setColumnCount(6);
         QStringList header;
         header << "شماره درس" << "نام درس" << "واحد" << "نمره" << "وضعیت" << "نوع درس";
         ui->TBW_Terms->setHorizontalHeaderLabels(header);
 
-        std::map<PresentedCourse*, MyCourse> courses = Extstudent->getTermCourses(curtermno);
+        std::map<PresentedCourse*, MyCourse> courses = Extstudent->getTerm(seltermno).getCourses();
         int r = 0;
 
         for(const auto& course : courses)
